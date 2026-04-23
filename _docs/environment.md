@@ -29,3 +29,5 @@ Do not commit real credentials, API keys, database passwords, connection strings
 - Use separate credentials for local development, preview deployments, and production.
 - Rotate any credential that has appeared in chat, logs, screenshots, or committed history.
 - Do not log secrets or full connection strings.
+- Local Vercel linkage and downloaded Vercel env files live under `.vercel/`, which is gitignored.
+- Root `vercel.json` owns the deployment framework/build/install/output settings so GitHub-triggered builds do not inherit an incorrect static output directory.

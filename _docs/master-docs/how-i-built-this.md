@@ -206,6 +206,13 @@ At **2026-04-23 22:07 BST**, the home page hero formatting was corrected after v
 - The home page typography now avoids viewport-driven font scaling while preserving the large editorial brand treatment.
 - `pnpm verify` and `pnpm build` passed after the CSS fix.
 
+At **2026-04-23 22:12 BST**, the first GitHub-to-Vercel deployment issue was found and fixed.
+
+- Commit `441ccab` was pushed to `origin/main`, triggering the Vercel production build for `assessmentoptima`.
+- Vercel installed dependencies and completed the Next.js build successfully, then failed because the project was still configured as Framework Preset `Other` with a static `public` output directory expectation.
+- A root `vercel.json` was added to force the project to deploy as Next.js with `pnpm build`, `pnpm install --frozen-lockfile`, and the Next.js default output handling.
+- The local linked Vercel production build then completed successfully into `.vercel/output`.
+
 ## Required Sections
 
 ### Hero

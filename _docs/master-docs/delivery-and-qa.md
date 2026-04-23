@@ -2,12 +2,14 @@
 
 Status: Implementation-current master reference for testing, deployment, README, and roadmap.
 
-Current implementation status as of 2026-04-23 21:59 BST:
+Current implementation status as of 2026-04-23 22:12 BST:
 
 - Next.js App Router, strict TypeScript, pnpm, Tailwind v4, ESLint, Prettier, and Vitest are implemented.
 - L0 schemas, Mongo repository, API routes, assessment flow, result report, dataset exports, BYOK AI analysis, dynamic OG cards, delete-by-token, and How I Built This are implemented.
-- `pnpm verify` and `pnpm build` pass locally.
-- Remaining launch work is Vercel linking/env/deploy, mobile hands-on QA, final dataset licence/contact decisions, and optional seed/logging/test expansion.
+- `pnpm verify`, `pnpm build`, and linked `vercel build --prod` pass locally.
+- The first GitHub-triggered Vercel deployment exposed a project configuration issue: Vercel was set to Framework Preset `Other` and expected a static `public` output directory after the Next.js build.
+- A root `vercel.json` now forces the deployment to use the Next.js framework preset, `pnpm install --frozen-lockfile`, `pnpm build`, and default Next.js output handling.
+- Remaining launch work is production Vercel env/domain/protection QA, mobile hands-on QA, final dataset licence/contact decisions, and optional seed/logging/test expansion.
 
 ## Build Order
 
@@ -179,6 +181,8 @@ Build command: pnpm build
 Output: default Next.js
 Node: use a Next.js-supported Node runtime, preferably Node 22 where available
 ```
+
+The repo includes `vercel.json` to enforce these settings per deployment because the initial Vercel project was created with the wrong `Other` framework/static output settings.
 
 ## Environment Variables
 

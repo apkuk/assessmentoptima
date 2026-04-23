@@ -8,6 +8,7 @@ export default defineConfig([
   ...nextTypescript,
   prettier,
   globalIgnores([
+    ".vercel/**",
     ".next/**",
     "out/**",
     "build/**",

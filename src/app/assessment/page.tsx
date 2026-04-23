@@ -9,7 +9,7 @@ import type { Metadata } from "next";
 import { AssessmentForm } from "@/features/assessment/components/assessment-form";
 
 export const metadata: Metadata = {
-  title: "Take the Assessment",
+  title: "Your WorkStyle Compass",
 };
 
 export default function AssessmentPage() {
@@ -17,11 +17,10 @@ export default function AssessmentPage() {
     <main className="page">
       <section className="section">
         <p className="eyebrow">WorkStyle Compass v0</p>
-        <h1 className="page-title">Take the assessment</h1>
+        <h1 className="page-title">Your WorkStyle Compass</h1>
         <p className="lede">
-          Rate each statement from 1 to 5. There are no ideal answers: the
-          report is designed to show likely contribution patterns, pressure
-          risks, and development experiments.
+          No right answers - just what is true for you at work right now. Takes
+          about 8 minutes. You will get a developmental report at the end.
         </p>
       </section>
       <AssessmentForm />

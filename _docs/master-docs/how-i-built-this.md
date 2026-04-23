@@ -240,6 +240,15 @@ At **2026-04-23 22:28 BST**, the home hero was adjusted after visual review on t
 - Desktop display type was reduced slightly while preserving the editorial first-screen impact.
 - The existing global stylesheet remains above the new 600-line guidance because this was a targeted launch polish change; splitting the global CSS should be handled as a separate capability-based refactor.
 
+At **2026-04-23 22:37 BST**, the assessment experience was rebuilt from a form dump into a gated flow.
+
+- `/assessment` now follows the intended sequence: Intro, Consent, About you, Assessment, Review, Submit.
+- The questionnaire is split into six screens of nine statements, with a single answered-count progress indicator instead of nine empty scale bars.
+- Likert controls now use labelled buttons with clear response anchors, and item IDs are kept out of the visible UI.
+- Consent and context copy was rewritten in plainer language, optional context is skippable, and progress is saved locally in the browser.
+- The implementation was split into capability-focused components and a feature-scoped CSS module so new files stay below the 600-line maintainability threshold.
+- `pnpm verify` and `pnpm build` passed after the assessment flow rewrite.
+
 ## Required Sections
 
 ### Hero

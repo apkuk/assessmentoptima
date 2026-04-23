@@ -4,17 +4,26 @@
  * File: src/features/assessment/components/assessment-form.tsx
  * Created: 2026-04-23
  * Updated: 2026-04-23
- * Description: Client-side consent, context, 54-item assessment, and submit flow.
+ * Description: Gated client-side assessment flow with autosave, consent, context, questionnaire pages, review, and submit.
  */
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Loader2 } from "lucide-react";
 
 import { apiRoutes } from "@/config/routes";
 import {
+  assessmentFlowSteps,
+  assessmentPageSize,
+  assessmentStepLabels,
+  assessmentStorageKey,
+  type AssessmentFlowStep,
+  type ConsentDraft,
+} from "@/features/assessment/application/assessment-flow";
+import {
   CONSENT_VERSION,
+  expectedItemIds,
   items,
-  scaleKeys,
   scales,
 } from "@/features/assessment/application/model";
 import { respondentContextFields } from "@/features/assessment/application/respondent-context";
@@ -27,74 +36,234 @@ import {
   type AnswerValue,
   type Consent,
   type RespondentContext,
-  type ScaleKey,
 } from "@/features/assessment/schemas/assessment";
 
-const groupedItems = scaleKeys.map((scaleKey) => ({
-  scale: scales[scaleKey],
-  items: items.filter((item) => item.scale === scaleKey),
-}));
+import { AssessmentStepper } from "./assessment-stepper";
+import {
+  ConsentStep,
+  ContextStep,
+  IntroStep,
+  QuestionsStep,
+  ReviewStep,
+} from "./assessment-step-panels";
+import styles from "./assessment-flow.module.css";
 
-function labelFromValue(value: string): string {
-  return value
-    .split("_")
-    .map((part) =>
-      part.length <= 2 || /^\d/.test(part)
-        ? part.toUpperCase()
-        : `${part[0]?.toUpperCase() ?? ""}${part.slice(1)}`,
-    )
-    .join(" ");
+interface SavedAssessmentState {
+  answers: Partial<AnswerMap>;
+  consent: ConsentDraft;
+  context: RespondentContext;
+  questionPageIndex: number;
+  step: AssessmentFlowStep;
+  updatedAt: string;
 }
 
-function scaleCompletion(
-  answers: Partial<AnswerMap>,
-  scaleKey: ScaleKey,
-): number {
-  const scaleItems = items.filter((item) => item.scale === scaleKey);
-  const answered = scaleItems.filter((item) => answers[item.id] !== undefined);
+const initialConsent: ConsentDraft = {
+  useBoundaryAccepted: false,
+  assessmentProcessing: false,
+  researchStorage: false,
+  publicDataset: false,
+};
 
-  return Math.round((answered.length / scaleItems.length) * 100);
+const questionPages = Array.from(
+  { length: Math.ceil(items.length / assessmentPageSize) },
+  (_, index) =>
+    items.slice(index * assessmentPageSize, (index + 1) * assessmentPageSize),
+);
+
+const expectedItemIdSet = new Set(expectedItemIds);
+const answerValueSet = new Set<number>(answerValues);
+
+function clampQuestionPageIndex(index: number): number {
+  return Math.min(Math.max(index, 0), questionPages.length - 1);
+}
+
+function sanitiseAnswers(value: unknown): Partial<AnswerMap> {
+  if (!value || typeof value !== "object") {
+    return {};
+  }
+
+  return Object.fromEntries(
+    Object.entries(value).filter(
+      ([itemId, answer]) =>
+        expectedItemIdSet.has(itemId) &&
+        typeof answer === "number" &&
+        answerValueSet.has(answer),
+    ),
+  ) as Partial<AnswerMap>;
+}
+
+function loadSavedAssessment(): SavedAssessmentState | null {
+  try {
+    const raw = window.localStorage.getItem(assessmentStorageKey);
+
+    if (!raw) {
+      return null;
+    }
+
+    const parsed = JSON.parse(raw) as Partial<SavedAssessmentState>;
+    const step = assessmentFlowSteps.includes(parsed.step as AssessmentFlowStep)
+      ? (parsed.step as AssessmentFlowStep)
+      : "intro";
+
+    return {
+      answers: sanitiseAnswers(parsed.answers),
+      consent: { ...initialConsent, ...parsed.consent },
+      context: { ...defaultRespondentContext, ...parsed.context },
+      questionPageIndex: clampQuestionPageIndex(
+        Number(parsed.questionPageIndex ?? 0),
+      ),
+      step,
+      updatedAt: typeof parsed.updatedAt === "string" ? parsed.updatedAt : "",
+    };
+  } catch {
+    return null;
+  }
+}
+
+function pageAnsweredCount(
+  pageItems: typeof items,
+  answers: Partial<AnswerMap>,
+): number {
+  return pageItems.filter((item) => answers[item.id] !== undefined).length;
 }
 
 export function AssessmentForm() {
   const router = useRouter();
+  const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [hasHydrated, setHasHydrated] = useState(false);
+  const [step, setStep] = useState<AssessmentFlowStep>("intro");
+  const [questionPageIndex, setQuestionPageIndex] = useState(0);
+  const [activeItemId, setActiveItemId] = useState(items[0]?.id ?? "");
   const [answers, setAnswers] = useState<Partial<AnswerMap>>({});
   const [context, setContext] = useState<RespondentContext>(
     defaultRespondentContext,
   );
-  const [useBoundaryAccepted, setUseBoundaryAccepted] = useState(false);
-  const [assessmentProcessing, setAssessmentProcessing] = useState(false);
-  const [researchStorage, setResearchStorage] = useState(false);
-  const [publicDataset, setPublicDataset] = useState(false);
+  const [consentDraft, setConsentDraft] =
+    useState<ConsentDraft>(initialConsent);
+  const [savedLabel, setSavedLabel] = useState("Autosave ready");
+  const [transitionNote, setTransitionNote] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const answeredCount = Object.keys(answers).length;
-  const completion = Math.round((answeredCount / items.length) * 100);
   const isComplete = answeredCount === items.length;
+  const currentQuestionItems = useMemo(
+    () => questionPages[questionPageIndex] ?? [],
+    [questionPageIndex],
+  );
+  const currentPageAnswered = pageAnsweredCount(currentQuestionItems, answers);
+  const currentPageComplete =
+    currentPageAnswered === currentQuestionItems.length;
+  const questionStart = questionPageIndex * assessmentPageSize + 1;
+  const questionEnd = questionStart + currentQuestionItems.length - 1;
+  const stepIndex = assessmentFlowSteps.indexOf(step);
 
   const consent = useMemo<Consent | null>(() => {
-    if (!useBoundaryAccepted || !assessmentProcessing) {
+    if (
+      !consentDraft.useBoundaryAccepted ||
+      !consentDraft.assessmentProcessing
+    ) {
       return null;
     }
 
     return {
-      useBoundaryAccepted,
-      assessmentProcessing,
-      researchStorage,
-      publicDataset,
+      useBoundaryAccepted: true,
+      assessmentProcessing: true,
+      researchStorage: consentDraft.researchStorage,
+      publicDataset: consentDraft.publicDataset,
       consentVersion: CONSENT_VERSION,
     };
-  }, [
-    assessmentProcessing,
-    publicDataset,
-    researchStorage,
-    useBoundaryAccepted,
-  ]);
+  }, [consentDraft]);
 
-  function updateAnswer(itemId: string, value: AnswerValue): void {
-    setAnswers((current) => ({ ...current, [itemId]: value }));
-  }
+  const setQuestionPage = useCallback(
+    (index: number, nextAnswers: Partial<AnswerMap> = answers) => {
+      const safeIndex = clampQuestionPageIndex(index);
+      const nextItems = questionPages[safeIndex] ?? [];
+      const nextActive =
+        nextItems.find((item) => nextAnswers[item.id] === undefined) ??
+        nextItems[0];
+
+      setQuestionPageIndex(safeIndex);
+      setActiveItemId(nextActive?.id ?? "");
+      setStep("questions");
+    },
+    [answers],
+  );
+
+  const goToStep = useCallback(
+    (nextStep: AssessmentFlowStep) => {
+      setError(null);
+      setTransitionNote(null);
+
+      if (nextStep === "questions") {
+        setQuestionPage(questionPageIndex);
+        return;
+      }
+
+      setStep(nextStep);
+    },
+    [questionPageIndex, setQuestionPage],
+  );
+
+  const scheduleAdvance = useCallback(
+    (itemId: string, nextAnswers: Partial<AnswerMap>) => {
+      if (advanceTimer.current) {
+        clearTimeout(advanceTimer.current);
+      }
+
+      advanceTimer.current = setTimeout(() => {
+        const currentIndex = currentQuestionItems.findIndex(
+          (item) => item.id === itemId,
+        );
+        const laterItems = currentQuestionItems.slice(currentIndex + 1);
+        const nextUnanswered = laterItems.find(
+          (item) => nextAnswers[item.id] === undefined,
+        );
+
+        if (nextUnanswered) {
+          setActiveItemId(nextUnanswered.id);
+          return;
+        }
+
+        const allPageItemsAnswered = currentQuestionItems.every(
+          (item) => nextAnswers[item.id] !== undefined,
+        );
+
+        if (!allPageItemsAnswered) {
+          return;
+        }
+
+        if (questionPageIndex < questionPages.length - 1) {
+          const completedScale =
+            scales[currentQuestionItems[0]?.scale ?? "delivery"].shortName;
+          const nextScale =
+            scales[
+              questionPages[questionPageIndex + 1]?.[0]?.scale ?? "delivery"
+            ].shortName;
+
+          setTransitionNote(`${completedScale} done. Next: ${nextScale}.`);
+          setQuestionPage(questionPageIndex + 1, nextAnswers);
+          return;
+        }
+
+        setTransitionNote(
+          "Assessment done. Review your answers before submit.",
+        );
+        setStep("review");
+      }, 250);
+    },
+    [currentQuestionItems, questionPageIndex, setQuestionPage],
+  );
+
+  const updateAnswer = useCallback(
+    (itemId: string, value: AnswerValue): void => {
+      const nextAnswers = { ...answers, [itemId]: value };
+      setAnswers(nextAnswers);
+      setActiveItemId(itemId);
+      scheduleAdvance(itemId, nextAnswers);
+    },
+    [answers, scheduleAdvance],
+  );
 
   function updateContext(
     key: (typeof respondentContextFields)[number]["key"],
@@ -103,17 +272,81 @@ export function AssessmentForm() {
     setContext((current) => ({ ...current, [key]: value }));
   }
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function updateConsent(key: keyof ConsentDraft, value: boolean): void {
+    setConsentDraft((current) => ({
+      ...current,
+      [key]: value,
+      publicDataset:
+        key === "researchStorage" && !value ? false : current.publicDataset,
+    }));
+  }
+
+  function validateBeforeNext(): boolean {
+    if (step === "consent" && !consent) {
+      setError("Please accept the two required checks before continuing.");
+      return false;
+    }
+
+    if (step === "questions" && !currentPageComplete) {
+      setError("Answer each statement on this screen before continuing.");
+      return false;
+    }
+
+    setError(null);
+    return true;
+  }
+
+  function nextStep(): void {
+    if (!validateBeforeNext()) {
+      return;
+    }
+
+    if (step === "questions") {
+      if (questionPageIndex < questionPages.length - 1) {
+        setQuestionPage(questionPageIndex + 1);
+      } else {
+        goToStep("review");
+      }
+      return;
+    }
+
+    const next = assessmentFlowSteps[stepIndex + 1];
+
+    if (next) {
+      goToStep(next);
+    }
+  }
+
+  function previousStep(): void {
+    setError(null);
+
+    if (step === "questions" && questionPageIndex > 0) {
+      setQuestionPage(questionPageIndex - 1);
+      return;
+    }
+
+    const previous = assessmentFlowSteps[stepIndex - 1];
+
+    if (previous) {
+      goToStep(previous);
+    }
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
 
     if (!consent) {
-      setError("Please accept the use boundary and processing consent.");
+      setError("Please accept the two required checks before submitting.");
+      goToStep("consent");
       return;
     }
 
     if (!isComplete) {
-      setError(`Please answer all ${items.length} items before submitting.`);
+      setError(
+        `Please answer all ${items.length} statements before submitting.`,
+      );
+      setQuestionPage(0);
       return;
     }
 
@@ -141,6 +374,7 @@ export function AssessmentForm() {
       }
 
       const parsed = submitAssessmentResponseSchema.parse(data);
+      window.localStorage.removeItem(assessmentStorageKey);
       router.push(parsed.resultUrl);
     } catch (submissionError) {
       setError(
@@ -152,174 +386,169 @@ export function AssessmentForm() {
     }
   }
 
+  useEffect(() => {
+    const hydrateTimer = setTimeout(() => {
+      const saved = loadSavedAssessment();
+
+      if (saved) {
+        setAnswers(saved.answers);
+        setContext(saved.context);
+        setConsentDraft(saved.consent);
+        setQuestionPageIndex(saved.questionPageIndex);
+        setStep(saved.step);
+        setSavedLabel("Saved in this browser");
+        const savedPage = questionPages[saved.questionPageIndex] ?? [];
+        const savedActive =
+          savedPage.find((item) => saved.answers[item.id] === undefined) ??
+          savedPage[0] ??
+          items[0];
+        setActiveItemId(savedActive?.id ?? "");
+      }
+
+      setHasHydrated(true);
+    }, 0);
+
+    return () => clearTimeout(hydrateTimer);
+  }, []);
+
+  useEffect(() => {
+    if (!hasHydrated) {
+      return;
+    }
+
+    const saveTimer = setTimeout(() => {
+      const state: SavedAssessmentState = {
+        answers,
+        consent: consentDraft,
+        context,
+        questionPageIndex,
+        step,
+        updatedAt: new Date().toISOString(),
+      };
+
+      window.localStorage.setItem(assessmentStorageKey, JSON.stringify(state));
+      setSavedLabel("Saved in this browser");
+    }, 180);
+
+    return () => clearTimeout(saveTimer);
+  }, [answers, consentDraft, context, hasHydrated, questionPageIndex, step]);
+
+  useEffect(() => {
+    if (step !== "questions" || !activeItemId) {
+      return;
+    }
+
+    function handleKeyDown(event: KeyboardEvent): void {
+      const target = event.target as HTMLElement | null;
+
+      if (
+        target?.closest("input, textarea, select, button") ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.altKey
+      ) {
+        return;
+      }
+
+      if (!/^[1-5]$/.test(event.key)) {
+        return;
+      }
+
+      event.preventDefault();
+      updateAnswer(activeItemId, Number(event.key) as AnswerValue);
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activeItemId, step, updateAnswer]);
+
+  useEffect(
+    () => () => {
+      if (advanceTimer.current) {
+        clearTimeout(advanceTimer.current);
+      }
+    },
+    [],
+  );
+
   return (
-    <form className="assessment-shell" onSubmit={handleSubmit}>
-      <aside className="progress-rail" aria-label="Assessment progress">
-        <span className="panel-label">Completion</span>
-        <strong className="progress-number">{completion}%</strong>
-        <p>
-          {answeredCount} of {items.length} items answered.
-        </p>
-        <div className="scale-list">
-          {scaleKeys.map((scaleKey) => (
-            <div key={scaleKey} className="score-bar" data-tone="science">
-              <div className="score-bar__head">
-                <span>{scales[scaleKey].shortName}</span>
-                <strong>{scaleCompletion(answers, scaleKey)}%</strong>
-              </div>
-              <div className="score-bar__track" aria-hidden="true">
-                <span
-                  style={{ width: `${scaleCompletion(answers, scaleKey)}%` }}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </aside>
+    <form className={styles.flowShell} onSubmit={handleSubmit}>
+      <AssessmentStepper
+        activeStep={step}
+        answeredCount={answeredCount}
+        itemCount={items.length}
+        savedLabel={savedLabel}
+      />
 
-      <div className="form-stack">
-        <section className="form-section">
-          <div className="form-section__head">
-            <p className="panel-label">Consent and use boundary</p>
-            <h2>Before you start</h2>
-          </div>
-          <div className="form-section__body">
-            <label className="check-row">
-              <input
-                checked={useBoundaryAccepted}
-                onChange={(event) =>
-                  setUseBoundaryAccepted(event.target.checked)
-                }
-                type="checkbox"
-              />
-              <span>
-                I understand this is developmental and research-informed only,
-                not validated for hiring, promotion, diagnosis, redundancy, or
-                high-stakes decisions.
-              </span>
-            </label>
-            <label className="check-row">
-              <input
-                checked={assessmentProcessing}
-                onChange={(event) =>
-                  setAssessmentProcessing(event.target.checked)
-                }
-                type="checkbox"
-              />
-              <span>
-                I consent to processing my answers so AssessmentOptima can
-                generate and store my private result report.
-              </span>
-            </label>
-            <label className="check-row">
-              <input
-                checked={researchStorage}
-                onChange={(event) => setResearchStorage(event.target.checked)}
-                type="checkbox"
-              />
-              <span>
-                I consent to my non-identifying scale scores being retained for
-                research analysis.
-              </span>
-            </label>
-            <label className="check-row">
-              <input
-                checked={publicDataset}
-                disabled={!researchStorage}
-                onChange={(event) => setPublicDataset(event.target.checked)}
-                type="checkbox"
-              />
-              <span>
-                I consent to my anonymised scale-level record being included in
-                the public dataset if threshold rules are met.
-              </span>
-            </label>
-          </div>
-        </section>
-
-        <section className="form-section">
-          <div className="form-section__head">
-            <p className="panel-label">Optional context</p>
-            <h2>Research buckets</h2>
-          </div>
-          <div className="form-section__body">
-            <div className="field-grid">
-              {respondentContextFields.map((field) => (
-                <div className="field" key={field.key}>
-                  <label>
-                    {field.label}
-                    <select
-                      value={
-                        context[field.key] ??
-                        defaultRespondentContext[field.key]
-                      }
-                      onChange={(event) =>
-                        updateContext(field.key, event.target.value)
-                      }
-                    >
-                      {field.options.map((option) => (
-                        <option key={option} value={option}>
-                          {labelFromValue(option)}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {groupedItems.map((group) => (
-          <section className="scale-section" key={group.scale.key}>
-            <div className="scale-section__head">
-              <p className="panel-label">{group.scale.shortName}</p>
-              <h2>{group.scale.name}</h2>
-              <p>{group.scale.description}</p>
-            </div>
-            <div className="scale-section__body">
-              {group.items.map((item) => (
-                <div className="item-row" key={item.id}>
-                  <p>
-                    <strong className="mono">{item.id}</strong> {item.text}
-                  </p>
-                  <div className="likert" aria-label={`${item.id} rating`}>
-                    {answerValues.map((value) => (
-                      <label key={value} title={`${value} out of 5`}>
-                        <input
-                          checked={answers[item.id] === value}
-                          name={item.id}
-                          onChange={() => updateAnswer(item.id, value)}
-                          type="radio"
-                          value={value}
-                        />
-                        <span>{value}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        ))}
+      <section
+        className={styles.flowPanel}
+        aria-label={assessmentStepLabels[step]}
+      >
+        {step === "intro" ? (
+          <IntroStep />
+        ) : step === "consent" ? (
+          <ConsentStep consentDraft={consentDraft} onChange={updateConsent} />
+        ) : step === "context" ? (
+          <ContextStep context={context} onChange={updateContext} />
+        ) : step === "questions" ? (
+          <QuestionsStep
+            activeItemId={activeItemId}
+            answers={answers}
+            currentPageAnswered={currentPageAnswered}
+            currentQuestionItems={currentQuestionItems}
+            questionEnd={questionEnd}
+            questionPageCount={questionPages.length}
+            questionPageIndex={questionPageIndex}
+            questionStart={questionStart}
+            transitionNote={transitionNote}
+            updateAnswer={updateAnswer}
+          />
+        ) : (
+          <ReviewStep answers={answers} consentDraft={consentDraft} />
+        )}
 
         {error ? <div className="form-error">{error}</div> : null}
 
-        <div className="action-row">
+        <div className={styles.flowNav}>
           <button
-            className="button"
-            disabled={!consent || !isComplete || isSubmitting}
-            type="submit"
+            className="button-ghost"
+            disabled={step === "intro" || isSubmitting}
+            onClick={previousStep}
+            type="button"
           >
-            {isSubmitting ? (
-              <Loader2 size={18} aria-hidden="true" />
-            ) : (
-              <ArrowRight size={18} aria-hidden="true" />
-            )}
-            Generate my report
+            Back
           </button>
+          <div>
+            {step === "context" ? (
+              <button
+                className="button-secondary"
+                onClick={() => goToStep("questions")}
+                type="button"
+              >
+                Skip for now
+              </button>
+            ) : null}
+            {step === "review" ? (
+              <button
+                className="button"
+                disabled={!consent || !isComplete || isSubmitting}
+                type="submit"
+              >
+                {isSubmitting ? (
+                  <Loader2 size={18} aria-hidden="true" />
+                ) : (
+                  <ArrowRight size={18} aria-hidden="true" />
+                )}
+                Generate my report
+              </button>
+            ) : (
+              <button className="button" onClick={nextStep} type="button">
+                Continue <ArrowRight size={18} aria-hidden="true" />
+              </button>
+            )}
+          </div>
         </div>
-      </div>
+      </section>
     </form>
   );
 }

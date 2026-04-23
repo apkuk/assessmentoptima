@@ -196,6 +196,8 @@ SSoT rule:
 - Provider default model strings and prompt guardrails live in `src/features/assessment/application/ai-analysis.ts`.
 - Route paths live in `src/config/routes.ts`.
 - The UI imports those values; it must not recreate provider lists, model defaults, analysis-type lists, or API paths inline.
+- AI prompts, provider defaults, and output shapes are versioned product contracts. Do not duplicate them in pages, tests, or route handlers; import from the owner and test the owner directly.
+- If a new provider or analysis type is added, update the L0 schema and L3 prompt/default owner first, then derive UI options, validation, tests, and docs from those changes.
 
 Test requirements:
 

@@ -251,12 +251,13 @@ src/features/assessment/application/respondent-context.ts
 src/features/assessment/tests/scoring.test.ts
 ```
 
-SSoT rule:
+DRY/SSoT rule:
 
 - Scale keys, answer values, context buckets, public dataset fields, consent shape, result payloads, aggregate payloads, reliability payloads, and AI request/response payloads live in `src/features/assessment/schemas/assessment.ts`.
 - Product/version constants live in `src/config/app.ts`.
-- Feature UI metadata derived from schemas, such as respondent context form fields, lives in `src/features/assessment/application/respondent-context.ts`.
-- Components must import those values instead of recreating enum-like arrays or contract types inline.
+- Feature UI metadata derived from schemas, such as respondent context form fields and questionnaire page grouping, lives in L3 application modules such as `src/features/assessment/application/respondent-context.ts` and `src/features/assessment/application/assessment-flow.ts`.
+- Components, API routes, repositories, exports, and tests must import those values instead of recreating enum-like arrays, item groups, field lists, or contract types inline.
+- Item IDs, scale IDs, reverse-scoring flags, Likert values, consent keys, and export fields must be changed at the owner first, then derived everywhere else.
 
 Test requirements:
 

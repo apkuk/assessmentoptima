@@ -50,6 +50,8 @@ Implementation constants:
 - Public routes and API route builders are centralised in `src/config/routes.ts`.
 - Product, version, filename, citation, local-default, and social image constants are centralised in `src/config/app.ts`.
 - Page and route code must import those constants instead of recreating route strings, product/version values, filenames, or social image sizes inline.
+- When adding a new public page, API route, export filename, or social/share URL, update the owning config module first and consume the builder/constant from pages, navigation, tests, docs, and metadata.
+- Do not duplicate API request/response payload types in route handlers or client components. Validate with the relevant L0 Zod schema and infer types from that schema.
 
 ## Page Requirements
 

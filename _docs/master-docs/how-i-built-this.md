@@ -249,6 +249,12 @@ At **2026-04-23 22:37 BST**, the assessment experience was rebuilt from a form d
 - The implementation was split into capability-focused components and a feature-scoped CSS module so new files stay below the 600-line maintainability threshold.
 - `pnpm verify` and `pnpm build` passed after the assessment flow rewrite.
 
+At **2026-04-23 22:42 BST**, the DRY/SSoT architecture rules were strengthened.
+
+- `AGENTS.md` now states "DRY/SSoT all day" as an explicit development rule.
+- The application architecture doc now defines source-of-truth owners for schemas, env contracts, product constants, routes, derived feature metadata, and UI-only presentation data.
+- Master docs were updated so assessment, data, API, privacy, AI, and QA guidance all reinforce the same rule: add or change the owner first, then import, infer, or derive everywhere else.
+
 ## Required Sections
 
 ### Hero

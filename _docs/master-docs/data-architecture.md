@@ -25,6 +25,16 @@ Default database name: `assessmentoptima`.
 
 The default lives in `src/config/app.ts` and can be overridden with `MONGODB_DB`. The Atlas connection string belongs in `MONGODB_URI`.
 
+## DRY/SSoT Ownership
+
+The database layer must consume the same contracts as the rest of the app. It must not define parallel document, export, or context shapes inline.
+
+- Stored submission documents are parsed through `storedAssessmentSubmissionSchema` in `src/features/assessment/schemas/assessment.ts`.
+- Public export rows are built from the canonical public dataset field list in `src/features/assessment/schemas/assessment.ts`.
+- Default database name, dataset filenames, assessment version, consent version, and threshold defaults come from `src/config/app.ts`.
+- Mongo adapters may contain persistence mapping code, but they should not own domain enums, consent keys, scale keys, public field names, or result payload shapes.
+- If persistence needs a new field, add it to the L0 schema first, then update the repository mapping, API response shaping, tests, and docs.
+
 ## Collections
 
 ### `assessment_submissions`

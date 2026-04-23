@@ -44,17 +44,36 @@ L2 -> React components
 
 Ports should sit with the core contracts, not inside infrastructure-only folders. L1 and L2 are adapter implementations of those ports.
 
-## SSoT And DRY Rules
+## DRY/SSoT Architecture Contract
 
-The implementation now treats source-of-truth ownership as an architecture rule, not a style preference.
+DRY/SSoT is an architecture rule, not a style preference. Every reusable definition needs one owner. All other layers import, infer, or derive from that owner.
 
-- L0 Zod schemas own domain enums, external request/response contracts, dataset fields, consent shape, context buckets, result schemas, and schema-inferred TypeScript types.
-- `src/config/app.ts` owns product/version/default constants such as product name, database default, assessment/consent versions, filenames, citation strings, local defaults, and OG image dimensions.
-- `src/config/routes.ts` owns public route paths and API route builders.
-- L3 application modules may own derived domain metadata that depends on schemas, such as respondent context field labels, AI provider model defaults, scoring composites, archetype rules, and prompt guardrails.
-- L5 components must import those values. They must not recreate schema enums, route strings, product constants, provider lists, context bucket defaults, or public dataset fields inline.
-- Local component constants are allowed only when they are presentation copy/data and do not mirror schemas, routes, config, ports, or domain contracts.
+Before adding a type, constant, enum-like array, field list, label map, route path, env key, schema, validation rule, prompt contract, or API/data shape, identify the owner first. If no owner exists, create one in the correct layer and then consume it everywhere else.
+
+| Concern | Owner |
+| --- | --- |
+| Domain enums, consent shape, context buckets, item/answer schemas, result schemas, aggregate schemas, public dataset fields, AI request/response schemas | `src/features/assessment/schemas/assessment.ts` |
+| Environment variable contracts | `src/lib/env/server.ts` and client-safe env modules if added |
+| Product names, assessment names, version defaults, database defaults, filenames, citation strings, local fallbacks, OG image sizes | `src/config/app.ts` |
+| Public page paths and API route builders | `src/config/routes.ts` |
+| Derived feature metadata such as respondent context labels, AI provider defaults, scoring composites, archetype rules, prompt guardrails, and page grouping logic | L3 application modules under `src/features/*/application/` |
+| Component-only presentational copy or layout arrays that do not mirror a schema/config/route/contract | The component or a nearby UI helper |
+
+Implementation rules:
+
+- L0 Zod schemas own domain and boundary contracts; TypeScript types should be inferred from those schemas where practical.
+- L5 components must not recreate schema enums, route strings, product constants, provider lists, context bucket defaults, or public dataset fields inline.
+- Local component constants are allowed only when they are pure presentation copy/data and do not mirror schemas, routes, config, ports, or domain contracts.
 - Local interfaces are allowed for component props or route context. API/domain payload types should be schema-inferred or derived with `Pick<>`/`Omit<>` from L0 contracts.
+- Tests should import canonical field lists and constants unless the test is explicitly asserting the canonical list itself.
+- Docs should describe the same owners used in code and should not introduce alternate field names or route paths.
+
+Change procedure:
+
+1. Update the owner module first.
+2. Export inferred types, builders, labels, or derived helpers from the owner or the nearest L3 application module.
+3. Replace local mirrors in UI, API routes, repositories, tests, and docs.
+4. Run `pnpm verify` before merging or deploying.
 
 ## Proposed Source Layout
 

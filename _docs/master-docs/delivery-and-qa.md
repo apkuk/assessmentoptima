@@ -45,6 +45,17 @@ This build order has been executed for the local v0. Keep it as historical seque
 
 Use Vitest.
 
+### DRY/SSoT Checks
+
+Before a change is considered ready:
+
+- schema-like values must have one owner and must be imported or inferred elsewhere;
+- route paths and API builders must come from `src/config/routes.ts`;
+- product/version/default constants must come from `src/config/app.ts`;
+- payload types must be inferred from L0 schemas or derived with TypeScript utility types;
+- UI tests should import canonical field lists and constants rather than retyping them;
+- any file approaching 600 lines of code should be split by coherent capability unless it is generated, mostly static, or easier to maintain as one documented exception.
+
 ### Scoring Tests
 
 Create `scoring.test.ts`.

@@ -51,6 +51,8 @@ Rules:
 
 All context fields are optional.
 
+The canonical context bucket values live in `src/features/assessment/schemas/assessment.ts`; this document describes them for product/privacy review. UI controls, export builders, aggregate filters, and tests must import the canonical values rather than retyping these unions.
+
 ```ts
 type AgeBand =
   | "under_25"
@@ -143,6 +145,8 @@ and:
 ## Public CSV Fields
 
 CSV columns:
+
+The canonical field order and allowlist live in `src/features/assessment/schemas/assessment.ts`. Export endpoints, data dictionary generation, tests, and docs must stay aligned to that owner.
 
 ```text
 row_id

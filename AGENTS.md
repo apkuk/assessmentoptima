@@ -13,9 +13,11 @@ Follow `_docs/master-docs/brand-guidelines.md` for visual design. The brand shou
 ## Development Defaults
 
 - Use TypeScript everywhere and keep `strict` mode clean.
+- DRY/SSoT all day. Before adding a type, constant, enum-like array, field list, label map, route path, env key, schema, validation rule, prompt contract, or API/data shape, first identify the owning module. If no owner exists, create it in the correct layer and derive/import from it everywhere else.
 - Treat L0 schemas as king. Zod schemas and shared contracts are the single source of truth for request shapes, form state, domain objects, API responses, persistence boundaries, and AI outputs.
 - Keep schema-derived types DRY. Prefer `z.infer` from the canonical schema over hand-written duplicate interfaces unless a boundary genuinely needs a separate persistence or view model.
-- Do not create parallel enums, validation rules, or field lists when they can be imported from L0. If a UI, API, repository, export, or test needs a field definition, it should reference the canonical schema/constant.
+- Treat duplicated schema-like data as a bug. UI, API, repositories, exports, tests, and docs should consume canonical schemas/config/routes rather than maintain parallel definitions.
+- Do not create parallel enums, validation rules, route strings, env-key lists, or field lists when they can be imported from the owner module. If a UI, API, repository, export, or test needs a definition, it should reference the canonical schema/constant.
 - Prefer small, named functions and explicit domain types over broad object bags.
 - Keep files below 600 lines of code by default. If a file approaches that size, split it along sensible capability/module boundaries such as schemas, adapters, orchestration, view components, data transforms, or tests. Do not split mechanically when the file is generated, mostly static data, or clearly easier to maintain as one cohesive unit, but record the rationale if keeping it large.
 - Keep behavior at the edges validated. When the app adds forms, API routes, server actions, or imports, use schema validation rather than trusting untyped input.

@@ -16,9 +16,13 @@ import {
   calculateDatasetComparison,
   toPublicDatasetRows,
 } from "@/features/assessment/application/public-dataset";
+import { parseStatelessResultToken } from "@/features/assessment/application/stateless-result-token";
 import { scaleKeys, scales } from "@/features/assessment/application/model";
 import { ResultActions } from "@/features/assessment/components/result-actions";
-import { resultTokenSchema } from "@/features/assessment/schemas/assessment";
+import {
+  type AssessmentResultResponse,
+  resultTokenSchema,
+} from "@/features/assessment/schemas/assessment";
 import { getServerEnv } from "@/lib/env/server";
 import { hashResultToken, resolveHashSecret } from "@/lib/security/tokens";
 
@@ -28,14 +32,34 @@ interface ResultPageProps {
   params: Promise<{ token: string }>;
 }
 
-async function getSubmission(token: string) {
+async function getResultRecord(
+  token: string,
+): Promise<AssessmentResultResponse | null> {
   const env = getServerEnv();
   const parsedToken = resultTokenSchema.parse(token);
-  const repository = createAssessmentSubmissionRepository();
+  const hashSecret = resolveHashSecret(env.HASH_SECRET);
+  const statelessResult = parseStatelessResultToken(parsedToken, hashSecret);
 
-  return repository.findByTokenHash(
-    hashResultToken(parsedToken, resolveHashSecret(env.HASH_SECRET)),
+  if (statelessResult) {
+    return statelessResult;
+  }
+
+  const repository = createAssessmentSubmissionRepository();
+  const submission = await repository.findByTokenHash(
+    hashResultToken(parsedToken, hashSecret),
   );
+
+  if (!submission) {
+    return null;
+  }
+
+  return {
+    assessmentVersion: submission.assessmentVersion,
+    createdMonth: submission.createdMonth,
+    context: submission.context,
+    result: submission.result,
+    publicDatasetEligible: submission.publicDatasetEligible,
+  };
 }
 
 export async function generateMetadata({
@@ -43,12 +67,12 @@ export async function generateMetadata({
 }: ResultPageProps): Promise<Metadata> {
   const { token } = await params;
   const env = getServerEnv();
-  const submission = await getSubmission(token).catch(() => null);
-  const title = submission
-    ? `${submission.result.archetype.name} | AssessmentOptima`
+  const record = await getResultRecord(token).catch(() => null);
+  const title = record
+    ? `${record.result.archetype.name} | AssessmentOptima`
     : "AssessmentOptima Result";
   const description =
-    submission?.result.archetype.summary ??
+    record?.result.archetype.summary ??
     "A private WorkStyle Compass result from AssessmentOptima.";
 
   return {
@@ -74,13 +98,13 @@ export async function generateMetadata({
 
 export default async function ResultPage({ params }: ResultPageProps) {
   const { token } = await params;
-  const submission = await getSubmission(token).catch(() => null);
+  const record = await getResultRecord(token).catch(() => null);
 
-  if (!submission) {
+  if (!record) {
     notFound();
   }
 
-  const { result } = submission;
+  const { result } = record;
   const env = getServerEnv();
   const repository = createAssessmentSubmissionRepository();
   const publicRows = await repository
@@ -186,7 +210,7 @@ export default async function ResultPage({ params }: ResultPageProps) {
           <p>{result.experiment}</p>
           <p className="panel-label">Dataset status</p>
           <p>
-            {submission.publicDatasetEligible
+            {record.publicDatasetEligible
               ? "Your anonymised scale-level row is eligible for the public dataset once release thresholds are met."
               : "Your result is private to this token and is not eligible for public dataset export."}
           </p>

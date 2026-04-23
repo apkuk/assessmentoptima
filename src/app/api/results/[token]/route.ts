@@ -7,6 +7,7 @@
 import { ZodError } from "zod";
 
 import { createAssessmentSubmissionRepository } from "@/features/assessment/adapters/mongo/assessment-submission-repository";
+import { parseStatelessResultToken } from "@/features/assessment/application/stateless-result-token";
 import {
   assessmentResultResponseSchema,
   resultTokenSchema,
@@ -28,9 +29,18 @@ export async function GET(_request: Request, context: RouteContext) {
     const env = getServerEnv();
     const { token } = await context.params;
     const parsedToken = resultTokenSchema.parse(token);
+    const hashSecret = resolveHashSecret(env.HASH_SECRET);
+    const statelessResult = parseStatelessResultToken(parsedToken, hashSecret);
+
+    if (statelessResult) {
+      return jsonResponse(
+        assessmentResultResponseSchema.parse(statelessResult),
+      );
+    }
+
     const repository = createAssessmentSubmissionRepository();
     const submission = await repository.findByTokenHash(
-      hashResultToken(parsedToken, resolveHashSecret(env.HASH_SECRET)),
+      hashResultToken(parsedToken, hashSecret),
     );
 
     if (!submission) {
@@ -72,9 +82,16 @@ export async function DELETE(_request: Request, context: RouteContext) {
     const env = getServerEnv();
     const { token } = await context.params;
     const parsedToken = resultTokenSchema.parse(token);
+    const hashSecret = resolveHashSecret(env.HASH_SECRET);
+    const statelessResult = parseStatelessResultToken(parsedToken, hashSecret);
+
+    if (statelessResult) {
+      return jsonResponse({ deleted: true, persisted: false });
+    }
+
     const repository = createAssessmentSubmissionRepository();
     const deleted = await repository.deleteByTokenHash(
-      hashResultToken(parsedToken, resolveHashSecret(env.HASH_SECRET)),
+      hashResultToken(parsedToken, hashSecret),
     );
 
     if (!deleted) {

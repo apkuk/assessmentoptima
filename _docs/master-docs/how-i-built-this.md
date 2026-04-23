@@ -261,6 +261,13 @@ At **2026-04-23 22:49 BST**, the public How I Built This UI was upgraded into a 
 - The story now makes the model-behaviour proof point clearer: speed mattered, but the stronger signal was connecting adjacent requirements across privacy, open data, sharing, maintainability, and deployment.
 - The page now includes an honest launch-status section: local verification/build and public Vercel routes are green, while production MongoDB persistence still needs Atlas network access from Vercel/serverless egress before the assessment can be shared as fully transactional.
 
+At **2026-04-23 22:59 BST**, the core assessment journey was made resilient to production persistence outages.
+
+- A signed stateless result-token fallback was added for cases where MongoDB is temporarily unreachable from Vercel.
+- If persistence fails at submit time, users still receive a private result report, result API response, social OG image, and 30-day experiment calendar export.
+- Public dataset persistence/export still requires MongoDB Atlas network access, so the fallback does not pretend that non-persisted responses were added to the research dataset.
+- MongoDB connection timeouts were shortened so unavailable persistence fails quickly and the user journey can continue.
+
 ## Required Sections
 
 ### Hero

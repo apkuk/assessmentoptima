@@ -11,7 +11,8 @@ Current implementation status as of 2026-04-23 22:24 BST:
 - A root `vercel.json` now forces the deployment to use the Next.js framework preset, `pnpm install --frozen-lockfile`, `pnpm build`, and default Next.js output handling.
 - Production environment variables have been added and production redeploy is ready at `https://assessmentoptima.vercel.app`.
 - `/`, `/dataset`, and `/api/health` return `200` in production.
-- First synthetic `/api/submit` smoke testing exposed a MongoDB connectivity timeout in Vercel runtime. The app now fails faster with `503 Database connection unavailable`, but Atlas network access still needs to allow Vercel/serverless egress before persistence-backed routes can pass.
+- First synthetic `/api/submit` smoke testing exposed a MongoDB connectivity timeout in Vercel runtime. Atlas network access still needs to allow Vercel/serverless egress before persistence-backed routes can pass.
+- The core assessment journey now has a signed stateless result-token fallback. If MongoDB is unreachable during submission, the user can still receive a private report, result API payload, dynamic OG image, and 30-day experiment calendar export. These fallback results are not added to the public dataset.
 - Remaining launch work is MongoDB Atlas network access/runtime persistence QA, mobile hands-on QA, final dataset licence/contact decisions, and optional seed/logging/test expansion.
 
 ## Build Order

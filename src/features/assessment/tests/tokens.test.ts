@@ -6,11 +6,22 @@
  */
 import { describe, expect, it } from "vitest";
 
+import { scoreAssessment } from "../application/scoring";
+import {
+  createStatelessResultToken,
+  parseStatelessResultToken,
+} from "../application/stateless-result-token";
+import type { AnswerMap, AnswerValue } from "../schemas/assessment";
+import { expectedItemIds } from "../application/model";
 import {
   createResultToken,
   getCreatedMonth,
   hashResultToken,
 } from "@/lib/security/tokens";
+
+function completeAnswers(value: AnswerValue): AnswerMap {
+  return Object.fromEntries(expectedItemIds.map((itemId) => [itemId, value]));
+}
 
 describe("result token helpers", () => {
   it("creates unguessable-looking result tokens", () => {
@@ -33,5 +44,19 @@ describe("result token helpers", () => {
     expect(getCreatedMonth(new Date("2026-04-23T20:30:00.000Z"))).toBe(
       "2026-04",
     );
+  });
+
+  it("creates signed stateless fallback result tokens", () => {
+    const payload = {
+      assessmentVersion: "wsc-v1.0",
+      createdMonth: "2026-04",
+      context: {},
+      result: scoreAssessment(completeAnswers(3)),
+      publicDatasetEligible: false,
+    };
+    const token = createStatelessResultToken(payload, "secret");
+
+    expect(parseStatelessResultToken(token, "secret")).toEqual(payload);
+    expect(parseStatelessResultToken(token, "different-secret")).toBeNull();
   });
 });

@@ -20,10 +20,10 @@ export class MongoConfigurationError extends Error {
 }
 
 const mongoClientOptions = {
-  connectTimeoutMS: 8000,
+  connectTimeoutMS: 3000,
   maxPoolSize: 10,
-  serverSelectionTimeoutMS: 8000,
-  socketTimeoutMS: 20000,
+  serverSelectionTimeoutMS: 3000,
+  socketTimeoutMS: 10000,
 } satisfies MongoClientOptions;
 
 const connectivityErrorNames = new Set([
@@ -34,10 +34,16 @@ const connectivityErrorNames = new Set([
 ]);
 
 export function isMongoConnectivityError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message.toLowerCase() : "";
+
   return (
     error instanceof Error &&
     (connectivityErrorNames.has(error.name) ||
-      error.message.toLowerCase().includes("server selection timed out"))
+      message.includes("server selection timed out") ||
+      message.includes("querysrv") ||
+      message.includes("enotfound") ||
+      message.includes("econnrefused") ||
+      message.includes("etimedout"))
   );
 }
 
@@ -51,7 +57,12 @@ export async function getMongoClient(): Promise<MongoClient> {
   globalThis.assessmentOptimaMongoClientPromise ??= new MongoClient(
     MONGODB_URI,
     mongoClientOptions,
-  ).connect();
+  )
+    .connect()
+    .catch((error: unknown) => {
+      globalThis.assessmentOptimaMongoClientPromise = undefined;
+      throw error;
+    });
 
   return globalThis.assessmentOptimaMongoClientPromise;
 }

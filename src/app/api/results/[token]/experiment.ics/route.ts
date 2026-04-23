@@ -6,6 +6,7 @@
  */
 import { createAssessmentSubmissionRepository } from "@/features/assessment/adapters/mongo/assessment-submission-repository";
 import { appConfig } from "@/config/app";
+import { parseStatelessResultToken } from "@/features/assessment/application/stateless-result-token";
 import { resultTokenSchema } from "@/features/assessment/schemas/assessment";
 import { apiError } from "@/lib/api/responses";
 import { getServerEnv } from "@/lib/env/server";
@@ -38,12 +39,21 @@ export async function GET(_request: Request, context: RouteContext) {
     const env = getServerEnv();
     const { token } = await context.params;
     const parsedToken = resultTokenSchema.parse(token);
+    const hashSecret = resolveHashSecret(env.HASH_SECRET);
+    const statelessResult = parseStatelessResultToken(parsedToken, hashSecret);
     const repository = createAssessmentSubmissionRepository();
-    const submission = await repository.findByTokenHash(
-      hashResultToken(parsedToken, resolveHashSecret(env.HASH_SECRET)),
-    );
+    const submission = statelessResult
+      ? null
+      : await repository.findByTokenHash(
+          hashResultToken(parsedToken, hashSecret),
+        );
 
-    if (!submission) {
+    const result = statelessResult?.result ?? submission?.result;
+    const uid = statelessResult
+      ? hashResultToken(parsedToken, hashSecret)
+      : submission?.publicRowId;
+
+    if (!result || !uid) {
       return apiError(404, "Result not found.");
     }
 
@@ -56,12 +66,12 @@ export async function GET(_request: Request, context: RouteContext) {
       "VERSION:2.0",
       `PRODID:${appConfig.calendarProductId}`,
       "BEGIN:VEVENT",
-      `UID:${submission.publicRowId}@${appConfig.productSlug}`,
+      `UID:${uid}@${appConfig.productSlug}`,
       `DTSTAMP:${formatIcsDate(now)}`,
       `DTSTART:${formatIcsDate(review)}`,
       `DTEND:${formatIcsDate(new Date(review.getTime() + 30 * 60 * 1000))}`,
       "SUMMARY:Review my AssessmentOptima experiment",
-      `DESCRIPTION:${escapeIcsText(submission.result.experiment)}`,
+      `DESCRIPTION:${escapeIcsText(result.experiment)}`,
       "END:VEVENT",
       "END:VCALENDAR",
     ].join("\r\n");

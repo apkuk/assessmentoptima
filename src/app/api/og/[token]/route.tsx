@@ -8,6 +8,7 @@ import { ImageResponse } from "next/og";
 
 import { appConfig } from "@/config/app";
 import { createAssessmentSubmissionRepository } from "@/features/assessment/adapters/mongo/assessment-submission-repository";
+import { parseStatelessResultToken } from "@/features/assessment/application/stateless-result-token";
 import { resultTokenSchema } from "@/features/assessment/schemas/assessment";
 import { getServerEnv } from "@/lib/env/server";
 import { hashResultToken, resolveHashSecret } from "@/lib/security/tokens";
@@ -24,16 +25,20 @@ export async function GET(_request: Request, context: RouteContext) {
   const env = getServerEnv();
   const { token } = await context.params;
   const parsedToken = resultTokenSchema.parse(token);
+  const hashSecret = resolveHashSecret(env.HASH_SECRET);
+  const statelessResult = parseStatelessResultToken(parsedToken, hashSecret);
   const repository = createAssessmentSubmissionRepository();
-  const submission = await repository.findByTokenHash(
-    hashResultToken(parsedToken, resolveHashSecret(env.HASH_SECRET)),
-  );
+  const submission = statelessResult
+    ? null
+    : await repository.findByTokenHash(
+        hashResultToken(parsedToken, hashSecret),
+      );
+  const result = statelessResult?.result ?? submission?.result;
 
-  if (!submission) {
+  if (!result) {
     return new Response("Not found", { status: 404 });
   }
 
-  const { result } = submission;
   const topScores = result.topScales.map((scaleKey) => result.scores[scaleKey]);
 
   return new ImageResponse(
@@ -63,6 +68,7 @@ export async function GET(_request: Request, context: RouteContext) {
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div
               style={{
+                display: "flex",
                 color: "#00615f",
                 fontSize: 24,
                 fontWeight: 700,
@@ -71,7 +77,7 @@ export async function GET(_request: Request, context: RouteContext) {
             >
               {appConfig.productName}
             </div>
-            <div style={{ color: "#53635f", fontSize: 24 }}>
+            <div style={{ display: "flex", color: "#53635f", fontSize: 24 }}>
               {appConfig.assessmentName} result
             </div>
           </div>
@@ -94,9 +100,12 @@ export async function GET(_request: Request, context: RouteContext) {
 
         <div style={{ display: "flex", gap: 44 }}>
           <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
-            <div style={{ color: "#53635f", fontSize: 30 }}>My archetype</div>
+            <div style={{ display: "flex", color: "#53635f", fontSize: 30 }}>
+              My archetype
+            </div>
             <div
               style={{
+                display: "flex",
                 marginTop: 8,
                 fontSize: 78,
                 fontWeight: 800,
@@ -107,6 +116,7 @@ export async function GET(_request: Request, context: RouteContext) {
             </div>
             <div
               style={{
+                display: "flex",
                 marginTop: 24,
                 color: "#2d3c38",
                 fontSize: 28,
@@ -160,7 +170,7 @@ export async function GET(_request: Request, context: RouteContext) {
           </div>
         </div>
 
-        <div style={{ color: "#53635f", fontSize: 24 }}>
+        <div style={{ display: "flex", color: "#53635f", fontSize: 24 }}>
           Developmental, open-research prototype. Not for high-stakes employment
           decisions.
         </div>

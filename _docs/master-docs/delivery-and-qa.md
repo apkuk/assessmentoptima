@@ -2,7 +2,7 @@
 
 Status: Implementation-current master reference for testing, deployment, README, and roadmap.
 
-Current implementation status as of 2026-04-23 22:22 BST:
+Current implementation status as of 2026-04-23 22:24 BST:
 
 - Next.js App Router, strict TypeScript, pnpm, Tailwind v4, ESLint, Prettier, and Vitest are implemented.
 - L0 schemas, Mongo repository, API routes, assessment flow, result report, dataset exports, BYOK AI analysis, dynamic OG cards, delete-by-token, and How I Built This are implemented.
@@ -10,7 +10,7 @@ Current implementation status as of 2026-04-23 22:22 BST:
 - The first GitHub-triggered Vercel deployment exposed a project configuration issue: Vercel was set to Framework Preset `Other` and expected a static `public` output directory after the Next.js build.
 - A root `vercel.json` now forces the deployment to use the Next.js framework preset, `pnpm install --frozen-lockfile`, `pnpm build`, and default Next.js output handling.
 - Production environment variables have been added and production redeploy is ready at `https://assessmentoptima.vercel.app`.
-- `/` and `/api/health` return `200` in production.
+- `/`, `/dataset`, and `/api/health` return `200` in production.
 - First synthetic `/api/submit` smoke testing exposed a MongoDB connectivity timeout in Vercel runtime. The app now fails faster with `503 Database connection unavailable`, but Atlas network access still needs to allow Vercel/serverless egress before persistence-backed routes can pass.
 - Remaining launch work is MongoDB Atlas network access/runtime persistence QA, mobile hands-on QA, final dataset licence/contact decisions, and optional seed/logging/test expansion.
 

@@ -221,6 +221,14 @@ At **2026-04-23 22:22 BST**, the first production runtime smoke test identified 
 - MongoDB client handling was tightened with server-selection/connect timeouts below the Vercel function limit, production-safe client reuse, and clean `503 Database connection unavailable` responses for database connectivity failures.
 - Local `pnpm verify`, `pnpm build`, and linked `vercel build --prod` passed after the runtime hardening.
 
+At **2026-04-23 22:24 BST**, production deployment status was confirmed after runtime hardening.
+
+- Commit `1c831ea` deployed successfully to Vercel production.
+- `https://assessmentoptima.vercel.app/` returned `200`.
+- `https://assessmentoptima.vercel.app/api/health` returned `200`.
+- The dataset page returned `200`, with persistence unavailable handled by page-level fallback.
+- Synthetic `/api/submit` returned `503 Database connection unavailable` in about 9 seconds, confirming the remaining blocker is MongoDB Atlas connectivity from Vercel rather than a Vercel build failure or missing production env variables.
+
 ## Required Sections
 
 ### Hero

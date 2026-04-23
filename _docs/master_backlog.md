@@ -209,14 +209,14 @@ Legend:
 
 ## Deployment
 
-- [ ] Vercel project linked.
-- [ ] Vercel env vars configured.
-- [ ] MongoDB Atlas network/user permissions confirmed for Vercel.
+- [x] Vercel project linked.
+- [x] Vercel env vars configured.
+- [!] MongoDB Atlas network/user permissions confirmed for Vercel.
 - [ ] Preview deployment passes.
-- [ ] Production deployment passes.
-- [ ] Core route smoke test after deploy.
+- [x] Production deployment passes.
+- [x] Core route smoke test after deploy.
 - [ ] Dataset export smoke test after deploy.
-- [ ] Submit/result smoke test after deploy.
+- [!] Submit/result smoke test after deploy.
 
 ## Acceptance
 
@@ -245,4 +245,5 @@ Legend:
 - [ ] Feedback polish pass after review.
 - [ ] Decide dataset licence.
 - [ ] Add privacy/contact placeholder.
+- [ ] Allow Vercel production functions to reach MongoDB Atlas, then rerun submit/result smoke.
 - [ ] Deploy Vercel preview.

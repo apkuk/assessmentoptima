@@ -255,6 +255,12 @@ At **2026-04-23 22:42 BST**, the DRY/SSoT architecture rules were strengthened.
 - The application architecture doc now defines source-of-truth owners for schemas, env contracts, product constants, routes, derived feature metadata, and UI-only presentation data.
 - Master docs were updated so assessment, data, API, privacy, AI, and QA guidance all reinforce the same rule: add or change the owner first, then import, infer, or derive everywhere else.
 
+At **2026-04-23 22:49 BST**, the public How I Built This UI was upgraded into a fuller launch case study.
+
+- The page now presents the Ask 1 / Ask 2 narrative, 47-minute document phase, two-hour sprint target, shipped product proof points, and AI-human accountability in the public UI.
+- The story now makes the model-behaviour proof point clearer: speed mattered, but the stronger signal was connecting adjacent requirements across privacy, open data, sharing, maintainability, and deployment.
+- The page now includes an honest launch-status section: local verification/build and public Vercel routes are green, while production MongoDB persistence still needs Atlas network access from Vercel/serverless egress before the assessment can be shared as fully transactional.
+
 ## Required Sections
 
 ### Hero

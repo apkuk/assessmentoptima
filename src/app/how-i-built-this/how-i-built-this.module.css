@@ -1,0 +1,288 @@
+/**
+ * File: src/app/how-i-built-this/how-i-built-this.module.css
+ * Created: 2026-04-23
+ * Updated: 2026-04-23
+ * Description: Page-scoped presentation for the public AI-assisted build story.
+ */
+.page {
+  width: min(100%, 86rem);
+  margin: 0 auto;
+  padding: clamp(var(--ao-space-4), 3vw, var(--ao-space-8));
+}
+
+.hero {
+  display: grid;
+  min-height: calc(100vh - 8.75rem);
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.56fr);
+  align-items: center;
+  gap: clamp(var(--ao-space-5), 4vw, var(--ao-space-10));
+  padding: clamp(var(--ao-space-8), 5vw, var(--ao-space-section-lg)) 0;
+}
+
+.heroCopy {
+  min-width: 0;
+  max-width: 55rem;
+}
+
+.hero h1,
+.sectionHeader h2,
+.statusSection h2,
+.receiptCard h2,
+.finalCallout h2 {
+  margin: 0;
+  color: var(--ao-ink);
+  font-family: var(--font-serif-editorial), ui-serif, Georgia, serif;
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+.hero h1 {
+  max-width: 11ch;
+  margin-top: 1rem;
+  font-size: var(--ao-text-display-sm);
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.lede {
+  max-width: 66ch;
+  margin: 1.25rem 0 0;
+  color: var(--ao-muted);
+  font-size: var(--ao-text-lg);
+  line-height: 1.7;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.receiptPanel,
+.askCard,
+.dotCard,
+.shippedCard,
+.statusSection,
+.receiptCard,
+.finalCallout {
+  border: 1px solid var(--ao-border);
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface);
+  box-shadow: var(--ao-shadow-sm);
+}
+
+.receiptPanel {
+  padding: 1.1rem;
+}
+
+.panelKicker {
+  margin: 0;
+  color: var(--ao-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.stat {
+  min-height: 8.5rem;
+  border: 1px solid var(--ao-border);
+  border-radius: var(--ao-radius-sm);
+  background: var(--ao-bg-soft);
+  padding: 0.9rem;
+}
+
+.stat strong {
+  display: block;
+  color: var(--ao-brand-strong);
+  font-family: var(--font-serif-editorial), ui-serif, Georgia, serif;
+  font-size: var(--ao-text-3xl);
+  line-height: 1;
+}
+
+.stat span {
+  display: block;
+  margin-top: 0.7rem;
+  color: var(--ao-muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.askGrid,
+.dotGrid,
+.shippedGrid,
+.receiptsGrid {
+  display: grid;
+  gap: 1rem;
+}
+
+.askGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.askCard,
+.dotCard,
+.shippedCard,
+.receiptCard {
+  padding: 1rem;
+}
+
+.askCard h2,
+.dotCard h3,
+.shippedCard h3 {
+  margin: 0.7rem 0 0;
+  color: var(--ao-ink);
+  font-family: var(--font-serif-editorial), ui-serif, Georgia, serif;
+  font-size: var(--ao-text-xl);
+  line-height: 1.1;
+}
+
+.askCard p,
+.dotCard p,
+.shippedCard li,
+.statusList p,
+.receiptCard p,
+.finalCallout p,
+.sectionHeader p {
+  color: var(--ao-muted);
+  line-height: 1.65;
+}
+
+.section {
+  padding: clamp(var(--ao-space-section-sm), 5vw, var(--ao-space-section-lg)) 0;
+}
+
+.sectionHeader {
+  max-width: 52rem;
+}
+
+.sectionHeader h2,
+.statusSection h2,
+.receiptCard h2,
+.finalCallout h2 {
+  margin-top: 0.65rem;
+  font-size: var(--ao-text-3xl);
+  line-height: 1;
+}
+
+.dotGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 1rem;
+}
+
+.dotCard {
+  background: var(--ao-brand-soft);
+}
+
+.shippedGrid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 1rem;
+}
+
+.shippedCard ul {
+  display: grid;
+  gap: 0.7rem;
+  margin: 1rem 0 0;
+  padding: 0 0 0 1.1rem;
+}
+
+.statusSection,
+.finalCallout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(18rem, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+  margin: clamp(var(--ao-space-4), 4vw, var(--ao-space-8)) 0;
+  padding: 1.25rem;
+}
+
+.statusSection {
+  border-color: color-mix(in srgb, var(--ao-accent) 40%, var(--ao-border));
+  background: color-mix(in srgb, var(--ao-accent) 10%, var(--ao-surface));
+}
+
+.statusList,
+.accountabilityList,
+.timelineList {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.statusList p,
+.accountabilityList p,
+.timelineList p {
+  margin: 0;
+}
+
+.receiptsGrid {
+  grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
+  padding: clamp(var(--ao-space-section-sm), 5vw, var(--ao-space-section-lg)) 0;
+}
+
+.timelineList {
+  margin-top: 1rem;
+}
+
+.timelineList p {
+  border-top: 1px solid var(--ao-border);
+  padding-top: 0.75rem;
+}
+
+.finalCallout {
+  border-color: color-mix(in srgb, var(--ao-science) 30%, var(--ao-border));
+  background: var(--ao-science-soft);
+}
+
+@media (min-width: 42.01rem) {
+  .hero h1 {
+    font-size: var(--ao-text-display-md);
+  }
+
+  .lede {
+    font-size: var(--ao-text-xl);
+  }
+
+  .sectionHeader h2,
+  .statusSection h2,
+  .receiptCard h2,
+  .finalCallout h2 {
+    font-size: var(--ao-text-4xl);
+  }
+}
+
+@media (max-width: 72rem) {
+  .hero,
+  .askGrid,
+  .dotGrid,
+  .shippedGrid,
+  .statusSection,
+  .receiptsGrid,
+  .finalCallout {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 42rem) {
+  .hero h1 {
+    font-size: var(--ao-text-display-sm);
+  }
+
+  .statGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .page {
+    padding: 1rem;
+  }
+}

@@ -229,6 +229,11 @@ At **2026-04-23 22:24 BST**, production deployment status was confirmed after ru
 - The dataset page returned `200`, with persistence unavailable handled by page-level fallback.
 - Synthetic `/api/submit` returned `503 Database connection unavailable` in about 9 seconds, confirming the remaining blocker is MongoDB Atlas connectivity from Vercel rather than a Vercel build failure or missing production env variables.
 
+At **2026-04-23 22:26 BST**, maintainability standards were tightened for future work.
+
+- `AGENTS.md` now sets a default maximum of 600 lines of code per file.
+- Files approaching that size should be split by coherent capability or module boundary, while allowing documented exceptions for generated, mostly static, or intentionally cohesive files.
+
 ## Required Sections
 
 ### Hero

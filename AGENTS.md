@@ -2,9 +2,20 @@
 
 This project is a TypeScript-first Vercel app for a public, research-informed work-style assessment. Keep the product language disciplined: developmental, exploratory, and research-oriented. Do not present the assessment as a validated hiring, diagnosis, promotion, or employment decision tool.
 
+The final product must include a public `How I Built This` page explaining the AI-assisted build process with ChatGPT 5.5 and Codex. Keep that page transparent and polished without exposing secrets, raw private chat logs, or overstating the assessment's validity.
+
+The `How I Built This` page is a core purpose of this exercise, not a nice-to-have. When making meaningful project changes, update `_docs/master-docs/how-i-built-this.md` with a dated build-log note covering what changed and when. Use the current timestamp available in the environment/tooling. Log milestones, stack decisions, major docs, architecture changes, implementation phases, verification results, and deployment events. Do not log secrets, raw private chat, or sensitive operational details.
+
+The public launch framing is an Ask 1 / Ask 2 challenge: ChatGPT 5.5 Pro creates the research-backed PRD/research handoff in 47 minutes, then Codex 5.5 builds and launches the site on Vercel with a two-hour target. Treat the two-hour timebox as a target unless the actual build record proves it was met, and do not repeat volatile leaderboard claims without citations.
+
+Follow `_docs/master-docs/brand-guidelines.md` for visual design. The brand should feel like a modern behavioural science lab: evidence-led, calm, transparent, precise, and accessible. The UI needs to be materially better than a generic scaffold: polished, memorable, responsive, and portfolio-worthy. Avoid quiz-like styling, generic HR SaaS visuals, purple/blue AI gradients, decorative blobs, and psychometric overclaiming.
+
 ## Development Defaults
 
 - Use TypeScript everywhere and keep `strict` mode clean.
+- Treat L0 schemas as king. Zod schemas and shared contracts are the single source of truth for request shapes, form state, domain objects, API responses, persistence boundaries, and AI outputs.
+- Keep schema-derived types DRY. Prefer `z.infer` from the canonical schema over hand-written duplicate interfaces unless a boundary genuinely needs a separate persistence or view model.
+- Do not create parallel enums, validation rules, or field lists when they can be imported from L0. If a UI, API, repository, export, or test needs a field definition, it should reference the canonical schema/constant.
 - Prefer small, named functions and explicit domain types over broad object bags.
 - Keep behavior at the edges validated. When the app adds forms, API routes, server actions, or imports, use schema validation rather than trusting untyped input.
 - Avoid premature framework churn. Start with Next.js App Router conventions when the app scaffold is added, because Vercel deployment is the target.
@@ -13,8 +24,8 @@ This project is a TypeScript-first Vercel app for a public, research-informed wo
 ## Developer Experience
 
 - Every meaningful behavior change should be covered by a fast unit test unless the risk is genuinely trivial.
-- Use `npm run verify` as the local confidence check. It runs strict typechecking and the Vitest suite.
-- Keep scripts boring and predictable: `test`, `test:watch`, `typecheck`, and `verify` should continue to work throughout the project.
+- Use `pnpm verify` as the local confidence check. It runs strict typechecking, linting, format checks, and the Vitest suite.
+- Keep scripts boring and predictable: `dev`, `build`, `lint`, `test`, `test:watch`, `typecheck`, and `verify` should continue to work throughout the project.
 - Add dependencies only when they remove real complexity or match the selected stack. Avoid one-off libraries for simple formatting or data transforms.
 - Prefer clear file names and stable module boundaries over clever abstractions.
 
@@ -36,11 +47,16 @@ This project is a TypeScript-first Vercel app for a public, research-informed wo
 ## Documentation
 
 - Put project documents in `_docs/`.
+- Add a short file-header JSDoc comment at the top of source files where the file is not self-explanatory. Include file path, created date, updated date, and a concise description.
+- Keep file headers current when materially changing a file. Prefer concise headers over noisy boilerplate.
+- Use inline comments for non-obvious business rules, privacy constraints, scoring decisions, or security boundaries. Do not comment obvious assignments or JSX structure.
 - Keep implementation notes close to the code when they explain non-obvious constraints.
 - Update docs when changing public claims, privacy behavior, scoring assumptions, or deployment requirements.
+- Keep `_docs/master_backlog.md` current as work progresses.
+- Keep `_docs/master-docs/how-i-built-this.md` current with timestamped build-log milestones.
 
 ## Git Hygiene
 
 - The repository may contain user work in progress. Do not revert unrelated changes.
 - Keep commits focused once git is initialized.
-- Before opening a PR or deploying, run `npm run verify` and summarize any known gaps.
+- Before opening a PR or deploying, run `pnpm verify` and summarize any known gaps.

@@ -13,6 +13,7 @@ import {
 } from "@/features/assessment/application/public-dataset";
 import { apiError } from "@/lib/api/responses";
 import { getServerEnv } from "@/lib/env/server";
+import { isMongoConnectivityError } from "@/lib/mongo/client";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -44,6 +45,10 @@ export async function GET() {
     if (error instanceof Error) {
       if (error.name === "MongoConfigurationError") {
         return apiError(503, error.message);
+      }
+
+      if (isMongoConnectivityError(error)) {
+        return apiError(503, "Database connection unavailable.");
       }
 
       return apiError(500, "Dataset export failed.", error.message);

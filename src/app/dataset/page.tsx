@@ -19,6 +19,7 @@ import {
 import { calculateReliabilitySnapshot } from "@/features/assessment/application/reliability";
 import { scaleKeys, scales } from "@/features/assessment/application/model";
 import { getServerEnv } from "@/lib/env/server";
+import { isMongoConnectivityError } from "@/lib/mongo/client";
 
 export const metadata: Metadata = {
   title: "Open Dataset",
@@ -44,7 +45,11 @@ async function getDatasetState() {
       rows: [],
       aggregates: calculateAggregates([], 10),
       reliability: calculateReliabilitySnapshot([], 10),
-      error: error instanceof Error ? error.message : "Dataset unavailable.",
+      error: isMongoConnectivityError(error)
+        ? "Database connection unavailable."
+        : error instanceof Error
+          ? error.message
+          : "Dataset unavailable.",
     };
   }
 }

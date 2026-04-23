@@ -4,7 +4,7 @@
  * Updated: 2026-04-23
  * Description: MongoDB client and database access with development-safe caching.
  */
-import { MongoClient } from "mongodb";
+import { MongoClient, type MongoClientOptions } from "mongodb";
 
 import { getServerEnv } from "@/lib/env/server";
 
@@ -19,6 +19,28 @@ export class MongoConfigurationError extends Error {
   }
 }
 
+const mongoClientOptions = {
+  connectTimeoutMS: 8000,
+  maxPoolSize: 10,
+  serverSelectionTimeoutMS: 8000,
+  socketTimeoutMS: 20000,
+} satisfies MongoClientOptions;
+
+const connectivityErrorNames = new Set([
+  "MongoNetworkError",
+  "MongoNetworkTimeoutError",
+  "MongoServerSelectionError",
+  "MongoTimeoutError",
+]);
+
+export function isMongoConnectivityError(error: unknown): boolean {
+  return (
+    error instanceof Error &&
+    (connectivityErrorNames.has(error.name) ||
+      error.message.toLowerCase().includes("server selection timed out"))
+  );
+}
+
 export async function getMongoClient(): Promise<MongoClient> {
   const { MONGODB_URI } = getServerEnv();
 
@@ -26,14 +48,12 @@ export async function getMongoClient(): Promise<MongoClient> {
     throw new MongoConfigurationError("MONGODB_URI is not configured.");
   }
 
-  if (process.env.NODE_ENV === "development") {
-    globalThis.assessmentOptimaMongoClientPromise ??= new MongoClient(
-      MONGODB_URI,
-    ).connect();
-    return globalThis.assessmentOptimaMongoClientPromise;
-  }
+  globalThis.assessmentOptimaMongoClientPromise ??= new MongoClient(
+    MONGODB_URI,
+    mongoClientOptions,
+  ).connect();
 
-  return new MongoClient(MONGODB_URI).connect();
+  return globalThis.assessmentOptimaMongoClientPromise;
 }
 
 export async function getMongoDb() {

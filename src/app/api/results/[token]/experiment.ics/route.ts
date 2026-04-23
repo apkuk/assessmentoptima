@@ -9,6 +9,7 @@ import { appConfig } from "@/config/app";
 import { resultTokenSchema } from "@/features/assessment/schemas/assessment";
 import { apiError } from "@/lib/api/responses";
 import { getServerEnv } from "@/lib/env/server";
+import { isMongoConnectivityError } from "@/lib/mongo/client";
 import { hashResultToken, resolveHashSecret } from "@/lib/security/tokens";
 
 export const runtime = "nodejs";
@@ -75,6 +76,10 @@ export async function GET(_request: Request, context: RouteContext) {
     if (error instanceof Error) {
       if (error.name === "MongoConfigurationError") {
         return apiError(503, error.message);
+      }
+
+      if (isMongoConnectivityError(error)) {
+        return apiError(503, "Database connection unavailable.");
       }
 
       return apiError(500, "Calendar export failed.", error.message);

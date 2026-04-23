@@ -13,6 +13,7 @@ import {
 } from "@/features/assessment/schemas/assessment";
 import { apiError, jsonResponse, zodErrorDetail } from "@/lib/api/responses";
 import { getServerEnv } from "@/lib/env/server";
+import { isMongoConnectivityError } from "@/lib/mongo/client";
 import { hashResultToken, resolveHashSecret } from "@/lib/security/tokens";
 
 export const runtime = "nodejs";
@@ -55,6 +56,10 @@ export async function GET(_request: Request, context: RouteContext) {
         return apiError(503, error.message);
       }
 
+      if (isMongoConnectivityError(error)) {
+        return apiError(503, "Database connection unavailable.");
+      }
+
       return apiError(500, "Result lookup failed.", error.message);
     }
 
@@ -85,6 +90,10 @@ export async function DELETE(_request: Request, context: RouteContext) {
     if (error instanceof Error) {
       if (error.name === "MongoConfigurationError") {
         return apiError(503, error.message);
+      }
+
+      if (isMongoConnectivityError(error)) {
+        return apiError(503, "Database connection unavailable.");
       }
 
       return apiError(500, "Result deletion failed.", error.message);

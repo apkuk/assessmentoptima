@@ -19,6 +19,7 @@ import {
 } from "@/features/assessment/schemas/assessment";
 import { apiError, jsonResponse, zodErrorDetail } from "@/lib/api/responses";
 import { getServerEnv } from "@/lib/env/server";
+import { isMongoConnectivityError } from "@/lib/mongo/client";
 import { rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
@@ -245,6 +246,10 @@ export async function POST(request: Request) {
     if (error instanceof Error) {
       if (error.name === "MongoConfigurationError") {
         return apiError(503, error.message);
+      }
+
+      if (isMongoConnectivityError(error)) {
+        return apiError(503, "Database connection unavailable.");
       }
 
       return apiError(500, "AI analysis failed.", error.message);

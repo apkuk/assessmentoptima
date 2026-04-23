@@ -213,6 +213,14 @@ At **2026-04-23 22:12 BST**, the first GitHub-to-Vercel deployment issue was fou
 - A root `vercel.json` was added to force the project to deploy as Next.js with `pnpm build`, `pnpm install --frozen-lockfile`, and the Next.js default output handling.
 - The local linked Vercel production build then completed successfully into `.vercel/output`.
 
+At **2026-04-23 22:22 BST**, the first production runtime smoke test identified the next launch blocker.
+
+- Vercel production environment variables were added for MongoDB, result-token hashing, app URL, assessment/consent versions, dataset threshold, AI analysis flags, and the server OpenAI key.
+- Production redeploy succeeded and `https://assessmentoptima.vercel.app` plus `/api/health` returned `200`.
+- A synthetic `/api/submit` smoke test timed out at the Vercel function limit, indicating a runtime persistence connectivity issue rather than a build issue.
+- MongoDB client handling was tightened with server-selection/connect timeouts below the Vercel function limit, production-safe client reuse, and clean `503 Database connection unavailable` responses for database connectivity failures.
+- Local `pnpm verify`, `pnpm build`, and linked `vercel build --prod` passed after the runtime hardening.
+
 ## Required Sections
 
 ### Hero

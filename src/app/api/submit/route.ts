@@ -15,6 +15,7 @@ import {
 } from "@/features/assessment/schemas/assessment";
 import { apiError, jsonResponse, zodErrorDetail } from "@/lib/api/responses";
 import { getServerEnv } from "@/lib/env/server";
+import { isMongoConnectivityError } from "@/lib/mongo/client";
 import {
   createPublicRowId,
   createResultToken,
@@ -77,6 +78,10 @@ export async function POST(request: Request) {
     if (error instanceof Error) {
       if (error.name === "MongoConfigurationError") {
         return apiError(503, error.message);
+      }
+
+      if (isMongoConnectivityError(error)) {
+        return apiError(503, "Database connection unavailable.");
       }
 
       if (error.name === "AssessmentScoringError") {

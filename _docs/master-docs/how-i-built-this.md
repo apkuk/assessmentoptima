@@ -268,6 +268,11 @@ At **2026-04-23 22:59 BST**, the core assessment journey was made resilient to p
 - Public dataset persistence/export still requires MongoDB Atlas network access, so the fallback does not pretend that non-persisted responses were added to the research dataset.
 - MongoDB connection timeouts were shortened so unavailable persistence fails quickly and the user journey can continue.
 
+At **2026-04-23 23:02 BST**, the dataset page was polished for launch resilience.
+
+- Public export buttons are locked while the dataset is suppressed or persistence is unavailable, preventing visitors from clicking into raw error responses.
+- The dataset page now explains that private reports work and public exports unlock once MongoDB Atlas accepts Vercel traffic and release thresholds are met.
+
 ## Required Sections
 
 ### Hero

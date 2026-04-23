@@ -46,16 +46,17 @@ async function getDatasetState() {
       aggregates: calculateAggregates([], 10),
       reliability: calculateReliabilitySnapshot([], 10),
       error: isMongoConnectivityError(error)
-        ? "Database connection unavailable."
+        ? "Live dataset storage is still connecting. Private reports work, and public exports will unlock once MongoDB Atlas accepts Vercel traffic and the release threshold is met."
         : error instanceof Error
-          ? error.message
-          : "Dataset unavailable.",
+          ? "Dataset is temporarily unavailable."
+          : "Dataset is temporarily unavailable.",
     };
   }
 }
 
 export default async function DatasetPage() {
   const { rows, aggregates, reliability, error } = await getDatasetState();
+  const exportsAvailable = !error && !aggregates.suppressed;
 
   return (
     <main className="page">
@@ -67,13 +68,27 @@ export default async function DatasetPage() {
           threshold has been met. Until then, aggregate views remain suppressed.
         </p>
         <div className="action-row">
-          <Link className="button" href={apiRoutes.datasetCsv}>
-            <Download size={18} aria-hidden="true" />
-            CSV export
-          </Link>
-          <Link className="button-secondary" href={apiRoutes.datasetJson}>
-            JSON export
-          </Link>
+          {exportsAvailable ? (
+            <>
+              <Link className="button" href={apiRoutes.datasetCsv}>
+                <Download size={18} aria-hidden="true" />
+                CSV export
+              </Link>
+              <Link className="button-secondary" href={apiRoutes.datasetJson}>
+                JSON export
+              </Link>
+            </>
+          ) : (
+            <>
+              <button className="button" disabled type="button">
+                <Download size={18} aria-hidden="true" />
+                CSV export locked
+              </button>
+              <button className="button-secondary" disabled type="button">
+                JSON export locked
+              </button>
+            </>
+          )}
           <Link className="button-ghost" href={routes.datasetDictionary}>
             Data dictionary
           </Link>

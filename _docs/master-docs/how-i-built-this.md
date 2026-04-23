@@ -234,6 +234,12 @@ At **2026-04-23 22:26 BST**, maintainability standards were tightened for future
 - `AGENTS.md` now sets a default maximum of 600 lines of code per file.
 - Files approaching that size should be split by coherent capability or module boundary, while allowing documented exceptions for generated, mostly static, or intentionally cohesive files.
 
+At **2026-04-23 22:28 BST**, the home hero was adjusted after visual review on the deployed page.
+
+- The report preview visual was made smaller and the two-column hero grid was rebalanced to give the unbroken AssessmentOptima wordmark more room.
+- Desktop display type was reduced slightly while preserving the editorial first-screen impact.
+- The existing global stylesheet remains above the new 600-line guidance because this was a targeted launch polish change; splitting the global CSS should be handled as a separate capability-based refactor.
+
 ## Required Sections
 
 ### Hero

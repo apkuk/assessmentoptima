@@ -64,8 +64,8 @@
   --ao-text-3xl: 2rem;
   --ao-text-4xl: 2.6rem;
   --ao-text-display-sm: 3.15rem;
-  --ao-text-display-md: 4.25rem;
-  --ao-text-display-lg: 5rem;
+  --ao-text-display-md: 4rem;
+  --ao-text-display-lg: 4.35rem;
   --ao-space-1: 0.25rem;
   --ao-space-2: 0.5rem;
   --ao-space-3: 0.75rem;
@@ -260,12 +260,12 @@ a {
   display: grid;
   min-height: calc(100vh - 8.75rem);
   align-items: center;
-  gap: clamp(var(--ao-space-6), 4vw, var(--ao-space-12));
+  gap: clamp(var(--ao-space-5), 3vw, var(--ao-space-8));
   padding: clamp(var(--ao-space-8), 5vw, var(--ao-space-section-lg)) 0;
 }
 
 .hero[data-layout="two"] {
-  grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.78fr);
+  grid-template-columns: minmax(0, 1.08fr) minmax(18rem, 0.62fr);
 }
 
 .hero-copy {
@@ -434,8 +434,8 @@ a {
 .assessment-map {
   position: relative;
   display: grid;
-  width: min(100%, 38.5rem);
-  min-height: 33rem;
+  width: min(100%, 32rem);
+  min-height: 29rem;
   align-content: end;
   justify-self: end;
   border: 1px solid var(--ao-border);
@@ -451,8 +451,8 @@ a {
 .assessment-map::before {
   position: absolute;
   inset: 8% 10% auto auto;
-  width: 12rem;
-  height: 12rem;
+  width: 9.5rem;
+  height: 9.5rem;
   border: 1px solid var(--ao-border-strong);
   border-radius: 50%;
   background:
@@ -1041,7 +1041,7 @@ th {
 
   .assessment-map {
     width: 100%;
-    min-height: 28rem;
+    min-height: 24rem;
     justify-self: stretch;
   }
 }

@@ -17,7 +17,7 @@ import {
   publicDatasetRowSchema,
   datasetComparisonSchema,
 } from "../schemas/assessment";
-import { scaleKeys } from "./model";
+import { operatingSystemDefinitions, scaleKeys } from "./model";
 
 export const PUBLIC_DATASET_FIELDS = publicDatasetFields;
 
@@ -40,6 +40,27 @@ export function isPublicDatasetEligible(input: {
   );
 }
 
+function averageScore(values: number[]): number {
+  if (values.length === 0) {
+    return 0;
+  }
+
+  return Math.round(
+    values.reduce((sum, value) => sum + value, 0) / values.length,
+  );
+}
+
+function operatingSystemScore(
+  result: AssessmentResult,
+  key: keyof typeof operatingSystemDefinitions,
+): number {
+  return averageScore(
+    operatingSystemDefinitions[key].scaleKeys.map(
+      (scaleKey) => result.scores[scaleKey].score,
+    ),
+  );
+}
+
 export function toPublicDatasetRow(
   submission: ExportableSubmission,
 ): PublicDatasetRow {
@@ -49,22 +70,21 @@ export function toPublicDatasetRow(
     row_id: submission.publicRowId,
     assessment_version: submission.assessmentVersion,
     created_month: submission.createdMonth,
-    delivery_score: result.scores.delivery.score,
-    learning_score: result.scores.learning.score,
-    influence_score: result.scores.influence.score,
-    collaboration_score: result.scores.collaboration.score,
-    regulation_score: result.scores.regulation.score,
-    strategy_score: result.scores.strategy.score,
-    integrity_score: result.scores.integrity.score,
-    change_score: result.scores.change.score,
-    ai_score: result.scores.ai.score,
-    operating_rhythm: result.composites.operatingRhythm ?? 0,
-    trust_backbone: result.composites.trustBackbone ?? 0,
-    learning_engine: result.composites.learningEngine ?? 0,
-    change_leadership: result.composites.changeLeadership ?? 0,
-    human_centred_influence: result.composites.humanCentredInfluence ?? 0,
+    commitment_rhythm_score: result.scores.commitment_rhythm.score,
+    adaptive_learning_score: result.scores.adaptive_learning.score,
+    mobilising_communication_score:
+      result.scores.mobilising_communication.score,
+    mutuality_repair_score: result.scores.mutuality_repair.score,
+    pressure_regulation_score: result.scores.pressure_regulation.score,
+    systems_sensemaking_score: result.scores.systems_sensemaking.score,
+    trust_stewardship_score: result.scores.trust_stewardship.score,
+    change_navigation_score: result.scores.change_navigation.score,
+    augmented_judgement_score: result.scores.augmented_judgement.score,
+    operational_clarity: operatingSystemScore(result, "operationalClarity"),
+    human_coordination: operatingSystemScore(result, "humanCoordination"),
+    adaptive_capacity: operatingSystemScore(result, "adaptiveCapacity"),
     archetype: result.archetype.name,
-    pressure_flag_count: result.pressureFlags.length,
+    pressure_drift_count: result.pressureDrifts.length,
   });
 }
 
@@ -104,16 +124,6 @@ export function applySmallCellSuppression<T>(
   };
 }
 
-function average(values: number[]): number {
-  if (values.length === 0) {
-    return 0;
-  }
-
-  return Math.round(
-    values.reduce((sum, value) => sum + value, 0) / values.length,
-  );
-}
-
 export function calculateAggregates(
   rows: PublicDatasetRow[],
   minGroupSize: number,
@@ -132,7 +142,7 @@ export function calculateAggregates(
   const averageByScale = Object.fromEntries(
     scaleKeys.map((scaleKey) => [
       scaleKey,
-      average(rows.map((row) => Number(row[`${scaleKey}_score`]))),
+      averageScore(rows.map((row) => Number(row[`${scaleKey}_score`]))),
     ]),
   ) as Record<ScaleKey, number>;
 
@@ -143,12 +153,14 @@ export function calculateAggregates(
   }, {});
 
   const compositeAverages = {
-    operatingRhythm: average(rows.map((row) => Number(row.operating_rhythm))),
-    trustBackbone: average(rows.map((row) => Number(row.trust_backbone))),
-    learningEngine: average(rows.map((row) => Number(row.learning_engine))),
-    changeLeadership: average(rows.map((row) => Number(row.change_leadership))),
-    humanCentredInfluence: average(
-      rows.map((row) => Number(row.human_centred_influence)),
+    operationalClarity: averageScore(
+      rows.map((row) => Number(row.operational_clarity)),
+    ),
+    humanCoordination: averageScore(
+      rows.map((row) => Number(row.human_coordination)),
+    ),
+    adaptiveCapacity: averageScore(
+      rows.map((row) => Number(row.adaptive_capacity)),
     ),
   };
 

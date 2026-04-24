@@ -1,4 +1,4 @@
-# Draft Proof Point: ChatGPT 5.5 + Codex 5.5 Build Sprint
+# Draft Proof Point: ChatGPT 5.5 + Codex With GPT-5.5 Build Sprint
 
 ## Core Observation
 
@@ -16,7 +16,7 @@ That is the proof point for me: not just raw speed, but task awareness across th
 
 The brief was deliberately ambitious:
 
-- create a Hogan-inspired, but original, work-style assessment;
+- create an original work-style assessment with professional-assessment seriousness;
 - ground it in behavioural science rather than quiz theatre;
 - keep it clearly developmental and not for high-stakes employment use;
 - make it GDPR/privacy-aware;
@@ -30,7 +30,7 @@ The brief was deliberately ambitious:
 
 The ChatGPT 5.5 Pro research/PRD phase produced the research-backed methodology and build brief in 47 minutes.
 
-Codex then used that context to build the actual app locally: Next.js App Router, strict TypeScript, pnpm, Vitest, MongoDB Atlas, Zod schemas, scoring logic, public routes, API routes, result pages, dataset export, share-safe OG cards, separate view/delete tokens, BYOK AI analysis, rate limiting, and a public build-story page.
+Codex with GPT-5.5 then used that context to build the actual app locally: Next.js App Router, strict TypeScript, pnpm, Vitest, MongoDB Atlas, Zod schemas, scoring logic, public routes, API routes, result pages, dataset export, share-safe OG cards, separate view/delete tokens, BYOK AI analysis, rate limiting, and a public build-story page.
 
 ## The Thing That Felt Different
 
@@ -58,7 +58,7 @@ The local v0 now includes:
 - 54-item WorkStyle Compass assessment;
 - consent and optional context capture;
 - private results report;
-- archetype, nine scale scores, radar chart, strengths, development edges, pressure flags, reflection prompts, and 30-day experiment;
+- archetype, nine domain scores, radar chart, three operating-system composites, strengths, development edges, pressure-drift signals, reflection prompts, and 30-day experiment;
 - share-safe LinkedIn/social OG image per archetype;
 - share actions and LinkedIn share link that do not expose private result URLs;
 - current public sample comparison badges when public thresholds are met;
@@ -94,7 +94,7 @@ And the build log records the main milestones:
 
 ## Caveat
 
-This is not a validated psychometric product. It is a research-informed developmental prototype.
+This is not a validated selection or high-stakes psychometric product. It is a research-informed developmental prototype.
 
 That matters. The site says that clearly. No hiring, promotion, redundancy, diagnosis, compensation, or high-stakes employment decisions.
 

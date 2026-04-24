@@ -9,7 +9,7 @@ import { ImageResponse } from "next/og";
 import { appConfig } from "@/config/app";
 import { createAssessmentSubmissionRepository } from "@/features/assessment/adapters/mongo/assessment-submission-repository";
 import { parseStatelessResultToken } from "@/features/assessment/application/stateless-result-token";
-import { resultTokenSchema } from "@/features/assessment/schemas/assessment";
+import { viewTokenSchema } from "@/features/assessment/schemas/assessment";
 import { getServerEnv } from "@/lib/env/server";
 import { hashResultToken, resolveHashSecret } from "@/lib/security/tokens";
 
@@ -24,7 +24,7 @@ interface RouteContext {
 export async function GET(_request: Request, context: RouteContext) {
   const env = getServerEnv();
   const { token } = await context.params;
-  const parsedToken = resultTokenSchema.parse(token);
+  const parsedToken = viewTokenSchema.parse(token);
   const hashSecret = resolveHashSecret(env.HASH_SECRET);
   const statelessResult = parseStatelessResultToken(parsedToken, hashSecret);
   const repository = createAssessmentSubmissionRepository();

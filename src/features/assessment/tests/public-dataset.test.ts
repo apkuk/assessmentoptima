@@ -76,7 +76,7 @@ describe("public export row", () => {
     expect(row).not.toHaveProperty("answers");
     expect(row).not.toHaveProperty("age_band");
     expect(row).not.toHaveProperty("role_level");
-    expect(row).not.toHaveProperty("resultTokenHash");
+    expect(row).not.toHaveProperty("viewTokenHash");
   });
 
   it("exports CSV using the public field order", () => {
@@ -108,7 +108,7 @@ describe("small-cell suppression and aggregates", () => {
 
     expect(aggregates.suppressed).toBe(false);
     expect(aggregates.rowCount).toBe(10);
-    expect(aggregates.averageByScale.delivery).toBeGreaterThan(0);
+    expect(aggregates.averageByScale.commitment_rhythm).toBeGreaterThan(0);
   });
 
   it("labels comparisons as current sample comparisons, not norms", () => {
@@ -122,9 +122,9 @@ describe("small-cell suppression and aggregates", () => {
     });
 
     expect(comparison.suppressed).toBe(false);
-    expect(comparison.currentSampleComparisonByScale.delivery).toBeGreaterThan(
-      0,
-    );
+    expect(
+      comparison.currentSampleComparisonByScale.commitment_rhythm,
+    ).toBeGreaterThan(0);
     expect(comparison).not.toHaveProperty("percentileByScale");
   });
 });

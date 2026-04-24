@@ -2,7 +2,7 @@
  * File: src/features/assessment/application/model.ts
  * Created: 2026-04-23
  * Updated: 2026-04-24
- * Description: WorkStyle Compass scale definitions and v0 item bank.
+ * Description: WorkStyle Compass v2 scale definitions, operating-system model, and item bank.
  */
 import { appConfig } from "@/config/app";
 
@@ -12,440 +12,498 @@ import {
   type ScaleKey,
 } from "../schemas/assessment";
 
+export type WorkOperatingSystemKey =
+  | "operationalClarity"
+  | "humanCoordination"
+  | "adaptiveCapacity";
+
+export interface WorkOperatingSystemDefinition {
+  key: WorkOperatingSystemKey;
+  name: string;
+  description: string;
+  scaleKeys: readonly ScaleKey[];
+}
+
 export interface ScaleDefinition {
   key: ScaleKey;
   name: string;
   shortName: string;
+  operatingSystem: WorkOperatingSystemKey;
   description: string;
   highAnchor: string;
   lowAnchor: string;
-  overuseRisk: string;
+  pressureDrift: string;
 }
 
 export const ASSESSMENT_VERSION = appConfig.defaultAssessmentVersion;
 export const CONSENT_VERSION = appConfig.defaultConsentVersion;
 export { scaleKeys };
 
+export const operatingSystemDefinitions = {
+  operationalClarity: {
+    key: "operationalClarity",
+    name: "Operational Clarity",
+    description:
+      "How the respondent turns complexity into usable work progress.",
+    scaleKeys: [
+      "commitment_rhythm",
+      "systems_sensemaking",
+      "augmented_judgement",
+    ],
+  },
+  humanCoordination: {
+    key: "humanCoordination",
+    name: "Human Coordination",
+    description:
+      "How the respondent creates shared understanding, trust, and commitment.",
+    scaleKeys: [
+      "mobilising_communication",
+      "mutuality_repair",
+      "trust_stewardship",
+    ],
+  },
+  adaptiveCapacity: {
+    key: "adaptiveCapacity",
+    name: "Adaptive Capacity",
+    description:
+      "How the respondent updates, recovers, and moves through uncertainty.",
+    scaleKeys: [
+      "adaptive_learning",
+      "pressure_regulation",
+      "change_navigation",
+    ],
+  },
+} as const satisfies Record<
+  WorkOperatingSystemKey,
+  WorkOperatingSystemDefinition
+>;
+
 export const scales: Record<ScaleKey, ScaleDefinition> = {
-  delivery: {
-    key: "delivery",
-    name: "Delivery Discipline",
-    shortName: "Delivery",
+  commitment_rhythm: {
+    key: "commitment_rhythm",
+    name: "Commitment Rhythm",
+    shortName: "Commitment",
+    operatingSystem: "operationalClarity",
     description:
-      "Reliable execution, prioritisation, follow-through and operational rhythm.",
-    highAnchor: "Structured, dependable and focused on commitments.",
-    lowAnchor: "Flexible, adaptive and less bound by plans or routines.",
-    overuseRisk:
-      "May become rigid, perfectionistic or over-controlled under pressure.",
+      "Converting intention into visible, reliable progress through prioritisation, sequencing, and follow-through.",
+    highAnchor: "Reliable, structured, and action-oriented.",
+    lowAnchor: "Flexible, improvisational, and less constrained by routines.",
+    pressureDrift: "Over-control, perfectionism, or reduced adaptability.",
   },
-  learning: {
-    key: "learning",
-    name: "Learning Agility",
+  adaptive_learning: {
+    key: "adaptive_learning",
+    name: "Adaptive Learning",
     shortName: "Learning",
+    operatingSystem: "adaptiveCapacity",
     description:
-      "Curiosity, feedback seeking, experimentation and speed of sense-making.",
-    highAnchor: "Curious, coachable, adaptive and quick to learn.",
-    lowAnchor: "Prefers proven methods and familiar domains.",
-    overuseRisk: "May chase novelty or pivot before learning is consolidated.",
+      "Updating beliefs and behaviour through feedback, evidence, experimentation, and reflection.",
+    highAnchor: "Curious, coachable, and experiment-minded.",
+    lowAnchor: "Proven-method oriented, stable, and less novelty-seeking.",
+    pressureDrift: "Exploration without consolidation.",
   },
-  influence: {
-    key: "influence",
-    name: "Influence & Social Energy",
-    shortName: "Influence",
+  mobilising_communication: {
+    key: "mobilising_communication",
+    name: "Mobilising Communication",
+    shortName: "Mobilising",
+    operatingSystem: "humanCoordination",
     description:
-      "Confidence in advocacy, persuasion, networking and visible leadership.",
-    highAnchor: "Persuasive, energising and comfortable with visibility.",
-    lowAnchor: "Reflective, quieter and likely to influence through depth.",
-    overuseRisk: "May dominate airtime or oversell before alignment is built.",
+      "Making ideas relevant, energising others, adapting messages, and creating commitment.",
+    highAnchor: "Persuasive, energising, and audience-aware.",
+    lowAnchor: "Reflective, quieter, and likely to influence through depth.",
+    pressureDrift: "Advocacy overpowering curiosity.",
   },
-  collaboration: {
-    key: "collaboration",
-    name: "Collaboration & Trust",
-    shortName: "Collaboration",
+  mutuality_repair: {
+    key: "mutuality_repair",
+    name: "Mutuality & Repair",
+    shortName: "Mutuality",
+    operatingSystem: "humanCoordination",
     description:
-      "Generosity, inclusion, conflict repair and confidence in others.",
-    highAnchor: "Inclusive, trusting and relationship-oriented.",
-    lowAnchor:
-      "Independent, selective with trust and willing to challenge group assumptions.",
-    overuseRisk: "May avoid hard conflict or over-accommodate.",
+      "Building shared work through trust, contribution clarity, inclusion, conflict repair, and mutual accountability.",
+    highAnchor: "Inclusive, relationally aware, and repair-oriented.",
+    lowAnchor: "Independent, selective with trust, and self-reliant.",
+    pressureDrift: "Harmony over candour or over-accommodation.",
   },
-  regulation: {
-    key: "regulation",
-    name: "Emotional Regulation",
+  pressure_regulation: {
+    key: "pressure_regulation",
+    name: "Pressure Regulation",
     shortName: "Regulation",
+    operatingSystem: "adaptiveCapacity",
     description:
-      "Composure, resilience, recovery and steadiness under pressure.",
-    highAnchor: "Calm, steady, resilient and proportionate.",
-    lowAnchor: "Sensitive to pressure signals and emotionally transparent.",
-    overuseRisk: "May appear detached or under-signal urgency.",
+      "Staying choiceful, proportionate, recoverable, and transparent enough under pressure.",
+    highAnchor: "Calm, resilient, and emotionally proportionate.",
+    lowAnchor: "Emotionally transparent, pressure-sensitive, and urgent.",
+    pressureDrift: "Under-signalling strain or urgency.",
   },
-  strategy: {
-    key: "strategy",
-    name: "Strategic Systems Thinking",
-    shortName: "Strategy",
+  systems_sensemaking: {
+    key: "systems_sensemaking",
+    name: "Systems Sensemaking",
+    shortName: "Sensemaking",
+    operatingSystem: "operationalClarity",
     description:
-      "Pattern recognition, trade-off thinking and handling complexity.",
-    highAnchor: "Systems-oriented, integrative and strategic.",
-    lowAnchor: "Practical, concrete and focused on immediate realities.",
-    overuseRisk: "May over-theorise or delay action for more analysis.",
+      "Seeing patterns, trade-offs, second-order effects, and long-term capability implications.",
+    highAnchor: "Integrative, strategic, and complexity-aware.",
+    lowAnchor: "Concrete, pragmatic, and close to immediate realities.",
+    pressureDrift: "Analysis drag, abstraction, or delayed commitment.",
   },
-  integrity: {
-    key: "integrity",
-    name: "Integrity & Humility",
-    shortName: "Integrity",
+  trust_stewardship: {
+    key: "trust_stewardship",
+    name: "Trust Stewardship",
+    shortName: "Trust",
+    operatingSystem: "humanCoordination",
     description:
-      "Truthfulness, fairness, ethical judgement, modesty and openness to challenge.",
-    highAnchor: "Grounded, fair, transparent and trustworthy.",
-    lowAnchor: "Competitive, status-aware and politically pragmatic.",
-    overuseRisk: "May under-claim impact or avoid necessary self-promotion.",
+      "Protecting truth, fairness, humility, risk visibility, and decision quality when incentives or politics complicate judgement.",
+    highAnchor: "Fair, transparent, grounded, and challenge-seeking.",
+    lowAnchor: "Pragmatic, status-aware, and politically adaptive.",
+    pressureDrift: "Under-claiming, over-caution, or low self-advocacy.",
   },
-  change: {
-    key: "change",
-    name: "Change Agency",
+  change_navigation: {
+    key: "change_navigation",
+    name: "Change Navigation",
     shortName: "Change",
+    operatingSystem: "adaptiveCapacity",
     description:
-      "Energy for transformation, ambiguity tolerance, courage and momentum creation.",
-    highAnchor: "Catalytic, bold and energised by change.",
-    lowAnchor: "Stabilising, continuity-minded and risk-aware.",
-    overuseRisk:
-      "May create change fatigue or move faster than adoption capacity.",
+      "Creating movement through uncertainty while managing adoption, trust, and capacity.",
+    highAnchor: "Catalytic, courageous, and momentum-building.",
+    lowAnchor: "Stabilising, continuity-minded, and risk-aware.",
+    pressureDrift: "Change load exceeding system capacity.",
   },
-  ai: {
-    key: "ai",
-    name: "AI-Augmented Judgement",
-    shortName: "AI Judgement",
+  augmented_judgement: {
+    key: "augmented_judgement",
+    name: "Augmented Judgement",
+    shortName: "Augmented",
+    operatingSystem: "operationalClarity",
     description:
-      "Use of AI and digital tools with critical thinking, verification and responsible judgement.",
-    highAnchor: "Experimental, augmented and verification-minded.",
-    lowAnchor: "Cautious, human-first and less tool-dependent.",
-    overuseRisk: "May over-automate or trust outputs before testing.",
+      "Using AI and digital tools to improve work while verifying outputs, protecting privacy, and preserving human accountability.",
+    highAnchor: "Experimental, discerning, and verification-minded.",
+    lowAnchor: "Cautious, human-first, and less tool-dependent.",
+    pressureDrift: "Automation before clarity or shallow verification.",
   },
 };
 
 export const items: AssessmentItem[] = [
   {
     id: "D1",
-    scale: "delivery",
+    scale: "commitment_rhythm",
     type: "core",
-    text: "I turn ambiguous goals into clear next actions quickly.",
+    text: "When a goal is unclear, I define the next concrete move rather than waiting for perfect direction.",
   },
   {
     id: "D2",
-    scale: "delivery",
+    scale: "commitment_rhythm",
     type: "core",
-    text: "I keep commitments even when the work becomes inconvenient.",
+    text: "I protect important commitments from being crowded out by urgent noise.",
   },
   {
     id: "D3",
-    scale: "delivery",
+    scale: "commitment_rhythm",
     type: "reverse",
-    text: "I often rely on last-minute intensity rather than steady progress.",
+    text: "My progress tends to come in bursts after pressure has built.",
   },
   {
     id: "D4",
-    scale: "delivery",
+    scale: "commitment_rhythm",
     type: "core",
-    text: "People can usually predict the quality and timing of my work.",
+    text: "I surface delivery risks before they become surprises.",
   },
   {
     id: "D5",
-    scale: "delivery",
-    type: "overuse",
-    text: "I find it hard to stop improving work once it is good enough.",
+    scale: "commitment_rhythm",
+    type: "core",
+    text: "I keep enough visible structure that collaborators know what is due, by when, and from whom.",
   },
   {
     id: "D6",
-    scale: "delivery",
-    type: "core",
-    text: "I can keep track of important details when several priorities compete.",
+    scale: "commitment_rhythm",
+    type: "overuse",
+    text: "I can become so focused on control and completion that I narrow others' room to adapt.",
   },
   {
     id: "L1",
-    scale: "learning",
+    scale: "adaptive_learning",
     type: "core",
-    text: "I actively seek feedback that may challenge my self-image.",
+    text: "I deliberately seek evidence that could disconfirm my first view.",
   },
   {
     id: "L2",
-    scale: "learning",
+    scale: "adaptive_learning",
     type: "core",
-    text: "I enjoy learning unfamiliar tools, concepts or domains.",
+    text: "I can enter an unfamiliar domain and quickly build a working map of it.",
   },
   {
     id: "L3",
-    scale: "learning",
+    scale: "adaptive_learning",
     type: "reverse",
-    text: "I prefer to stick with methods that have worked for me before.",
+    text: "I tend to prefer familiar methods even when the context has changed.",
   },
   {
     id: "L4",
-    scale: "learning",
+    scale: "adaptive_learning",
     type: "core",
-    text: "I run small experiments before committing to a big change.",
+    text: "I turn feedback into a specific behavioural experiment.",
   },
   {
     id: "L5",
-    scale: "learning",
+    scale: "adaptive_learning",
     type: "core",
-    text: "When I fail, I can usually extract a practical lesson quickly.",
+    text: "After a setback, I identify what the next attempt should test.",
   },
   {
     id: "L6",
-    scale: "learning",
+    scale: "adaptive_learning",
     type: "overuse",
-    text: "I sometimes move on to the next idea before finishing the learning loop.",
+    text: "I can keep exploring new angles after the problem needs consolidation.",
   },
   {
     id: "I1",
-    scale: "influence",
+    scale: "mobilising_communication",
     type: "core",
-    text: "I am comfortable advocating for an idea in front of senior stakeholders.",
+    text: "I can make a complex idea feel relevant to the people who need to act on it.",
   },
   {
     id: "I2",
-    scale: "influence",
+    scale: "mobilising_communication",
     type: "core",
-    text: "I can energise a group when momentum is low.",
+    text: "I notice when a group needs energy, confidence, or a clearer call to action.",
   },
   {
     id: "I3",
-    scale: "influence",
+    scale: "mobilising_communication",
     type: "reverse",
-    text: "I prefer others to present ideas, even when the thinking is mine.",
+    text: "I often let useful ideas stay in my head because I do not want to push myself forward.",
   },
   {
     id: "I4",
-    scale: "influence",
+    scale: "mobilising_communication",
     type: "core",
-    text: "I adapt my message to the audience rather than using one generic pitch.",
+    text: "I adjust my message based on what the audience already believes, values, and fears.",
   },
   {
     id: "I5",
-    scale: "influence",
+    scale: "mobilising_communication",
     type: "core",
-    text: "I build networks before I need them.",
+    text: "I build relationships before I need agreement or support.",
   },
   {
     id: "I6",
-    scale: "influence",
+    scale: "mobilising_communication",
     type: "overuse",
-    text: "In debate, I can push too hard for my preferred direction.",
+    text: "I can become more persuasive than curious once I believe a direction is right.",
   },
   {
     id: "C1",
-    scale: "collaboration",
+    scale: "mutuality_repair",
     type: "core",
-    text: "I assume positive intent unless there is strong evidence otherwise.",
+    text: "I check my assumptions about others' intentions before reacting to them.",
   },
   {
     id: "C2",
-    scale: "collaboration",
+    scale: "mutuality_repair",
     type: "core",
-    text: "I make space for quieter voices before decisions are made.",
+    text: "I draw out perspectives that could otherwise be missed.",
   },
   {
     id: "C3",
-    scale: "collaboration",
+    scale: "mutuality_repair",
     type: "reverse",
-    text: "I would rather do work myself than depend on others.",
+    text: "I am quicker to take work back than to help others succeed with it.",
   },
   {
     id: "C4",
-    scale: "collaboration",
+    scale: "mutuality_repair",
     type: "core",
-    text: "I repair relationships directly when tension has built up.",
+    text: "I address relationship tension before it hardens into avoidance.",
   },
   {
     id: "C5",
-    scale: "collaboration",
+    scale: "mutuality_repair",
     type: "core",
-    text: "I share credit generously.",
+    text: "I make contribution boundaries clear so shared work does not become vague or unfair.",
   },
   {
     id: "C6",
-    scale: "collaboration",
+    scale: "mutuality_repair",
     type: "overuse",
-    text: "I sometimes avoid difficult conversations to keep the peace.",
+    text: "I can spend too long preserving harmony when clarity or challenge is needed.",
   },
   {
     id: "R1",
-    scale: "regulation",
+    scale: "pressure_regulation",
     type: "core",
-    text: "Under pressure, I can stay calm enough to choose my response.",
+    text: "When pressure rises, I can slow the moment enough to choose my response.",
   },
   {
     id: "R2",
-    scale: "regulation",
+    scale: "pressure_regulation",
     type: "core",
-    text: "I recover quickly after criticism, setbacks or conflict.",
+    text: "I regain perspective after criticism, conflict, or a visible mistake.",
   },
   {
     id: "R3",
-    scale: "regulation",
+    scale: "pressure_regulation",
     type: "reverse",
-    text: "My mood can visibly affect the people around me.",
+    text: "People can usually tell when my frustration has taken over.",
   },
   {
     id: "R4",
-    scale: "regulation",
+    scale: "pressure_regulation",
     type: "core",
-    text: "I can discuss difficult facts without making the conversation personal.",
+    text: "I can name difficult realities without turning the discussion into blame.",
   },
   {
     id: "R5",
-    scale: "regulation",
+    scale: "pressure_regulation",
     type: "core",
-    text: "I notice early signals that I am becoming overloaded.",
+    text: "I recognise my early overload signals before they become performance problems.",
   },
   {
     id: "R6",
-    scale: "regulation",
+    scale: "pressure_regulation",
     type: "overuse",
-    text: "I may hide stress so well that others do not know I need help.",
+    text: "I can appear so composed that others underestimate the support or urgency required.",
   },
   {
     id: "S1",
-    scale: "strategy",
+    scale: "systems_sensemaking",
     type: "core",
-    text: "I naturally look for patterns across functions, markets or systems.",
+    text: "I look for the pattern connecting separate events, functions, or incentives.",
   },
   {
     id: "S2",
-    scale: "strategy",
+    scale: "systems_sensemaking",
     type: "core",
-    text: "I consider second-order consequences before recommending action.",
+    text: "Before recommending action, I consider what the decision may create downstream.",
   },
   {
     id: "S3",
-    scale: "strategy",
+    scale: "systems_sensemaking",
     type: "reverse",
-    text: "I prefer immediate practical action to abstract analysis.",
+    text: "I tend to prioritise immediate visible action over understanding the system behind the problem.",
   },
   {
     id: "S4",
-    scale: "strategy",
+    scale: "systems_sensemaking",
     type: "core",
-    text: "I can simplify complexity without distorting it.",
+    text: "I can make complexity understandable without making it simplistic.",
   },
   {
     id: "S5",
-    scale: "strategy",
+    scale: "systems_sensemaking",
     type: "core",
-    text: "I connect day-to-day decisions to longer-term capability.",
+    text: "I connect today's choices to capability, culture, or capacity that will matter later.",
   },
   {
     id: "S6",
-    scale: "strategy",
+    scale: "systems_sensemaking",
     type: "overuse",
-    text: "I sometimes hold decisions open while searching for a better model.",
+    text: "I can keep refining the model after the team needs a decision.",
   },
   {
     id: "H1",
-    scale: "integrity",
+    scale: "trust_stewardship",
     type: "core",
-    text: "I will raise an uncomfortable truth even when it may cost me politically.",
+    text: "I raise material risks or uncomfortable facts early enough for people to act on them.",
   },
   {
     id: "H2",
-    scale: "integrity",
+    scale: "trust_stewardship",
     type: "core",
-    text: "I am willing to admit when I do not know or got something wrong.",
+    text: "When my evidence is weak, I say so rather than overstating certainty.",
   },
   {
     id: "H3",
-    scale: "integrity",
+    scale: "trust_stewardship",
     type: "reverse",
-    text: "When the desired outcome is clear, I can be tempted to treat formal process as flexible.",
+    text: "When a goal feels important, I may treat process commitments as negotiable.",
   },
   {
     id: "H4",
-    scale: "integrity",
+    scale: "trust_stewardship",
     type: "core",
-    text: "I consider who may be disadvantaged by a decision, even when that concern is not being raised by others.",
+    text: "I consider who could be unintentionally harmed by a decision.",
   },
   {
     id: "H5",
-    scale: "integrity",
+    scale: "trust_stewardship",
     type: "core",
-    text: "I invite challenge before committing to a consequential decision.",
+    text: "I invite challenge from people who are likely to see my blind spots.",
   },
   {
     id: "H6",
-    scale: "integrity",
+    scale: "trust_stewardship",
     type: "overuse",
-    text: "I can understate my own contribution to avoid seeming self-promotional.",
+    text: "I can downplay my own contribution so much that others miss the value I added.",
   },
   {
     id: "G1",
-    scale: "change",
+    scale: "change_navigation",
     type: "core",
-    text: "I am energised by turning uncertainty into movement.",
+    text: "I can create movement when the path is still partly undefined.",
   },
   {
     id: "G2",
-    scale: "change",
+    scale: "change_navigation",
     type: "core",
-    text: "I can help others understand why change is necessary.",
+    text: "I help people see the reason for change in terms that matter to their work.",
   },
   {
     id: "G3",
-    scale: "change",
+    scale: "change_navigation",
     type: "reverse",
-    text: "I prefer stability over transformation when both are possible.",
+    text: "When stability is possible, I usually prefer it over redesigning the way things work.",
   },
   {
     id: "G4",
-    scale: "change",
+    scale: "change_navigation",
     type: "core",
-    text: "I am willing to make a visible decision with incomplete information.",
+    text: "I can make a provisional decision, learn from it, and adjust publicly.",
   },
   {
     id: "G5",
-    scale: "change",
+    scale: "change_navigation",
     type: "core",
-    text: "I notice adoption risk, not just launch risk.",
+    text: "I pay attention to adoption capacity, not just launch momentum.",
   },
   {
     id: "G6",
-    scale: "change",
+    scale: "change_navigation",
     type: "overuse",
-    text: "I can create more change than people have capacity to absorb.",
+    text: "I can generate more change than the system has attention or trust to absorb.",
   },
   {
     id: "A1",
-    scale: "ai",
+    scale: "augmented_judgement",
     type: "core",
-    text: "I use AI or digital tools to accelerate thinking, drafting or analysis.",
+    text: "Where tools are available, I use AI or automation to create a first draft, comparison, or analysis faster.",
   },
   {
     id: "A2",
-    scale: "ai",
+    scale: "augmented_judgement",
     type: "core",
-    text: "I verify AI-generated outputs before relying on them.",
+    text: "I check AI-assisted work against evidence, context, and consequences before relying on it.",
   },
   {
     id: "A3",
-    scale: "ai",
+    scale: "augmented_judgement",
     type: "reverse",
-    text: "I avoid AI tools because I do not trust their usefulness.",
+    text: "I avoid AI-enabled tools even when they could safely improve the work.",
   },
   {
     id: "A4",
-    scale: "ai",
+    scale: "augmented_judgement",
     type: "core",
-    text: "I can identify when a human judgement call should not be delegated to automation.",
+    text: "I can tell when a task needs human accountability rather than automated output.",
   },
   {
     id: "A5",
-    scale: "ai",
+    scale: "augmented_judgement",
     type: "core",
-    text: "I experiment with new tools while keeping ethics, privacy and quality in view.",
+    text: "I experiment with new tools while protecting privacy, quality, and trust.",
   },
   {
     id: "A6",
-    scale: "ai",
+    scale: "augmented_judgement",
     type: "overuse",
-    text: "I sometimes use automation before the underlying process is clear enough.",
+    text: "I can reach for automation before clarifying the human problem or process.",
   },
 ];
 

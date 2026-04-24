@@ -24,7 +24,8 @@ export const aiProviderModelDefaults = {
 } as const satisfies Record<AiAnalysisRequest["provider"], string>;
 
 export const aiAnalysisPromptPolicy = [
-  "You are analysing an open, anonymised work-style assessment dataset.",
+  "You are analysing an open, anonymised developmental work-style assessment dataset.",
+  "The model explores how people turn complexity into contribution through Operational Clarity, Human Coordination, and Adaptive Capacity.",
   "The instrument is research-informed and developmental, but it is not validated for hiring, promotion, diagnosis, redundancy, or high-stakes employment decisions.",
   "Be careful: separate observed patterns from speculation, avoid clinical claims, and mention sample size limits.",
   "Rows are anonymised, score-level records only; no respondent context fields are included in the v0 row export.",
@@ -42,15 +43,15 @@ export function createAiAnalysisPrompt(input: {
     : "";
 
   return [
-    ...aiAnalysisPromptPolicy.slice(0, 3),
+    ...aiAnalysisPromptPolicy.slice(0, 4),
     `Task: ${analysisLabels[input.request.analysisType]}.${question}`,
     "",
     "Aggregate data:",
     JSON.stringify(input.aggregates, null, 2),
     "",
-    aiAnalysisPromptPolicy[3],
+    aiAnalysisPromptPolicy[4],
     JSON.stringify(sampledRows, null, 2),
     "",
-    aiAnalysisPromptPolicy[4],
+    aiAnalysisPromptPolicy[5],
   ].join("\n");
 }

@@ -83,7 +83,11 @@ Change procedure:
 src/
   app/                         # L4/L5 Next.js App Router entrypoints
     api/                       # L4 Route Handlers
+    about/                     # L5 founder/about page
     assessment/                 # L5 assessment page
+    science/                    # L5 science/methodology page
+    dataset/                    # L5 dataset dashboard and dictionary pages
+    ai-analysis/                # L5 BYOK AI analysis page
     results/[token]/            # L5 private report page
     how-i-built-this/           # L5 public AI-assisted build-story page
   config/                       # product constants and route builders
@@ -260,7 +264,7 @@ Responsibilities:
 - assessment questionnaire UI
 - results page
 - dashboard and export UI
-- BYOK AI analysis UI if included in v0
+- BYOK AI analysis UI
 - public "How I Built This" page covering ChatGPT 5.5, Codex, architecture, privacy, and validation boundaries
 
 Rules:
@@ -287,8 +291,19 @@ src/features/assessment/components/assessment-form.tsx
 Current public/server endpoints:
 
 ```text
+GET  /
+GET  /about
+GET  /science
+GET  /privacy
+GET  /limitations
+GET  /assessment
 GET  /how-i-built-this
 GET  /archetypes/[slug]
+GET  /results/[token]
+GET  /dataset
+GET  /dataset/dictionary
+GET  /ai-analysis
+GET  /api/docs
 POST /api/submit
 GET  /api/results/[token]
 DELETE /api/results/[token]
@@ -345,7 +360,16 @@ Few: browser or full app workflow tests once UI exists
 6. Add L4 submit and export entrypoints.
 7. Add L5 assessment and results UI.
 8. Add the public `/how-i-built-this` page and link it from global navigation/footer.
-9. Add L2 AI adapter only after the PRD confirms BYOK/server-funded behavior.
+9. Add L2 BYOK AI adapters and keep server-funded analysis disabled unless the PRD is updated with cost and abuse controls.
+
+## Related Docs
+
+- [PRD](../PRD.md)
+- [Assessment Model](./assessment-model.md)
+- [Assessment Science Research](./assessment-science/research.md)
+- [Product Routes And API](./product-routes-and-api.md)
+- [Data Architecture](./data-architecture.md)
+- [Delivery And QA](./delivery-and-qa.md)
 
 ## Sources
 

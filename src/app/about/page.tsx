@@ -103,6 +103,22 @@ export default function AboutPage() {
             </ButtonLink>
             <a
               className="button-secondary"
+              href="https://talentoptima.co/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              TalentOptima <ExternalLink aria-hidden="true" size={16} />
+            </a>
+            <a
+              className="button-secondary"
+              href="https://www.linkedin.com/in/apkilshaw/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              LinkedIn <ExternalLink aria-hidden="true" size={16} />
+            </a>
+            <a
+              className="button-secondary"
               href="https://phoque.ai"
               rel="noreferrer"
               target="_blank"

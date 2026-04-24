@@ -89,16 +89,22 @@
   text-decoration: none;
   white-space: nowrap;
   transition:
-    background-color 160ms ease,
-    border-color 160ms ease,
-    color 160ms ease,
-    transform 160ms ease;
+    background-color var(--ao-duration-fast) var(--ao-ease),
+    border-color var(--ao-duration-fast) var(--ao-ease),
+    color var(--ao-duration-fast) var(--ao-ease),
+    transform var(--ao-duration-fast) var(--ao-ease);
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.nav-link[data-active="true"] {
   border-color: var(--ao-border);
   background: var(--ao-surface);
   color: var(--ao-brand-strong);
+}
+
+.nav-link[data-active="true"] {
+  border-color: color-mix(in srgb, var(--ao-brand) 34%, var(--ao-border));
+  background: var(--ao-brand-soft);
 }
 
 .nav-link:active {
@@ -203,12 +209,12 @@
   padding: 0.8rem 1rem;
   text-decoration: none;
   transition:
-    background-color 160ms ease,
-    border-color 160ms ease,
-    box-shadow 160ms ease,
-    color 160ms ease,
-    opacity 160ms ease,
-    transform 160ms ease;
+    background-color var(--ao-duration-fast) var(--ao-ease),
+    border-color var(--ao-duration-fast) var(--ao-ease),
+    box-shadow var(--ao-duration-fast) var(--ao-ease),
+    color var(--ao-duration-fast) var(--ao-ease),
+    opacity var(--ao-duration-fast) var(--ao-ease),
+    transform var(--ao-duration-fast) var(--ao-ease);
   user-select: none;
 }
 

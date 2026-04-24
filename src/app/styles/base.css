@@ -88,6 +88,10 @@
   --ao-shadow-sm: 0 1px 2px rgb(19 32 30 / 0.08);
   --ao-shadow-md: 0 16px 48px rgb(19 32 30 / 0.11);
   --ao-shadow-lg: 0 28px 80px rgb(19 32 30 / 0.16);
+  --ao-duration-fast: 150ms;
+  --ao-duration-standard: 220ms;
+  --ao-duration-slow: 260ms;
+  --ao-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 * {
@@ -140,6 +144,38 @@ a {
   outline: 2px solid var(--ao-brand);
   outline-offset: 3px;
   box-shadow: 0 0 0 5px var(--ao-focus-ring);
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  border: 1px solid var(--ao-brand);
+  border-radius: var(--ao-radius-sm);
+  background: var(--ao-surface);
+  color: var(--ao-brand-strong);
+  font-weight: 800;
+  padding: 0.7rem 0.85rem;
+  text-decoration: none;
+  transform: translateY(calc(-100% - 1.25rem));
+  transition: transform var(--ao-duration-fast) var(--ao-ease);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -32,3 +32,4 @@ Do not commit real credentials, API keys, database passwords, connection strings
 - Local Vercel linkage and downloaded Vercel env files live under `.vercel/`, which is gitignored.
 - Root `vercel.json` owns the deployment framework/build/install/output settings so GitHub-triggered builds do not inherit an incorrect static output directory.
 - MongoDB Atlas network access must allow Vercel production functions to connect. If `/api/submit` returns `503 Database connection unavailable`, check Atlas IP/network access before changing application code.
+- The current default assessment version is owned in `src/config/app.ts` and should remain aligned with [Assessment Model](./master-docs/assessment-model.md).

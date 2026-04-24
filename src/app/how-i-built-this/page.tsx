@@ -19,7 +19,7 @@ import styles from "./how-i-built-this.module.css";
 export const metadata: Metadata = {
   title: "How I Built This",
   description:
-    "A transparent build story for AssessmentOptima: ChatGPT 5.5 research and PRD work, Codex 5.5 implementation, Vercel deployment, and the limits of the prototype.",
+    "A transparent build story for AssessmentOptima: ChatGPT 5.5 research and PRD work, Codex with GPT-5.5 implementation, Vercel deployment, and the limits of the prototype.",
 };
 
 const proofStats = [
@@ -45,12 +45,12 @@ const askCards = [
   {
     label: "Ask 1",
     title: "Create the behavioural-science brief",
-    body: "ChatGPT 5.5 Pro was asked to turn a rough Hogan-style idea into an original, research-informed, privacy-aware product brief with a full assessee cycle, open data, BYOK AI analysis, and a beautiful UX.",
+    body: "ChatGPT 5.5 Pro was asked to turn a rough professional-assessment idea into an original, research-informed, privacy-aware product brief with a full assessee cycle, open data, BYOK AI analysis, and a beautiful UX.",
   },
   {
     label: "Ask 2",
     title: "Build and launch the product",
-    body: "Codex 5.5 used the PRD and master docs to implement the Next.js app, strict TypeScript contracts, MongoDB persistence layer, public routes, tests, deployment wiring, and the build-story page you are reading.",
+    body: "Codex with GPT-5.5 used the PRD and master docs to implement the Next.js app, strict TypeScript contracts, MongoDB persistence layer, public routes, tests, deployment wiring, and the build-story page you are reading.",
   },
 ];
 
@@ -58,7 +58,7 @@ const processSteps = [
   {
     label: "1",
     title: "ChatGPT Pro created the science and PRD",
-    body: "The first pass was research and strategy: behavioural-science grounding, assessment architecture, privacy boundaries, open-data posture, and a Codex-ready product requirements document.",
+    body: "The first pass was research and sensemaking: behavioural-science grounding, assessment architecture, privacy boundaries, open-data posture, and a Codex-ready product requirements document.",
   },
   {
     label: "2",
@@ -93,7 +93,7 @@ const shippedGroups = [
     items: [
       "Gated Intro -> Consent -> About you -> Assessment -> Review flow",
       "54-item WorkStyle Compass model with nine scale scores",
-      "Private result report with archetype, radar, strengths, risks, and 30-day experiment",
+      "Private result report with archetype, radar, strengths, pressure drifts, and 30-day experiment",
       "Developmental-only use boundary throughout the product",
     ],
   },
@@ -159,7 +159,7 @@ const enterprisePractices = [
   },
   {
     title: "Use the right model for the right job",
-    body: "Strategy and documentation benefit from ChatGPT Pro-style deep reasoning. UI polish benefits from strong visual review. Implementation benefits from Codex 5.5 with high or extra-high reasoning on code.",
+    body: "Strategy and documentation benefit from ChatGPT Pro-style deep reasoning. UI polish benefits from strong visual review. Implementation benefits from Codex with GPT-5.5 using high or extra-high reasoning on code.",
   },
   {
     title: "Documentation is part of the system",
@@ -203,7 +203,7 @@ const accountability = [
   },
   {
     label: "Rejected or constrained",
-    body: "Any implication that this became a validated psychometric instrument during the sprint, any direct PII in the public dataset, and any public server-funded AI cost exposure.",
+    body: "Any implication that this became a scientifically validated instrument during the sprint, any direct PII in the public dataset, and any public server-funded AI cost exposure.",
   },
 ];
 
@@ -219,9 +219,9 @@ export default function HowIBuiltThisPage() {
           <h1>From rough idea to deployed assessment product</h1>
           <p className={styles.lede}>
             {appConfig.productName} is a work-style assessment prototype. It is
-            also a transparent case study in what ChatGPT 5.5 and Codex 5.5 can
-            do when the brief includes product thinking, behavioural science,
-            privacy, data architecture, UX, tests, and deployment.
+            also a transparent case study in what ChatGPT 5.5 and Codex with
+            GPT-5.5 can do when the brief includes product thinking, behavioural
+            science, privacy, data architecture, UX, tests, and deployment.
           </p>
           <div className={styles.heroActions}>
             <Link className="button" href={routes.assessment}>
@@ -264,8 +264,9 @@ export default function HowIBuiltThisPage() {
             The useful pattern was not one model doing everything in a straight
             line. It was multiple high-capability tools working in parallel:
             ChatGPT Pro for deep strategy and documentation, Claude Code for UI
-            critique, and Codex 5.5 with high-reasoning implementation inside VS
-            Code. The project reached a share-ready v0 in about 2.5 hours.
+            critique, and Codex with GPT-5.5 high-reasoning implementation
+            inside VS Code. The project reached a share-ready v0 in about 2.5
+            hours.
           </p>
         </div>
         <div className={styles.processGrid}>

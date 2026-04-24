@@ -174,7 +174,11 @@ export function AiAnalysisForm() {
           </label>
         </div>
 
-        {error ? <div className="form-error">{error}</div> : null}
+        {error ? (
+          <div className="form-error" role="alert">
+            {error}
+          </div>
+        ) : null}
 
         <button
           className="button"

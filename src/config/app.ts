@@ -10,8 +10,8 @@ export const appConfig = {
   assessmentName: "WorkStyle Compass",
   defaultAppUrl: "http://localhost:3000",
   defaultDatabaseName: "assessmentoptima",
-  defaultAssessmentVersion: "wsc-v1.0",
-  defaultConsentVersion: "consent-v1.0",
+  defaultAssessmentVersion: "wsc-v2.0",
+  defaultConsentVersion: "consent-v2.0",
   localDevelopmentHashSecret: "assessmentoptima-local-development-token-secret",
   publicDatasetFilename: "assessmentoptima-public-dataset.csv",
   privacyContactEmail: "privacy@assessmentoptima.com",
@@ -27,7 +27,7 @@ export const appConfig = {
 
 export const citations = {
   assessment:
-    "@misc{assessmentoptima2026, title={AssessmentOptima WorkStyle Compass v0}, year={2026}, note={Developmental open research prototype}}",
+    "@misc{assessmentoptima2026, title={AssessmentOptima WorkStyle Compass v2}, year={2026}, note={Developmental open research prototype}}",
   methodology:
-    "@misc{assessmentoptima2026, title={AssessmentOptima WorkStyle Compass v0 methodology}, year={2026}, note={Research-informed developmental prototype}}",
+    "@misc{assessmentoptima2026, title={AssessmentOptima WorkStyle Compass v2 methodology}, year={2026}, note={Work operating system developmental prototype}}",
 } as const;

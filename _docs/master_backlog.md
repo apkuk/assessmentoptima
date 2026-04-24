@@ -25,7 +25,11 @@ Legend:
 - [AI Analysis](./master-docs/ai-analysis.md)
 - [Delivery And QA](./master-docs/delivery-and-qa.md)
 - [How I Built This](./master-docs/how-i-built-this.md)
-- [Research Notes](./research.md)
+- [Assessment Science Research](./master-docs/assessment-science/research.md)
+- [WorkStyle Compass v2 Audit And Model](./master-docs/assessment-science/workstyle_compass_v2_assessment_audit_and_model.md)
+- [WorkStyle Compass v2 Item Bank](./master-docs/assessment-science/workstyle_compass_v2_item_bank.json)
+- [Frontend Audit](./plans/frontend-audit.md)
+- [Frontend Backlog](./plans/frontend-backlog.md)
 
 ## Decisions
 
@@ -38,10 +42,11 @@ Legend:
 - [x] Styling direction: Tailwind v4 plus AssessmentOptima global tokens.
 - [x] Global background polish: calm lab surface, no site-wide grid.
 - [x] V0 assessment instrument: WorkStyle Compass.
+- [x] V2 assessment model: Work Operating Systems with Operational Clarity, Human Coordination, and Adaptive Capacity.
 - [x] Public AI story page required: `/how-i-built-this`.
 - [x] Final public product name: AssessmentOptima.
 - [x] WorkStyle Compass remains the internal/assessment instrument name.
-- [x] Confirm whether Anthropic BYOK is required in v0 or OpenAI-only BYOK is acceptable for first deploy.
+- [x] BYOK providers for v0: OpenAI and Anthropic.
 - [ ] Confirm final dataset licence: CC BY 4.0, CC0, or placeholder pending legal review.
 - [ ] Confirm public contact route/email placeholder for privacy and dataset pages.
 - [ ] Confirm whether result links should be shareable indefinitely in v0.
@@ -75,7 +80,7 @@ Legend:
 - [x] Public dataset row schema.
 - [x] Aggregate response schema.
 - [x] AI analysis request/response schema.
-- [x] Result token schema.
+- [x] View/management token schema.
 - [x] Scale key export is derived from `scaleKeySchema`.
 - [x] Respondent context defaults and buckets are centralised in L0 schemas.
 - [x] Public dataset/reliability/comparison contracts are schema-derived.
@@ -84,12 +89,15 @@ Legend:
 
 - [x] Implement assessment scale definitions.
 - [x] Implement 54-item bank.
+- [x] Replace previous item bank with v2 Work Operating System item bank.
 - [x] Implement answer completeness validation.
 - [x] Implement reverse scoring.
 - [x] Implement scale score conversion.
 - [x] Implement profile bands.
-- [x] Implement pressure flags.
+- [x] Implement pressure-drift signal logic.
+- [x] Reframe public pressure language as pressure-drift signals.
 - [x] Implement composite scores.
+- [x] Replace old composites with Operational Clarity, Human Coordination, and Adaptive Capacity.
 - [x] Implement archetype derivation.
 - [x] Implement report interpretation helpers.
 - [x] Implement 30-day experiment selection.
@@ -162,7 +170,7 @@ Legend:
 - [x] Assessment stepper.
 - [x] Scale score card.
 - [x] Archetype hero.
-- [x] Pressure flag panel.
+- [x] Pressure-drift signal panel.
 - [x] Dataset metric.
 - [x] Aggregate chart.
 - [x] Data dictionary table.
@@ -178,6 +186,12 @@ Legend:
 - [x] Print stylesheet for reports.
 - [x] Default generated OG image and favicon.
 - [x] Shared public-page UI primitives for page shells, headers, grids, surfaces, metrics, action rows, and button links.
+- [x] Active navigation state with `aria-current`.
+- [x] Skip-link and screen-reader-only utilities.
+- [x] Global loading and error fallback pages.
+- [x] Radar chart point titles and hidden data table.
+- [x] Mobile Likert target sizing and desktop keyboard hint.
+- [x] Dataset archetype distribution mini-bars.
 
 ## Privacy And Dataset
 
@@ -205,7 +219,7 @@ Legend:
 - [x] API key password field.
 - [x] No key localStorage persistence.
 - [x] OpenAI adapter.
-- [x] Anthropic adapter, if confirmed for v0.
+- [x] Anthropic adapter.
 - [x] Prompt guardrails.
 - [x] Prompt transparency on public AI analysis page.
 - [x] Baked example AI analysis output.
@@ -220,7 +234,7 @@ Legend:
 - [x] Vercel env vars configured.
 - [!] MongoDB Atlas network/user permissions confirmed for Vercel.
 - [ ] Preview deployment passes.
-- [x] Production deployment passes.
+- [x] Production deployment builds and serves core non-persistence routes.
 - [x] Core route smoke test after deploy.
 - [ ] Dataset export smoke test after deploy.
 - [!] Submit/result smoke test after deploy.
@@ -232,8 +246,8 @@ Legend:
 - [x] `pnpm dev` launches the local frontend in Chrome by default.
 - [x] End-to-end assessment works on desktop.
 - [ ] End-to-end assessment works on mobile.
-- [x] MongoDB write works.
-- [x] Result link fetch works.
+- [x] Local MongoDB write works.
+- [x] Local result link fetch works.
 - [x] Public dataset excludes non-consented rows.
 - [x] CSV export works.
 - [x] JSON export works.
@@ -242,8 +256,9 @@ Legend:
 - [x] Share-safe archetype OG image works.
 - [x] 30-day experiment calendar export works.
 - [x] Delete-by-management-token works.
-- [x] How I Built This page includes 47-minute research/PRD phase and two-hour build target accurately.
+- [x] How I Built This page includes 47-minute research/PRD phase, two-hour target, and about 2.5-hour share-ready sprint timing accurately.
 - [x] How I Built This page includes timestamped build-log milestones through deployment.
+- [x] Frontend audit quick-pass findings applied and tracked in `_docs/plans`.
 - [x] README complete.
 
 ## Remaining Recommended Next Steps

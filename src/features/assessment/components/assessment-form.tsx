@@ -240,10 +240,12 @@ export function AssessmentForm() {
 
         if (questionPageIndex < questionPages.length - 1) {
           const completedScale =
-            scales[currentQuestionItems[0]?.scale ?? "delivery"].shortName;
+            scales[currentQuestionItems[0]?.scale ?? "commitment_rhythm"]
+              .shortName;
           const nextScale =
             scales[
-              questionPages[questionPageIndex + 1]?.[0]?.scale ?? "delivery"
+              questionPages[questionPageIndex + 1]?.[0]?.scale ??
+                "commitment_rhythm"
             ].shortName;
 
           setTransitionNote(`${completedScale} done. Next: ${nextScale}.`);
@@ -511,7 +513,11 @@ export function AssessmentForm() {
           <ReviewStep answers={answers} consentDraft={consentDraft} />
         )}
 
-        {error ? <div className="form-error">{error}</div> : null}
+        {error ? (
+          <div className="form-error" role="alert">
+            {error}
+          </div>
+        ) : null}
 
         <div className={styles.flowNav}>
           <button

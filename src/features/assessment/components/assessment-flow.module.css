@@ -252,7 +252,29 @@
   height: 100%;
   border-radius: inherit;
   background: var(--ao-brand);
-  transition: width 220ms ease;
+  transition: width var(--ao-duration-standard) var(--ao-ease);
+}
+
+.keyboardHint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: var(--ao-text-sm);
+}
+
+.keyboardHint kbd {
+  display: inline-grid;
+  min-width: 1.35rem;
+  min-height: 1.35rem;
+  place-items: center;
+  border: 1px solid var(--ao-border-strong);
+  border-radius: var(--ao-radius-xs);
+  background: var(--ao-surface);
+  color: var(--ao-brand-strong);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: var(--ao-text-xs);
+  font-weight: 850;
 }
 
 .questionHelp {
@@ -281,9 +303,9 @@
   background: var(--ao-surface-raised);
   padding: var(--ao-space-4);
   transition:
-    background-color 180ms ease,
-    border-color 180ms ease,
-    box-shadow 180ms ease;
+    background-color var(--ao-duration-fast) var(--ao-ease),
+    border-color var(--ao-duration-fast) var(--ao-ease),
+    box-shadow var(--ao-duration-fast) var(--ao-ease);
 }
 
 .itemCard[data-active="true"] {
@@ -318,10 +340,10 @@
   cursor: pointer;
   padding: 0.55rem 0.35rem;
   transition:
-    background-color 160ms ease,
-    border-color 160ms ease,
-    color 160ms ease,
-    transform 160ms ease;
+    background-color var(--ao-duration-fast) var(--ao-ease),
+    border-color var(--ao-duration-fast) var(--ao-ease),
+    color var(--ao-duration-fast) var(--ao-ease),
+    transform var(--ao-duration-fast) var(--ao-ease);
 }
 
 .likertButton:hover {
@@ -428,7 +450,7 @@
 
   .likertButton {
     grid-template-columns: 2.25rem 1fr;
-    min-height: 3rem;
+    min-height: 3.25rem;
     justify-items: start;
     padding: 0.65rem 0.85rem;
     text-align: left;
@@ -436,5 +458,11 @@
 
   .likertLabel {
     text-align: left;
+  }
+}
+
+@media (hover: none) {
+  .keyboardHint {
+    display: none;
   }
 }

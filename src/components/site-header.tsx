@@ -5,26 +5,10 @@
  * Description: Global navigation and brand lockup for the public app shell.
  */
 import Link from "next/link";
-import {
-  Activity,
-  BarChart3,
-  BookOpen,
-  FlaskConical,
-  Sparkles,
-  UserRound,
-} from "lucide-react";
 
 import { appConfig } from "@/config/app";
 import { routes } from "@/config/routes";
-
-const navItems = [
-  { href: routes.assessment, label: "Assessment", icon: Activity },
-  { href: routes.science, label: "Science", icon: FlaskConical },
-  { href: routes.dataset, label: "Dataset", icon: BarChart3 },
-  { href: routes.aiAnalysis, label: "AI analysis", icon: Sparkles },
-  { href: routes.about, label: "About", icon: UserRound },
-  { href: routes.howIBuiltThis, label: "Build story", icon: BookOpen },
-];
+import { SiteNav } from "@/components/site-nav";
 
 export function SiteHeader() {
   return (
@@ -43,18 +27,7 @@ export function SiteHeader() {
         </span>
       </Link>
 
-      <nav className="site-nav" aria-label="Primary navigation">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-
-          return (
-            <Link key={item.href} className="nav-link" href={item.href}>
-              <Icon aria-hidden="true" size={16} strokeWidth={2.1} />
-              <span>{item.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
+      <SiteNav />
     </header>
   );
 }

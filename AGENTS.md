@@ -6,7 +6,7 @@ The final product must include a public `How I Built This` page explaining the A
 
 The `How I Built This` page is a core purpose of this exercise, not a nice-to-have. When making meaningful project changes, update `_docs/master-docs/how-i-built-this.md` with a dated build-log note covering what changed and when. Use the current timestamp available in the environment/tooling. Log milestones, stack decisions, major docs, architecture changes, implementation phases, verification results, and deployment events. Do not log secrets, raw private chat, or sensitive operational details.
 
-The public launch framing is an Ask 1 / Ask 2 challenge: ChatGPT 5.5 Pro creates the research-backed PRD/research handoff in 47 minutes, then Codex 5.5 builds and launches the site on Vercel with a two-hour target. Treat the two-hour timebox as a target unless the actual build record proves it was met, and do not repeat volatile leaderboard claims without citations.
+The public launch framing is an Ask 1 / Ask 2 challenge: ChatGPT 5.5 Pro creates the research-backed PRD/research handoff in 47 minutes, then Codex with GPT-5.5 builds and launches the site on Vercel with a two-hour target. Treat the two-hour timebox as a target unless the actual build record proves it was met, and do not repeat volatile leaderboard claims without citations.
 
 Follow `_docs/master-docs/brand-guidelines.md` for visual design. The brand should feel like a modern behavioural science lab: evidence-led, calm, transparent, precise, and accessible. The UI needs to be materially better than a generic scaffold: polished, memorable, responsive, and portfolio-worthy. Avoid quiz-like styling, generic HR SaaS visuals, purple/blue AI gradients, decorative blobs, and psychometric overclaiming.
 

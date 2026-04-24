@@ -49,7 +49,7 @@ async function getDatasetState() {
         appConfig.reliabilityMinRespondents,
       ),
       error: isMongoConnectivityError(error)
-        ? "Live dataset storage is still connecting. Private reports work, and public exports will unlock once MongoDB Atlas accepts Vercel traffic and the release threshold is met."
+        ? "The open dataset is still warming up. Private reports work already; public exports unlock when enough opted-in responses are available and live storage is ready."
         : error instanceof Error
           ? "Dataset is temporarily unavailable."
           : "Dataset is temporarily unavailable.",
@@ -122,7 +122,9 @@ export default async function DatasetPage() {
 
       {error ? (
         <section className="section">
-          <div className="form-error">{error}</div>
+          <div className="form-error" role="alert">
+            {error}
+          </div>
         </section>
       ) : null}
 
@@ -143,11 +145,32 @@ export default async function DatasetPage() {
         <div className="dataset-card">
           <p className="panel-label">Archetypes</p>
           {Object.keys(aggregates.archetypeCounts).length > 0 ? (
-            Object.entries(aggregates.archetypeCounts).map(([name, count]) => (
-              <p key={name}>
-                <strong>{name}:</strong> {count}
-              </p>
-            ))
+            <div className="archetype-distribution">
+              {Object.entries(aggregates.archetypeCounts).map(
+                ([name, count]) => {
+                  const share =
+                    rows.length > 0
+                      ? Math.round((count / rows.length) * 100)
+                      : 0;
+
+                  return (
+                    <div className="archetype-distribution__row" key={name}>
+                      <div className="archetype-distribution__head">
+                        <span>{name}</span>
+                        <strong>{count}</strong>
+                      </div>
+                      <div
+                        aria-label={`${name}: ${count} respondents, ${share}% of eligible rows`}
+                        className="archetype-distribution__track"
+                        role="img"
+                      >
+                        <span style={{ width: `${share}%` }} />
+                      </div>
+                    </div>
+                  );
+                },
+              )}
+            </div>
           ) : (
             <p>
               Archetype distribution will appear after the release threshold.

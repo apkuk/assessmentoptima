@@ -207,7 +207,7 @@ export function QuestionsStep({
   transitionNote,
   updateAnswer,
 }: QuestionsStepProps) {
-  const firstScale = currentQuestionItems[0]?.scale ?? "delivery";
+  const firstScale = currentQuestionItems[0]?.scale ?? "commitment_rhythm";
   const scale = scales[firstScale];
 
   return (
@@ -217,8 +217,11 @@ export function QuestionsStep({
           <p className="panel-label">Assessment</p>
           <h2>{scale.name}</h2>
           <p>
-            Statements {questionStart}-{questionEnd} of {items.length}. Press
-            keys 1-5 to answer the active statement.
+            Statements {questionStart}-{questionEnd} of {items.length}.
+          </p>
+          <p className={styles.keyboardHint}>
+            Tip: use <kbd>1</kbd>-<kbd>5</kbd> on your keyboard to answer the
+            active statement.
           </p>
         </div>
         <div className={styles.questionCount}>

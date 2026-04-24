@@ -2,6 +2,13 @@
 
 Status: Implementation-current master reference for public routes, API routes, and page-level requirements.
 
+Related source-of-truth docs:
+
+- [Assessment Model](./assessment-model.md) owns model labels, item bank, scoring, composites, pressure-drift language, and archetypes.
+- [Assessment Science Research](./assessment-science/research.md) owns behavioural-science rationale and validation posture.
+- [Data Architecture](./data-architecture.md) owns persistence and export boundaries.
+- [Privacy And Open Data](./privacy-and-open-data.md) owns consent, prohibited data, and public dataset rules.
+
 ## Runtime
 
 Use the Node.js runtime for route handlers that access MongoDB or provider SDKs:
@@ -66,9 +73,10 @@ Must include:
 - "Take the assessment" CTA;
 - "Explore the science" CTA;
 - "How I built this" link;
-- clear v0 use boundary;
+- clear prototype use boundary;
 - "54 items / approx 8-10 minutes / developmental only" badges;
 - summary of the nine dimensions;
+- summary of the three work operating systems;
 - explanation of open dataset contribution;
 - small aggregate dataset preview if data exists;
 - credibility section: research-informed, transparent scoring, anonymised data, open methodology.
@@ -84,7 +92,7 @@ Must include:
 - phoque.ai as an AI-powered tutoring app being built in parallel;
 - practical LinkedIn sharing posture: examples of what gets built and how to use AI properly;
 - concise career credibility from the March 2025 resume, including TalentOptima, Sanofi, Shell, Nike, BlackRock/BGI, IMD, and enterprise transformation/capability experience;
-- links to `/how-i-built-this` and phoque.ai;
+- links to `/how-i-built-this`, phoque.ai, TalentOptima, and Andrew's LinkedIn profile;
 - no private contact details copied from the resume unless explicitly approved for publication.
 
 Tone: credible, human, pragmatic, and focused on hands-on AI/product-building rather than biography for its own sake.
@@ -95,17 +103,18 @@ Must explain:
 
 - the model is inspired by occupational psychology and professional assessment architecture;
 - the nine domains;
-- bright-side / pressure-risk / motive-context logic;
+- the three work operating systems: Operational Clarity, Human Coordination, and Adaptive Capacity;
+- pressure-drift signals as reflection prompts, not diagnoses;
 - self-report limitations;
 - no normative percentile claims yet;
 - validation roadmap;
-- why AI-Augmented Judgement is treated as a dynamic work-practice domain.
+- why Augmented Judgement is treated as a dynamic work-practice domain.
 
 Include citation cards for:
 
 - Big Five / occupational validity;
 - HEXACO Honesty-Humility;
-- Hogan-style bright/dark/inside architecture;
+- professional assessment design lessons without copying proprietary architectures;
 - Saville motive/talent integration;
 - Korn Ferry whole-person model;
 - privacy/anonymisation approach.
@@ -139,7 +148,7 @@ Hard requirements:
 Must include:
 
 - prohibited uses;
-- v0 evidence limits;
+- prototype evidence limits;
 - difference between profile bands and norms;
 - no selection validity claim;
 - validation roadmap;
@@ -179,7 +188,7 @@ Must display:
 - archetype;
 - top 3 strengths;
 - 2 development edges;
-- pressure-risk flags;
+- pressure-drift signals;
 - nine scale cards with progress bars;
 - nine-scale radar chart;
 - no private result data in page metadata or social previews;
@@ -281,7 +290,7 @@ Request:
     "privateResultStorage": true,
     "researchStorage": true,
     "publicDataset": true,
-    "consentVersion": "consent-v1.0"
+    "consentVersion": "consent-v2.0"
   },
   "context": {
     "ageBand": "45_54",
@@ -313,9 +322,8 @@ Response:
 {
   "viewToken": "private-view-token",
   "managementToken": "private-management-token",
-  "resultToken": "raw-token",
   "resultUrl": "/results/raw-token",
-  "publicShareUrl": "/archetypes/builder",
+  "publicShareUrl": "/archetypes/grounded-builder",
   "publicDatasetEligible": true
 }
 ```
@@ -326,15 +334,17 @@ Response:
 
 ```json
 {
-  "assessmentVersion": "wsc-v1.0",
+  "assessmentVersion": "wsc-v2.0",
   "createdAt": "ISO",
   "scores": {},
   "composites": {},
-  "pressureFlags": [],
-  "archetype": "The Builder",
+  "pressureDrifts": [],
+  "archetype": "The Grounded Builder",
   "interpretation": {}
 }
 ```
+
+Public UI copy must label `pressureDrifts` as pressure-drift signals.
 
 Do not expose:
 
@@ -380,7 +390,7 @@ Response:
 ```json
 {
   "meta": {
-    "assessmentVersion": "wsc-v1.0",
+    "assessmentVersion": "wsc-v2.0",
     "generatedAt": "ISO timestamp",
     "rowCount": 123,
     "minGroupSize": 10
@@ -415,7 +425,7 @@ Otherwise return:
   - 80-100;
 - archetype counts;
 - composite averages;
-- top pressure flags;
+- top pressure-drift signals;
 - correlation matrix across nine scale scores if `n >= 30`.
 
 ### POST `/api/ai/analyze`

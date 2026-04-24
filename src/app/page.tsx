@@ -18,10 +18,10 @@ import { appConfig } from "@/config/app";
 import { routes } from "@/config/routes";
 
 const mapRows = [
-  { label: "Delivery", value: 84, color: "var(--ao-brand)" },
+  { label: "Commitment", value: 84, color: "var(--ao-brand)" },
   { label: "Learning", value: 78, color: "var(--ao-science)" },
   { label: "Trust", value: 72, color: "var(--ao-success)" },
-  { label: "Pressure", value: 41, color: "var(--ao-pressure)" },
+  { label: "Drift", value: 41, color: "var(--ao-pressure)" },
 ];
 
 export default function Home() {
@@ -33,8 +33,9 @@ export default function Home() {
           <h1 id="home-title">{appConfig.productName}</h1>
           <p className="lede">
             Take a 10-minute work-style assessment, get a developmental report,
-            and contribute to an anonymised open dataset on how people deliver,
-            collaborate, lead change, and use AI at work.
+            and contribute to an anonymised open dataset on how people create
+            clarity, coordinate with others, adapt under pressure, and use AI at
+            work.
           </p>
           <ActionRow placement="hero">
             <ButtonLink href={routes.assessment}>
@@ -77,7 +78,7 @@ export default function Home() {
           <p>Score-level rows, private context, and threshold protection.</p>
         </MetricCard>
         <MetricCard label="Build story" value="5.5">
-          <p>Documented ChatGPT 5.5 and Codex 5.5 build workflow.</p>
+          <p>Documented ChatGPT 5.5 and Codex with GPT-5.5 build workflow.</p>
         </MetricCard>
       </section>
 

@@ -1,273 +1,195 @@
 # Assessment Model
 
-Status: Implementation-current master reference for the WorkStyle Compass instrument.
-
-This document owns the assessment scales, v0 item bank, scoring rules, pressure flags, composite scores, archetypes, and result interpretation rules.
+Status: Implementation-current master reference for WorkStyle Compass v2.
 
 ## Positioning
 
-WorkStyle Compass is a developmental, research-informed work-style assessment. It is not a validated selection instrument.
+WorkStyle Compass is a developmental work-style assessment. It explores how people turn complexity into contribution through three work operating systems:
 
-Use language:
+- **Operational Clarity**: turning complexity into reliable, usable progress.
+- **Human Coordination**: turning difference into trust, action, and shared commitment.
+- **Adaptive Capacity**: turning pressure and uncertainty into learning, change, and responsible judgement.
 
-> A developmental work-style assessment inspired by occupational psychology. It helps people reflect on how they deliver, learn, collaborate, influence, handle pressure, think strategically, exercise judgement, use AI, and lead change.
-
-Do not claim:
-
-- diagnostic meaning;
-- candidate suitability;
-- job-performance prediction;
-- percentile norms;
-- validated type categories;
-- employment decision readiness.
-
-## Format
-
-- 54 items total.
-- 9 scales.
-- 6 items per scale.
-- 5-point Likert response scale:
-  1. Strongly disagree
-  2. Disagree
-  3. Neither agree nor disagree
-  4. Agree
-  5. Strongly agree
-
-Each scale contains:
-
-- 4 core items;
-- 1 reverse item;
-- 1 overuse / pressure-risk item.
+It is not a selection instrument, clinical tool, validated predictor, or employment-decision aid. Results are for self-reflection, coaching, team conversation, and open research only.
 
 ## Scale Keys
 
+The implementation uses v2 domain-aligned scale keys directly. Do not reintroduce older generic keys or compatibility aliases:
+
 ```ts
-export type ScaleKey =
-  | "delivery"
-  | "learning"
-  | "influence"
-  | "collaboration"
-  | "regulation"
-  | "strategy"
-  | "integrity"
-  | "change"
-  | "ai";
+commitment_rhythm | adaptive_learning | mobilising_communication | mutuality_repair | pressure_regulation | systems_sensemaking | trust_stewardship | change_navigation | augmented_judgement
 ```
 
-## Scales
+## Operating Systems And Domains
 
-| Key | Name | Short name | Description | High anchor | Low anchor | Overuse risk |
-| --- | --- | --- | --- | --- | --- | --- |
-| `delivery` | Delivery Discipline | Delivery | Reliable execution, prioritisation, follow-through and operational rhythm. | Structured, dependable and focused on commitments. | Flexible, adaptive and less bound by plans or routines. | May become rigid, perfectionistic or over-controlled under pressure. |
-| `learning` | Learning Agility | Learning | Curiosity, feedback seeking, experimentation and speed of sense-making. | Curious, coachable, adaptive and quick to learn. | Prefers proven methods and familiar domains. | May chase novelty or pivot before learning is consolidated. |
-| `influence` | Influence & Social Energy | Influence | Confidence in advocacy, persuasion, networking and visible leadership. | Persuasive, energising and comfortable with visibility. | Reflective, quieter and likely to influence through depth. | May dominate airtime or oversell before alignment is built. |
-| `collaboration` | Collaboration & Trust | Collaboration | Generosity, inclusion, conflict repair and confidence in others. | Inclusive, trusting and relationship-oriented. | Independent, selective with trust and willing to challenge group assumptions. | May avoid hard conflict or over-accommodate. |
-| `regulation` | Emotional Regulation | Regulation | Composure, resilience, recovery and steadiness under pressure. | Calm, steady, resilient and proportionate. | Sensitive to pressure signals and emotionally transparent. | May appear detached or under-signal urgency. |
-| `strategy` | Strategic Systems Thinking | Strategy | Pattern recognition, trade-off thinking and handling complexity. | Systems-oriented, integrative and strategic. | Practical, concrete and focused on immediate realities. | May over-theorise or delay action for more analysis. |
-| `integrity` | Integrity & Humility | Integrity | Truthfulness, fairness, ethical judgement, modesty and openness to challenge. | Grounded, fair, transparent and trustworthy. | Competitive, status-aware and politically pragmatic. | May under-claim impact or avoid necessary self-promotion. |
-| `change` | Change Agency | Change | Energy for transformation, ambiguity tolerance, courage and momentum creation. | Catalytic, bold and energised by change. | Stabilising, continuity-minded and risk-aware. | May create change fatigue or move faster than adoption capacity. |
-| `ai` | AI-Augmented Judgement | AI Judgement | Use of AI and digital tools with critical thinking, verification and responsible judgement. | Experimental, augmented and verification-minded. | Cautious, human-first and less tool-dependent. | May over-automate or trust outputs before testing. |
+| Operating system | Key | Public domain | Core question |
+| --- | --- | --- | --- |
+| Operational Clarity | `commitment_rhythm` | Commitment Rhythm | How do you convert intention into reliable progress? |
+| Operational Clarity | `systems_sensemaking` | Systems Sensemaking | How do you understand complexity and downstream effects? |
+| Operational Clarity | `augmented_judgement` | Augmented Judgement | How do you use AI/digital tools while preserving human accountability? |
+| Human Coordination | `mobilising_communication` | Mobilising Communication | How do you create energy, relevance, and commitment? |
+| Human Coordination | `mutuality_repair` | Mutuality & Repair | How do you build collaboration and restore trust? |
+| Human Coordination | `trust_stewardship` | Trust Stewardship | How do you protect truth, fairness, humility, and decision integrity? |
+| Adaptive Capacity | `adaptive_learning` | Adaptive Learning | How do you update your thinking when context changes? |
+| Adaptive Capacity | `pressure_regulation` | Pressure Regulation | How do you maintain perspective and choice under strain? |
+| Adaptive Capacity | `change_navigation` | Change Navigation | How do you create movement without outrunning adoption? |
 
-AI-Augmented Judgement is a dynamic work-practice domain, not a fixed personality trait. It is affected by role, tool access, policy, industry, age cohort, and the maturity of AI tooling.
+## Scale Definitions
 
-## Item Bank
+| Key | Name | High expression | Lower expression | Pressure drift |
+| --- | --- | --- | --- | --- |
+| `commitment_rhythm` | Commitment Rhythm | Reliable, structured, action-oriented. | Flexible, improvisational, less constrained by routines. | Over-control, perfectionism, reduced adaptability. |
+| `systems_sensemaking` | Systems Sensemaking | Integrative, strategic, complexity-aware. | Concrete, pragmatic, close to immediate realities. | Analysis drag, abstraction, delayed commitment. |
+| `augmented_judgement` | Augmented Judgement | Experimental, discerning, verification-minded. | Cautious, human-first, less tool-dependent. | Automation before clarity, shallow verification. |
+| `mobilising_communication` | Mobilising Communication | Persuasive, energising, audience-aware. | Reflective, quieter, influence through depth. | Advocacy overpowering curiosity. |
+| `mutuality_repair` | Mutuality & Repair | Inclusive, relationally aware, repair-oriented. | Independent, selective with trust, self-reliant. | Harmony over candour; over-accommodation. |
+| `trust_stewardship` | Trust Stewardship | Fair, transparent, grounded, challenge-seeking. | Pragmatic, status-aware, politically adaptive. | Under-claiming, over-caution, low self-advocacy. |
+| `adaptive_learning` | Adaptive Learning | Curious, coachable, experiment-minded. | Proven-method oriented, stable, less novelty-seeking. | Exploration without consolidation. |
+| `pressure_regulation` | Pressure Regulation | Calm, resilient, emotionally proportionate. | Emotionally transparent, pressure-sensitive, urgent. | Under-signalling strain or urgency. |
+| `change_navigation` | Change Navigation | Catalytic, courageous, momentum-building. | Stabilising, continuity-minded, risk-aware. | Change load exceeding system capacity. |
 
-Use this item bank exactly for v0 unless the research document is deliberately revised.
+Augmented Judgement is a dynamic work-practice domain, not a fixed personality trait. Access, company policy, role, sector, age cohort, and tool maturity can all affect the score.
+
+## Item Structure
+
+Each scale has exactly:
+
+- 4 core items;
+- 1 reverse item;
+- 1 overuse item.
+
+Overuse items are excluded from the core scale score. They create pressure-drift signals for reflection only.
+
+## V2 Item Bank
 
 | ID | Scale | Type | Item |
 | --- | --- | --- | --- |
-| D1 | delivery | core | I turn ambiguous goals into clear next actions quickly. |
-| D2 | delivery | core | I keep commitments even when the work becomes inconvenient. |
-| D3 | delivery | reverse | I often rely on last-minute intensity rather than steady progress. |
-| D4 | delivery | core | People can usually predict the quality and timing of my work. |
-| D5 | delivery | overuse | I find it hard to stop improving work once it is good enough. |
-| D6 | delivery | core | I can keep track of important details when several priorities compete. |
-| L1 | learning | core | I actively seek feedback that may challenge my self-image. |
-| L2 | learning | core | I enjoy learning unfamiliar tools, concepts or domains. |
-| L3 | learning | reverse | I prefer to stick with methods that have worked for me before. |
-| L4 | learning | core | I run small experiments before committing to a big change. |
-| L5 | learning | core | When I fail, I can usually extract a practical lesson quickly. |
-| L6 | learning | overuse | I sometimes move on to the next idea before finishing the learning loop. |
-| I1 | influence | core | I am comfortable advocating for an idea in front of senior stakeholders. |
-| I2 | influence | core | I can energise a group when momentum is low. |
-| I3 | influence | reverse | I prefer others to present ideas, even when the thinking is mine. |
-| I4 | influence | core | I adapt my message to the audience rather than using one generic pitch. |
-| I5 | influence | core | I build networks before I need them. |
-| I6 | influence | overuse | In debate, I can push too hard for my preferred direction. |
-| C1 | collaboration | core | I assume positive intent unless there is strong evidence otherwise. |
-| C2 | collaboration | core | I make space for quieter voices before decisions are made. |
-| C3 | collaboration | reverse | I would rather do work myself than depend on others. |
-| C4 | collaboration | core | I repair relationships directly when tension has built up. |
-| C5 | collaboration | core | I share credit generously. |
-| C6 | collaboration | overuse | I sometimes avoid difficult conversations to keep the peace. |
-| R1 | regulation | core | Under pressure, I can stay calm enough to choose my response. |
-| R2 | regulation | core | I recover quickly after criticism, setbacks or conflict. |
-| R3 | regulation | reverse | My mood can visibly affect the people around me. |
-| R4 | regulation | core | I can discuss difficult facts without making the conversation personal. |
-| R5 | regulation | core | I notice early signals that I am becoming overloaded. |
-| R6 | regulation | overuse | I may hide stress so well that others do not know I need help. |
-| S1 | strategy | core | I naturally look for patterns across functions, markets or systems. |
-| S2 | strategy | core | I consider second-order consequences before recommending action. |
-| S3 | strategy | reverse | I prefer immediate practical action to abstract analysis. |
-| S4 | strategy | core | I can simplify complexity without distorting it. |
-| S5 | strategy | core | I connect day-to-day decisions to longer-term capability. |
-| S6 | strategy | overuse | I sometimes hold decisions open while searching for a better model. |
-| H1 | integrity | core | I will raise an uncomfortable truth even when it may cost me politically. |
-| H2 | integrity | core | I am willing to admit when I do not know or got something wrong. |
-| H3 | integrity | reverse | When the desired outcome is clear, I can be tempted to treat formal process as flexible. |
-| H4 | integrity | core | I consider who may be disadvantaged by a decision, even when that concern is not being raised by others. |
-| H5 | integrity | core | I invite challenge before committing to a consequential decision. |
-| H6 | integrity | overuse | I can understate my own contribution to avoid seeming self-promotional. |
-| G1 | change | core | I am energised by turning uncertainty into movement. |
-| G2 | change | core | I can help others understand why change is necessary. |
-| G3 | change | reverse | I prefer stability over transformation when both are possible. |
-| G4 | change | core | I am willing to make a visible decision with incomplete information. |
-| G5 | change | core | I notice adoption risk, not just launch risk. |
-| G6 | change | overuse | I can create more change than people have capacity to absorb. |
-| A1 | ai | core | I use AI or digital tools to accelerate thinking, drafting or analysis. |
-| A2 | ai | core | I verify AI-generated outputs before relying on them. |
-| A3 | ai | reverse | I avoid AI tools because I do not trust their usefulness. |
-| A4 | ai | core | I can identify when a human judgement call should not be delegated to automation. |
-| A5 | ai | core | I experiment with new tools while keeping ethics, privacy and quality in view. |
-| A6 | ai | overuse | I sometimes use automation before the underlying process is clear enough. |
+| D1 | Commitment Rhythm | core | When a goal is unclear, I define the next concrete move rather than waiting for perfect direction. |
+| D2 | Commitment Rhythm | core | I protect important commitments from being crowded out by urgent noise. |
+| D3 | Commitment Rhythm | reverse | My progress tends to come in bursts after pressure has built. |
+| D4 | Commitment Rhythm | core | I surface delivery risks before they become surprises. |
+| D5 | Commitment Rhythm | core | I keep enough visible structure that collaborators know what is due, by when, and from whom. |
+| D6 | Commitment Rhythm | overuse | I can become so focused on control and completion that I narrow others' room to adapt. |
+| L1 | Adaptive Learning | core | I deliberately seek evidence that could disconfirm my first view. |
+| L2 | Adaptive Learning | core | I can enter an unfamiliar domain and quickly build a working map of it. |
+| L3 | Adaptive Learning | reverse | I tend to prefer familiar methods even when the context has changed. |
+| L4 | Adaptive Learning | core | I turn feedback into a specific behavioural experiment. |
+| L5 | Adaptive Learning | core | After a setback, I identify what the next attempt should test. |
+| L6 | Adaptive Learning | overuse | I can keep exploring new angles after the problem needs consolidation. |
+| I1 | Mobilising Communication | core | I can make a complex idea feel relevant to the people who need to act on it. |
+| I2 | Mobilising Communication | core | I notice when a group needs energy, confidence, or a clearer call to action. |
+| I3 | Mobilising Communication | reverse | I often let useful ideas stay in my head because I do not want to push myself forward. |
+| I4 | Mobilising Communication | core | I adjust my message based on what the audience already believes, values, and fears. |
+| I5 | Mobilising Communication | core | I build relationships before I need agreement or support. |
+| I6 | Mobilising Communication | overuse | I can become more persuasive than curious once I believe a direction is right. |
+| C1 | Mutuality & Repair | core | I check my assumptions about others' intentions before reacting to them. |
+| C2 | Mutuality & Repair | core | I draw out perspectives that could otherwise be missed. |
+| C3 | Mutuality & Repair | reverse | I am quicker to take work back than to help others succeed with it. |
+| C4 | Mutuality & Repair | core | I address relationship tension before it hardens into avoidance. |
+| C5 | Mutuality & Repair | core | I make contribution boundaries clear so shared work does not become vague or unfair. |
+| C6 | Mutuality & Repair | overuse | I can spend too long preserving harmony when clarity or challenge is needed. |
+| R1 | Pressure Regulation | core | When pressure rises, I can slow the moment enough to choose my response. |
+| R2 | Pressure Regulation | core | I regain perspective after criticism, conflict, or a visible mistake. |
+| R3 | Pressure Regulation | reverse | People can usually tell when my frustration has taken over. |
+| R4 | Pressure Regulation | core | I can name difficult realities without turning the discussion into blame. |
+| R5 | Pressure Regulation | core | I recognise my early overload signals before they become performance problems. |
+| R6 | Pressure Regulation | overuse | I can appear so composed that others underestimate the support or urgency required. |
+| S1 | Systems Sensemaking | core | I look for the pattern connecting separate events, functions, or incentives. |
+| S2 | Systems Sensemaking | core | Before recommending action, I consider what the decision may create downstream. |
+| S3 | Systems Sensemaking | reverse | I tend to prioritise immediate visible action over understanding the system behind the problem. |
+| S4 | Systems Sensemaking | core | I can make complexity understandable without making it simplistic. |
+| S5 | Systems Sensemaking | core | I connect today's choices to capability, culture, or capacity that will matter later. |
+| S6 | Systems Sensemaking | overuse | I can keep refining the model after the team needs a decision. |
+| H1 | Trust Stewardship | core | I raise material risks or uncomfortable facts early enough for people to act on them. |
+| H2 | Trust Stewardship | core | When my evidence is weak, I say so rather than overstating certainty. |
+| H3 | Trust Stewardship | reverse | When a goal feels important, I may treat process commitments as negotiable. |
+| H4 | Trust Stewardship | core | I consider who could be unintentionally harmed by a decision. |
+| H5 | Trust Stewardship | core | I invite challenge from people who are likely to see my blind spots. |
+| H6 | Trust Stewardship | overuse | I can downplay my own contribution so much that others miss the value I added. |
+| G1 | Change Navigation | core | I can create movement when the path is still partly undefined. |
+| G2 | Change Navigation | core | I help people see the reason for change in terms that matter to their work. |
+| G3 | Change Navigation | reverse | When stability is possible, I usually prefer it over redesigning the way things work. |
+| G4 | Change Navigation | core | I can make a provisional decision, learn from it, and adjust publicly. |
+| G5 | Change Navigation | core | I pay attention to adoption capacity, not just launch momentum. |
+| G6 | Change Navigation | overuse | I can generate more change than the system has attention or trust to absorb. |
+| A1 | Augmented Judgement | core | Where tools are available, I use AI or automation to create a first draft, comparison, or analysis faster. |
+| A2 | Augmented Judgement | core | I check AI-assisted work against evidence, context, and consequences before relying on it. |
+| A3 | Augmented Judgement | reverse | I avoid AI-enabled tools even when they could safely improve the work. |
+| A4 | Augmented Judgement | core | I can tell when a task needs human accountability rather than automated output. |
+| A5 | Augmented Judgement | core | I experiment with new tools while protecting privacy, quality, and trust. |
+| A6 | Augmented Judgement | overuse | I can reach for automation before clarifying the human problem or process. |
 
-## Scoring Rules
-
-For each item:
-
-```ts
-function scoreItem(raw: number, type: ItemType): number {
-  if (type === "reverse") return 6 - raw;
-  return raw;
-}
-```
+## Scoring
 
 For each scale:
 
-1. Score `core` and `reverse` items.
-2. Exclude `overuse` from the core scale score.
-3. Compute the mean of the five scored core/reverse items.
-4. Convert to a 0-100 profile score:
+1. Score core items as raw 1-5.
+2. Score reverse items as `6 - raw`.
+3. Exclude the overuse item from the scale score.
+4. Average the five scored items.
+5. Convert to 0-100 with `round((mean - 1) / 4 * 100)`.
 
-```text
-score_0_100 = round((mean - 1) / 4 * 100)
-```
+Bands:
 
-Profile bands:
-
-| Band | Score range | Meaning |
+| Band | Range | Meaning |
 | --- | ---: | --- |
-| low | 0-39 | Less characteristic of the respondent's current work style |
-| moderate | 40-69 | Situational, mixed, or context-dependent |
-| high | 70-100 | Strongly characteristic of the respondent's current work style |
+| Lower | 0-39 | Less characteristic of the respondent's current work style. |
+| Situational | 40-69 | Context-dependent or mixed expression. |
+| Strong | 70-100 | Strongly characteristic of the respondent's current work style. |
 
-These bands are profile bands, not norms.
+## Pressure Drift
 
-## Pressure Flags
-
-Overuse items are scored separately.
-
-Create a pressure-risk flag when:
+Create a pressure-drift signal when:
 
 ```text
-core scale score >= 70 and overuse raw score >= 4
+core scale score >= 70 and overuse raw >= 4
 ```
 
 or:
 
 ```text
-overuse raw score = 5
+overuse raw = 5
 ```
 
 Severity:
 
-- `watch` when overuse raw score is 4;
-- `high` when overuse raw score is 5.
+- `watch` when overuse raw is 4.
+- `strong_watch` when overuse raw is 5.
 
-## Composite Scores
+Public language:
 
-Composite indices are secondary summaries. They should never replace individual scale interpretation.
+> A pressure-drift signal is a reflection prompt, not a diagnosis. It suggests where a useful style could become costly under pressure, overuse, or poor context fit.
+
+## Operating-System Composites
 
 | Composite | Formula |
 | --- | --- |
-| Operating Rhythm | average of Delivery Discipline, Emotional Regulation, Strategic Systems Thinking |
-| Trust Backbone | average of Integrity & Humility, Collaboration & Trust, Emotional Regulation |
-| Learning Engine | average of Learning Agility, Change Agency, AI-Augmented Judgement |
-| Change Leadership | average of Change Agency, Influence & Social Energy, Strategic Systems Thinking |
-| Human-Centred Influence | average of Influence & Social Energy, Collaboration & Trust, Integrity & Humility |
+| Operational Clarity | average of Commitment Rhythm, Systems Sensemaking, Augmented Judgement |
+| Human Coordination | average of Mobilising Communication, Mutuality & Repair, Trust Stewardship |
+| Adaptive Capacity | average of Adaptive Learning, Pressure Regulation, Change Navigation |
 
-## Archetype Rules
+## Archetypes
 
-Archetypes are narrative summaries of score patterns. They are not types, diagnoses, or permanent labels.
+Archetypes are narrative summaries, not fixed types. Use "your current pattern resembles" rather than "you are."
 
-Algorithm:
-
-1. Sort scale scores descending.
-2. Identify the top two domains.
-3. If no score is at least 70 and the spread between highest and lowest score is less than 20, assign `Balanced Operator`.
-4. Otherwise map the closest top-domain combination to a narrative archetype.
-5. If no direct match exists, choose the closest archetype based on the top domain.
-
-| Archetype | Trigger pattern | Summary |
+| Archetype | Trigger pattern | Narrative |
 | --- | --- | --- |
-| The Builder | Delivery + Strategy or Delivery + Integrity | Turns priorities into reliable, high-quality progress. |
-| The Catalyst | Change + Influence | Creates movement, energy, and visible momentum. |
-| The Sensemaker | Strategy + Learning | Finds patterns, learns fast, and clarifies complexity. |
-| The Integrator | Collaboration + Strategy or Collaboration + Integrity | Connects people, perspectives, and decisions. |
-| The Steward | Integrity + Regulation or Integrity + Delivery | Protects trust, standards, and responsible execution. |
-| The Explorer | Learning + AI or Learning + Change | Experiments, adapts, and extends capability. |
-| The Connector | Influence + Collaboration | Builds energy, relationships, and shared commitment. |
-| The Stabiliser | Regulation + Delivery | Brings calm, order, and follow-through under pressure. |
-| The Balanced Operator | Balanced profile | Uses a broad mix of styles without one dominant pattern. |
+| The Grounded Builder | Commitment Rhythm + Systems Sensemaking or Trust Stewardship | Turns complexity into dependable, responsible progress. |
+| The Adaptive Explorer | Adaptive Learning + Augmented Judgement or Change Navigation | Experiments, learns quickly, and expands what is possible. |
+| The Human Integrator | Mutuality & Repair + Trust Stewardship or Systems Sensemaking | Connects people, decisions, and trust across boundaries. |
+| The Momentum Catalyst | Change Navigation + Mobilising Communication | Creates energy, urgency, and visible movement. |
+| The Calm Operator | Pressure Regulation + Commitment Rhythm | Brings steadiness, order, and follow-through under strain. |
+| The Systems Translator | Systems Sensemaking + Mobilising Communication | Makes complexity understandable and actionable for others. |
+| The Trust Anchor | Trust Stewardship + Pressure Regulation | Protects truth, fairness, and proportion under pressure. |
+| The Augmented Sensemaker | Augmented Judgement + Systems Sensemaking or Adaptive Learning | Uses digital tools to accelerate thinking while preserving judgement. |
+| The Balanced Contributor | Balanced profile | Uses a broad mix of styles without one dominant pattern. |
 
-## Results Report
+## Required Tests
 
-Each results report should include:
-
-1. Use boundary: developmental use only.
-2. Profile summary and archetype.
-3. Nine domain scores with score, band, high anchor, low anchor, and overuse risk.
-4. Top two or three strengths.
-5. Lowest two domains framed as development edges or contextual preferences.
-6. Pressure-risk flags.
-7. Team contribution.
-8. Leadership implications.
-9. AI/digital work implication.
-10. Suggested 30-day experiment.
-11. Three to five reflection prompts.
-12. Methodology note explaining scoring and limits.
-
-Do not imply that a result is a diagnosis, a validated prediction, or a hiring recommendation.
-
-## Implementation Notes
-
-Recommended files:
-
-```text
-src/features/assessment/schemas/assessment.ts
-src/features/assessment/application/model.ts
-src/features/assessment/application/scoring.ts
-src/features/assessment/application/public-dataset.ts
-src/features/assessment/application/reliability.ts
-src/features/assessment/application/respondent-context.ts
-src/features/assessment/tests/scoring.test.ts
-```
-
-DRY/SSoT rule:
-
-- Scale keys, answer values, context buckets, public dataset fields, consent shape, result payloads, aggregate payloads, reliability payloads, and AI request/response payloads live in `src/features/assessment/schemas/assessment.ts`.
-- Product/version constants live in `src/config/app.ts`.
-- Feature UI metadata derived from schemas, such as respondent context form fields and questionnaire page grouping, lives in L3 application modules such as `src/features/assessment/application/respondent-context.ts` and `src/features/assessment/application/assessment-flow.ts`.
-- Components, API routes, repositories, exports, and tests must import those values instead of recreating enum-like arrays, item groups, field lists, or contract types inline.
-- Item IDs, scale IDs, reverse-scoring flags, Likert values, consent keys, and export fields must be changed at the owner first, then derived everywhere else.
-
-Test requirements:
-
-- all scales have exactly six items;
-- each scale has exactly four core items, one reverse item, and one overuse item;
-- every answer is required;
-- reverse scoring works;
-- overuse item is excluded from core score;
-- profile score conversion is correct;
-- pressure flags trigger correctly;
-- archetype derivation is deterministic.
+- 54 items across 9 scales.
+- every scale has 4 core, 1 reverse, and 1 overuse item.
+- overuse items are excluded from core scale scores.
+- operating-system composites use the correct three domains.
+- pressure-drift signals trigger correctly.
+- item text avoids copied/proprietary assessment phrasing and role-level bias such as "senior stakeholders."
+- public copy avoids claims that the instrument is validated for selection or diagnosis.

@@ -17,17 +17,20 @@ const plex = IBM_Plex_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-plex",
+  display: "swap",
 });
 
 const editorial = Source_Serif_4({
   subsets: ["latin"],
   weight: ["500", "600", "700"],
   variable: "--font-serif-editorial",
+  display: "swap",
 });
 
 const mono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-geist-mono",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -75,8 +78,13 @@ export default function RootLayout({
       <body
         className={`${plex.variable} ${editorial.variable} ${mono.variable}`}
       >
+        <a className="skip-link" href="#main-content">
+          Skip to main content
+        </a>
         <SiteHeader />
-        {children}
+        <div id="main-content" tabIndex={-1}>
+          {children}
+        </div>
         <PageFooter />
       </body>
     </html>

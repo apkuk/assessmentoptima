@@ -55,7 +55,6 @@ function createSubmissionResponse(input: {
     submitAssessmentResponseSchema.parse({
       viewToken: input.viewToken,
       managementToken: input.managementToken,
-      resultToken: input.viewToken,
       resultUrl: new URL(routes.result(input.viewToken), input.appUrl).pathname,
       publicShareUrl: new URL(input.publicSharePath, input.appUrl).pathname,
       publicDatasetEligible: input.publicDatasetEligible,
@@ -69,14 +68,14 @@ function createStatelessFallback(input: {
   hashSecret: string;
   appUrl: string;
 }) {
-  const resultToken = createStatelessResultToken(
+  const viewToken = createStatelessResultToken(
     input.resultResponse,
     input.hashSecret,
   );
   const managementToken = createResultToken();
 
   return createSubmissionResponse({
-    viewToken: resultToken,
+    viewToken,
     managementToken,
     appUrl: input.appUrl,
     publicSharePath: routes.archetype(input.resultResponse.result.archetype.id),
@@ -113,7 +112,6 @@ export async function POST(request: Request) {
       await repository.save({
         viewTokenHash,
         managementTokenHash,
-        tokenHash: viewTokenHash,
         publicRowId: createPublicRowId(),
         assessmentVersion: env.ASSESSMENT_VERSION,
         consent: input.consent,

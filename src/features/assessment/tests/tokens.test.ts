@@ -48,7 +48,7 @@ describe("result token helpers", () => {
 
   it("creates signed stateless fallback result tokens", () => {
     const payload = {
-      assessmentVersion: "wsc-v1.0",
+      assessmentVersion: "wsc-v2.0",
       createdMonth: "2026-04",
       context: {},
       result: scoreAssessment(completeAnswers(3)),

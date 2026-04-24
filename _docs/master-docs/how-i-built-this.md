@@ -37,7 +37,7 @@ This should read like a polished product/build case study, not a raw chat transc
 
 The story should follow this arc:
 
-1. The initial idea was to explore a modern, Hogan-inspired work-style assessment experience.
+1. The initial idea was to explore a modern professional work-style assessment experience.
 2. The project deliberately pivoted away from cloning proprietary assessments.
 3. The product became an original, developmental, research-informed work-style platform.
 4. ChatGPT 5.5 helped reason through the professional assessment landscape, ethical boundaries, Vercel architecture, privacy risks, and v0 scope.
@@ -52,9 +52,9 @@ The public build story is anchored by the project owner's LinkedIn launch framin
 
 ```text
 Ask 1 of ChatGPT 5.5 Pro:
-Create a project requirements document for a new Hogan-type psychometric assessment, based in real behavioural science, with a strong UX, GDPR-aware data handling, the full assessee cycle, results interpretation, open dataset access, downloadable data, and BYOK AI querying.
+Create a project requirements document for a new professional work-style assessment, based in real behavioural science, with a strong UX, GDPR-aware data handling, the full assessee cycle, results interpretation, open dataset access, downloadable data, and BYOK AI querying.
 
-Ask 2 of Codex 5.5:
+Ask 2 of Codex with GPT-5.5:
 Build the site and launch it on Vercel.
 
 Target:
@@ -84,7 +84,7 @@ The public page should explain the real workflow that happened, because it is ce
 7. The project owner then performed a real user walkthrough of the UI and gave practical feedback, including formatting, image sizing, checkbox behaviour, context dropdown labels, and assessment flow quality.
 8. Codex implemented that user feedback and the project reached a share-ready v0 in about 2.5 hours total.
 
-The page should make the parallelism explicit. The work was not a single linear chat thread. It used multiple high-capability tools for different activities at the same time: ChatGPT Pro for deep documentation and strategic review, Claude Code for UI critique, and Codex 5.5 inside VS Code for implementation and verification. The project owner used Claude Max and ChatGPT Pro plans, which provided the usage headroom needed to run those parallel review/build loops.
+The page should make the parallelism explicit. The work was not a single linear chat thread. It used multiple high-capability tools for different activities at the same time: ChatGPT Pro for deep documentation and strategic review, Claude Code for UI critique, and Codex with GPT-5.5 inside VS Code for implementation and verification. The project owner used Claude Max and ChatGPT Pro plans, which provided the usage headroom needed to run those parallel review/build loops.
 
 ## Build Log Snapshot
 
@@ -123,7 +123,9 @@ _docs/master-docs/how-i-built-this.md
 _docs/master-docs/privacy-and-open-data.md
 _docs/master-docs/product-routes-and-api.md
 _docs/master_backlog.md
-_docs/research.md
+_docs/master-docs/assessment-science/research.md
+_docs/master-docs/assessment-science/workstyle_compass_v2_assessment_audit_and_model.md
+_docs/master-docs/assessment-science/workstyle_compass_v2_item_bank.json
 eslint.config.mjs
 next-env.d.ts
 next.config.ts
@@ -162,7 +164,7 @@ At **2026-04-23 21:29 BST**, the first implementation slice passed verification.
 - Latest core runtime dependencies were installed for Zod, MongoDB, and Lucide React.
 - L0 schemas were expanded for consent, respondent context, item contracts, answer maps, result reports, public dataset rows, API responses, aggregate payloads, and BYOK AI requests.
 - WorkStyle Compass scale definitions and the 54-item bank were implemented.
-- Pure scoring covered reverse scoring, bands, pressure flags, composites, archetype derivation, strengths, development edges, and the 30-day experiment.
+- Pure scoring covered reverse scoring, bands, pressure-drift signals, composites, archetype derivation, strengths, development edges, and the 30-day experiment.
 - Public export shaping covered row allowlisting, monthly timestamp fields, CSV generation, small-cell suppression, and aggregate calculation.
 - Vitest coverage for scoring, consent, public exports, suppression, aggregates, and result tokens passed: 5 files, 20 tests.
 
@@ -236,14 +238,14 @@ At **2026-04-24 11:20 BST**, the public build-story page gained an enterprise-gr
 - The page now explains that fast AI-assisted application development only works when the guardrails are explicit.
 - It highlights `AGENTS.md` as the operating manual for build instructions, QA expectations, no-god-file rules, line-count limits, documentation habits, and verification checks.
 - It calls out Vitest coverage, strict TypeScript, ESLint, Prettier, production builds, and the future need for CI gates.
-- It explains the multi-model review pattern: use strategy/documentation models for PRDs, UI-strong models for polish, and Codex 5.5 with high or extra-high reasoning for implementation.
+- It explains the multi-model review pattern: use strategy/documentation models for PRDs, UI-strong models for polish, and Codex with GPT-5.5 using high or extra-high reasoning for implementation.
 - It reinforces documentation, inline comments for non-obvious constraints, README/master-doc upkeep, `.gitignore`, `.env` discipline, and Vercel environment variables as enterprise hygiene rather than optional admin.
 
 At **2026-04-24 11:26 BST**, the public build-story page was updated to reflect the actual end-to-end process.
 
 - The visible build receipt now states a 2.5-hour total AI-assisted sprint to share-ready v0.
 - The page now explains that ChatGPT Pro created the initial PRD and science basis, Codex split the project documentation and built in VS Code, Claude Code reviewed UI polish, ChatGPT Pro performed a hardening review, and the project owner completed a hands-on UI pass before final fixes.
-- The narrative now explicitly describes parallel workstreams rather than a single linear chat: ChatGPT Pro for research/documentation, Claude Code for UI critique, and Codex 5.5 for implementation.
+- The narrative now explicitly describes parallel workstreams rather than a single linear chat: ChatGPT Pro for research/documentation, Claude Code for UI critique, and Codex with GPT-5.5 for implementation.
 - The page notes that Claude Max and ChatGPT Pro plans provided the usage headroom for parallel high-reasoning review and build loops.
 
 At **2026-04-24 11:28 BST**, an About page was added to connect the product to the builder.
@@ -252,6 +254,27 @@ At **2026-04-24 11:28 BST**, an About page was added to connect the product to t
 - The page references his current AI sabbatical, hands-on AI learning, phoque.ai tutoring-app work, and LinkedIn sharing of practical AI examples.
 - The page uses concise career credibility from the March 2025 resume, including TalentOptima, Sanofi, Shell, Nike, BlackRock/BGI, IMD, and enterprise transformation/capability work.
 - The page is linked from the global header and footer, while avoiding copying private contact details from the resume into the public app.
+
+At **2026-04-24 11:39 BST**, WorkStyle Compass was migrated to the v2 Work Operating System model.
+
+- Public scale labels moved from generic occupational-assessment names to Commitment Rhythm, Systems Sensemaking, Augmented Judgement, Mobilising Communication, Mutuality & Repair, Trust Stewardship, Adaptive Learning, Pressure Regulation, and Change Navigation.
+- The product model now centres on three composites: Operational Clarity, Human Coordination, and Adaptive Capacity.
+- The 54-item bank was replaced with the v2 behavioural item set while preserving the existing internal scale keys.
+- Public result language now says pressure-drift signal rather than older validated-risk language.
+- Tests were added for v2 public names, item-bank structure, operating-system composites, and banned public positioning phrases.
+
+At **2026-04-24 11:49 BST**, the documentation set was consolidated around the implemented v2 model and DRY/SSoT rules.
+
+- `_docs/README.md`, the PRD, master backlog, architecture, routes/API, data, privacy, AI, QA, and environment docs now point to the v2 assessment-science package instead of the old `_docs/research.md` path.
+- The docs now distinguish product v0 scope from the WorkStyle Compass v2 assessment model.
+
+At **2026-04-24 12:04 BST**, the Claude Code frontend audit was applied as a focused UI/accessibility pass.
+
+- Quick-pass fixes included active nav state, skip-link styling, alert semantics, motion tokens, radar-chart accessibility, global loading/error fallbacks, mobile Likert sizing, a desktop keyboard hint, calmer dataset outage copy, and visual archetype distribution bars.
+- Remaining package-level polish items, such as dev-only axe checks, typography plugin adoption, and a dark-mode pass, are tracked in `_docs/plans/frontend-backlog.md`.
+- Stale implementation language was removed or clarified, including older result-signal terms, older chart-library references, older AI analysis type names, and production persistence status.
+- The privacy/open-data doc now points readers to the L0 schema as the owner for context bucket values instead of duplicating enum lists.
+- The route/API, data, privacy, and AI docs now cross-reference their related source-of-truth docs so future changes start from the correct owner.
 
 At **2026-04-23 22:07 BST**, the home page hero formatting was corrected after visual review.
 
@@ -325,7 +348,7 @@ At **2026-04-23 22:59 BST**, the core assessment journey was made resilient to p
 At **2026-04-23 23:02 BST**, the dataset page was polished for launch resilience.
 
 - Public export buttons are locked while the dataset is suppressed or persistence is unavailable, preventing visitors from clicking into raw error responses.
-- The dataset page now explains that private reports work and public exports unlock once MongoDB Atlas accepts Vercel traffic and release thresholds are met.
+- The dataset page now explains that private reports work already, and public exports unlock when enough opted-in responses are available and live storage is ready.
 
 ## Required Sections
 
@@ -343,7 +366,7 @@ Suggested subtitle:
 An AI-assisted build story: from a rough work-style assessment idea to a public Next.js product using ChatGPT 5.5, Codex, MongoDB, and Vercel.
 ```
 
-The hero should be editorial and confident, but it must not imply that AI alone created a validated psychometric instrument.
+The hero should be editorial and confident, but it must not imply that AI alone created a scientifically validated instrument.
 
 ### The Original Question
 
@@ -353,7 +376,7 @@ Summarise the starting prompt in plain English:
 - Can users take it, receive a useful developmental report, and contribute anonymously to an open dataset?
 - Can the dataset be explored publicly and optionally analysed with AI?
 - Can this be built quickly enough for a Codex/Vercel sprint?
-- Can the build publicly demonstrate the practical workflow from ChatGPT 5.5 Pro research/PRD generation to Codex 5.5 implementation and Vercel launch?
+- Can the build publicly demonstrate the practical workflow from ChatGPT 5.5 Pro research/PRD generation to Codex with GPT-5.5 implementation and Vercel launch?
 
 Do not paste raw secrets, private chat, or full internal transcripts.
 
@@ -362,12 +385,12 @@ Do not paste raw secrets, private chat, or full internal transcripts.
 Explain the key product decision:
 
 ```text
-This should not be a Hogan clone or a pretend-clinical assessment. It should be an original, developmental, research-informed work-style tool with clear use boundaries.
+This should not be a clone of any proprietary assessment or a pretend-clinical assessment. It should be an original, developmental, research-informed work-style tool with clear use boundaries.
 ```
 
 This section should mention:
 
-- Hogan-style architecture as inspiration only: everyday style, pressure/overuse risks, motives/values, and role context.
+- Professional assessment design lessons as market context only: practical work language, contextual interpretation, pressure-drift reflection, and role relevance.
 - No copying of proprietary scales, items, reports, labels, or protected materials.
 - Public-facing claims should be cautious and disciplined.
 
@@ -409,7 +432,7 @@ Explain the operating model behind building serious AI-assisted applications:
 - `AGENTS.md` gives agents and humans a shared operating manual for product boundaries, build style, QA, no-god-file rules, line-count limits, documentation habits, and verification expectations.
 - Full fast test coverage turns vague confidence into repeatable evidence. This project uses Vitest for scoring, consent, public export, suppression, token, and AI prompt guardrail tests.
 - Code quality tooling matters: strict TypeScript, ESLint, Prettier, and production builds catch issues before they become launch problems.
-- Multiple agents or LLMs can be used as specialist reviewers. Use the right model for the right exercise: ChatGPT Pro-style reasoning for documentation and strategy, UI-strong review for visual polish, and Codex 5.5 with high or extra-high reasoning for implementation.
+- Multiple agents or LLMs can be used as specialist reviewers. Use the right model for the right exercise: ChatGPT Pro-style reasoning for documentation and strategy, UI-strong review for visual polish, and Codex with GPT-5.5 using high or extra-high reasoning for implementation.
 - Clear documentation makes the work steerable. The PRD, master docs, README files, file headers, and targeted inline comments reduce ambiguity for humans and agents.
 - CI gates should be added so typecheck, lint, format, tests, and build run automatically before merge or deploy. The local gates exist; CI should become the shared enforcement layer.
 - `.gitignore`, `.env` discipline, Vercel environment variables, and secret scanning habits are essential. A fast AI workflow must never become a secrets leak.
@@ -543,7 +566,7 @@ Avoid a marketing-card wall. Use dense but readable editorial sections with rest
 - Page links to the science/methodology page.
 - Page links to the open dataset page once available.
 - Page does not expose secrets, private keys, private chat logs, or raw environment details.
-- Page does not claim validated psychometric status.
+- Page does not claim scientific validation or selection readiness.
 - Page does not imply that API keys pasted into BYOK AI analysis are stored.
 
 ## Source Background
@@ -552,7 +575,7 @@ This requirement comes from the project owner’s stated goal: the exercise is n
 
 The background notes emphasise:
 
-- public LinkedIn framing: ChatGPT 5.5 Pro creates the research-backed PRD; Codex 5.5 builds and launches the site on Vercel
+- public LinkedIn framing: ChatGPT 5.5 Pro creates the research-backed PRD; Codex with GPT-5.5 builds and launches the site on Vercel
 - 47-minute ChatGPT 5.5 Pro document phase for the research-backed methodology brief and Codex-ready PRD
 - two-hour target for standing up the v0 from the AI-assisted workflow
 - start as product/design build, not pretend-clinical assessment

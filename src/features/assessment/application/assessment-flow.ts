@@ -6,10 +6,10 @@
  */
 import { answerValues, type AnswerValue } from "../schemas/assessment";
 
-export const assessmentStorageKey = "assessmentoptima.workstyle-compass.v1";
+export const assessmentStorageKey = "assessmentoptima.workstyle-compass.v2";
 export const resultManagementTokenStoragePrefix =
-  "assessmentoptima.result-management.v1";
-export const assessmentPageSize = 9;
+  "assessmentoptima.result-management.v2";
+export const assessmentPageSize = 6;
 
 export const assessmentFlowSteps = [
   "intro",
@@ -33,7 +33,7 @@ export const likertOptions = answerValues.map((value) => {
   const labels: Record<AnswerValue, string> = {
     1: "Strongly disagree",
     2: "Disagree",
-    3: "Mixed",
+    3: "Neither agree nor disagree",
     4: "Agree",
     5: "Strongly agree",
   };

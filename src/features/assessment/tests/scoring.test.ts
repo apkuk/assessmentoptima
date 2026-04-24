@@ -7,9 +7,16 @@
 import { describe, expect, it } from "vitest";
 
 import type { AnswerMap, AnswerValue, ScaleKey } from "../schemas/assessment";
-import { expectedItemIds, items, scaleKeys } from "../application/model";
+import {
+  expectedItemIds,
+  items,
+  operatingSystemDefinitions,
+  scaleKeys,
+  scales,
+} from "../application/model";
 import {
   AssessmentScoringError,
+  findPublicArchetype,
   scoreAssessment,
   scoreItem,
 } from "../application/scoring";
@@ -48,6 +55,28 @@ describe("assessment model", () => {
       );
     }
   });
+
+  it("uses the v2 public scale names", () => {
+    expect(scales.commitment_rhythm.name).toBe("Commitment Rhythm");
+    expect(scales.systems_sensemaking.name).toBe("Systems Sensemaking");
+    expect(scales.augmented_judgement.name).toBe("Augmented Judgement");
+  });
+
+  it("keeps banned public-positioning language out of the item bank", () => {
+    const banned = [
+      "Hogan",
+      "bright side",
+      "dark side",
+      "derailer",
+      "senior stakeholders",
+      "psychometric diagnosis",
+    ];
+    const itemText = items.map((item) => item.text).join("\n");
+
+    for (const phrase of banned) {
+      expect(itemText).not.toContain(phrase);
+    }
+  });
 });
 
 describe("scoreItem", () => {
@@ -76,26 +105,46 @@ describe("scoreAssessment", () => {
     answers.D2 = 5;
     answers.D3 = 1;
     answers.D4 = 5;
-    answers.D5 = 1;
-    answers.D6 = 5;
+    answers.D5 = 5;
+    answers.D6 = 1;
 
     const result = scoreAssessment(answers);
 
-    expect(result.scores.delivery.score).toBe(100);
-    expect(result.scores.delivery.overuseRaw).toBe(1);
+    expect(result.scores.commitment_rhythm.score).toBe(100);
+    expect(result.scores.commitment_rhythm.overuseRaw).toBe(1);
   });
 
-  it("creates pressure flags when high score pairs with high overuse", () => {
-    const result = scoreAssessment(answersWithScale("delivery", 5));
+  it("creates pressure-drift signals when high score pairs with high overuse", () => {
+    const result = scoreAssessment(answersWithScale("commitment_rhythm", 5));
 
-    expect(result.pressureFlags).toEqual(
+    expect(result.pressureDrifts).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          scale: "delivery",
-          itemId: "D5",
-          severity: "high",
+          scale: "commitment_rhythm",
+          itemId: "D6",
+          severity: "strong_watch",
         }),
       ]),
+    );
+  });
+
+  it("calculates the three v2 operating-system composites", () => {
+    const result = scoreAssessment(completeAnswers(4));
+
+    expect(Object.keys(result.composites).sort()).toEqual(
+      Object.keys(operatingSystemDefinitions).sort(),
+    );
+    expect(result.composites.operationalClarity).toBeGreaterThan(0);
+    expect(result.composites.humanCoordination).toBeGreaterThan(0);
+    expect(result.composites.adaptiveCapacity).toBeGreaterThan(0);
+  });
+
+  it("resolves canonical public archetype share slugs", () => {
+    expect(findPublicArchetype("grounded-builder")?.name).toBe(
+      "The Grounded Builder",
+    );
+    expect(findPublicArchetype("balanced-contributor")?.name).toBe(
+      "The Balanced Contributor",
     );
   });
 
@@ -103,13 +152,16 @@ describe("scoreAssessment", () => {
     const answers = completeAnswers(3);
 
     for (const item of items) {
-      if (item.scale === "delivery" || item.scale === "strategy") {
+      if (
+        item.scale === "commitment_rhythm" ||
+        item.scale === "systems_sensemaking"
+      ) {
         answers[item.id] = item.type === "reverse" ? 1 : 5;
       }
     }
 
     const result = scoreAssessment(answers);
 
-    expect(result.archetype.name).toBe("The Builder");
+    expect(result.archetype.name).toBe("The Grounded Builder");
   });
 });

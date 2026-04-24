@@ -1,7 +1,7 @@
 /**
  * File: src/components/radar-chart.tsx
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: SVG radar chart for nine-scale assessment profiles.
  */
 import type {
@@ -51,10 +51,22 @@ export function RadarChart({ scores, order }: RadarChartProps) {
   const maxRadius = 104;
   const values = order.map((scaleKey) => scores[scaleKey].score);
   const profilePoints = polygonPoints({ values, center, maxRadius });
+  const pointData = order.map((scaleKey, index) => ({
+    key: scaleKey,
+    point: pointFor({
+      index,
+      total: order.length,
+      center,
+      radius: (scores[scaleKey].score / 100) * maxRadius,
+    }),
+    score: scores[scaleKey].score,
+    name: scores[scaleKey].name,
+  }));
 
   return (
     <figure className="radar-chart">
       <svg role="img" viewBox="0 0 320 320" aria-label="Nine-scale radar chart">
+        <title>WorkStyle Compass score profile across nine scales</title>
         {[25, 50, 75, 100].map((ring) => (
           <polygon
             key={ring}
@@ -108,7 +120,32 @@ export function RadarChart({ scores, order }: RadarChartProps) {
           );
         })}
         <polygon className="radar-chart__profile" points={profilePoints} />
+        {pointData.map((scale) => (
+          <g className="radar-chart__point" key={scale.key}>
+            <title>
+              {scale.name}: {scale.score} out of 100
+            </title>
+            <circle cx={scale.point.x} cy={scale.point.y} r={4.5} />
+          </g>
+        ))}
       </svg>
+      <table className="sr-only">
+        <caption>WorkStyle Compass scale scores</caption>
+        <thead>
+          <tr>
+            <th scope="col">Scale</th>
+            <th scope="col">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {pointData.map((scale) => (
+            <tr key={scale.key}>
+              <td>{scale.name}</td>
+              <td>{scale.score} out of 100</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </figure>
   );
 }

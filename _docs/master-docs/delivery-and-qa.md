@@ -5,7 +5,7 @@ Status: Implementation-current master reference for testing, deployment, README,
 Current implementation status as of 2026-04-24 11:02 BST:
 
 - Next.js App Router, strict TypeScript, pnpm, Tailwind v4, ESLint, Prettier, and Vitest are implemented.
-- L0 schemas, Mongo repository, API routes, assessment flow, result report, score-first dataset exports, BYOK AI analysis, share-safe archetype OG cards, separate view/delete tokens, and How I Built This are implemented.
+- L0 schemas, Mongo repository, API routes, WorkStyle Compass v2 assessment flow, result report, score-first dataset exports, BYOK AI analysis, share-safe archetype OG cards, separate view/delete tokens, and How I Built This are implemented.
 - `pnpm verify`, `pnpm build`, and linked `vercel build --prod` pass locally.
 - The first GitHub-triggered Vercel deployment exposed a project configuration issue: Vercel was set to Framework Preset `Other` and expected a static `public` output directory after the Next.js build.
 - A root `vercel.json` now forces the deployment to use the Next.js framework preset, `pnpm install --frozen-lockfile`, `pnpm build`, and default Next.js output handling.
@@ -23,7 +23,7 @@ Prioritise in this order:
 2. Add environment parsing and server-only guardrails.
 3. Add Zod schemas for consent, context, answers, scoring output, public dataset rows, and AI analysis requests.
 4. Implement assessment model and scoring.
-5. Add tests for scoring, pressure flags, composites, and archetypes.
+5. Add tests for scoring, pressure-drift signals, composites, and archetypes.
 6. Implement consent and public dataset eligibility.
 7. Add tests for consent and export eligibility.
 8. Add MongoDB client and repository adapter.
@@ -69,7 +69,7 @@ Required coverage:
 - each scale has exactly four core items, one reverse item, and one overuse item;
 - every answer is required;
 - score conversion is correct;
-- pressure flags trigger correctly;
+- pressure-drift signals trigger correctly;
 - archetype derivation is deterministic.
 
 ### Export Tests
@@ -278,7 +278,7 @@ Do not consider v0 complete until:
 - [x] All pages render without TypeScript errors.
 - [x] Assessment can be completed end-to-end on desktop/local smoke test.
 - [x] Results report is contextual and attractive.
-- [x] MongoDB write works.
+- [x] MongoDB write works locally.
 - [x] Public dataset excludes non-consented rows.
 - [x] CSV download works.
 - [x] JSON download works.
@@ -291,7 +291,8 @@ Do not consider v0 complete until:
 - [x] README includes local setup, env vars, database setup, and deployment basics.
 - [ ] Mobile end-to-end assessment reviewed by a human.
 - [ ] Vercel preview deployment passes.
-- [ ] Vercel production deployment passes.
+- [x] Vercel production build/deployment serves core routes.
+- [ ] Vercel production persistence-backed submit/result smoke passes.
 
 ## Roadmap
 
@@ -313,7 +314,7 @@ Do not consider v0 complete until:
 - exploratory factor analysis offline notebook;
 - validation study onboarding.
 
-### v1.0
+### Validated Product Release
 
 - technical manual;
 - validated norms;

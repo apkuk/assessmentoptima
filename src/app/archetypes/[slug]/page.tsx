@@ -11,14 +11,17 @@ import { ButtonLink } from "@/components/ui/actions";
 import { ContentGrid, PageShell, Surface } from "@/components/ui/page";
 import { appConfig } from "@/config/app";
 import { apiRoutes, routes } from "@/config/routes";
-import { publicArchetypes } from "@/features/assessment/application/scoring";
+import {
+  findPublicArchetype,
+  publicArchetypes,
+} from "@/features/assessment/application/scoring";
 
 interface ArchetypePageProps {
   params: Promise<{ slug: string }>;
 }
 
 function findArchetype(slug: string) {
-  return publicArchetypes.find((archetype) => archetype.id === slug);
+  return findPublicArchetype(slug);
 }
 
 export function generateStaticParams() {
@@ -91,14 +94,16 @@ export default async function ArchetypePage({ params }: ArchetypePageProps) {
           <p>
             WorkStyle Compass archetypes are shorthand for a person&apos;s most
             visible current work-style pattern. They are developmental prompts,
-            not fixed types, diagnoses, or selection recommendations.
+            not fixed types, diagnoses, or selection recommendations. The better
+            reading is &quot;your current pattern resembles&quot;, not &quot;you
+            are&quot;.
           </p>
         </Surface>
         <Surface title="How to read it">
           <p>
-            A full private report includes scale scores, pressure risks, and a
-            30-day experiment. Public share pages intentionally stay at the
-            archetype level to keep respondent data private.
+            A full private report includes domain scores, pressure-drift
+            signals, and a 30-day experiment. Public share pages intentionally
+            stay at the archetype level to keep respondent data private.
           </p>
         </Surface>
       </ContentGrid>

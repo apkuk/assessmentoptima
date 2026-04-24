@@ -48,7 +48,6 @@ type AssessmentSubmissionDocument = {
   _id: ObjectId;
   viewTokenHash: string;
   managementTokenHash: string;
-  tokenHash?: string; // legacy alias while older rows/deploys settle.
   publicShareId?: string; // optional if a future share-specific page is used.
   publicRowId: string;
   assessmentVersion: string;
@@ -83,9 +82,8 @@ Indexes:
 
 ```text
 assessment_submissions
-- { tokenHash: 1 } unique
-- { viewTokenHash: 1 } unique sparse
-- { managementTokenHash: 1 } unique sparse
+- { viewTokenHash: 1 } unique
+- { managementTokenHash: 1 } unique
 - { publicShareId: 1 } unique sparse
 - { publicRowId: 1 } unique
 - { publicDatasetEligible: 1, createdMonth: 1 }
@@ -105,7 +103,7 @@ Rules:
 
 Versioned assessment metadata: item definitions, scale mappings, scoring weights, narrative templates, and consent copy references.
 
-For early v0, the assessment model may live in code. Move it into this collection only when there is an admin or release process that needs runtime model changes.
+For the current prototype, the assessment model lives in code and is documented in [Assessment Model](./assessment-model.md). Move it into this collection only when there is an admin or release process that needs runtime model changes.
 
 ```ts
 type AssessmentModelDocument = {
@@ -177,9 +175,9 @@ type AiAnalysisRunDocument = {
   analysisType:
     | "summarise_dataset"
     | "compare_segments"
-    | "identify_patterns"
-    | "generate_research_questions"
-    | "critique_methodology";
+    | "interesting_patterns"
+    | "research_hypotheses"
+    | "methodology_critique";
   assessmentVersion?: string;
   inputSummary: {
     rowCount: number;
@@ -236,22 +234,20 @@ Allowed v0 export fields:
 row_id
 assessment_version
 created_month
-delivery_score
-learning_score
-influence_score
-collaboration_score
-regulation_score
-strategy_score
-integrity_score
-change_score
-ai_score
-operating_rhythm
-trust_backbone
-learning_engine
-change_leadership
-human_centred_influence
+commitment_rhythm_score
+adaptive_learning_score
+mobilising_communication_score
+mutuality_repair_score
+pressure_regulation_score
+systems_sensemaking_score
+trust_stewardship_score
+change_navigation_score
+augmented_judgement_score
+operational_clarity
+human_coordination
+adaptive_capacity
 archetype
-pressure_flag_count
+pressure_drift_count
 ```
 
 Excluded v0 export fields:
@@ -259,7 +255,6 @@ Excluded v0 export fields:
 ```text
 _id
 internal_submission_id
-tokenHash
 viewTokenHash
 managementTokenHash
 publicShareId
@@ -305,7 +300,9 @@ Aggregate pages and filtered views must enforce a minimum group size. Default th
 ## Related Docs
 
 - [Assessment Model](./assessment-model.md)
+- [Assessment Science Research](./assessment-science/research.md)
 - [Privacy And Open Data](./privacy-and-open-data.md)
+- [Product Routes And API](./product-routes-and-api.md)
 - [AI Analysis](./ai-analysis.md)
 
 ## Sources

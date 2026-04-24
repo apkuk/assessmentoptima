@@ -11,7 +11,7 @@ import { parseStatelessResultToken } from "@/features/assessment/application/sta
 import {
   assessmentResultResponseSchema,
   deleteResultRequestSchema,
-  resultTokenSchema,
+  viewTokenSchema,
 } from "@/features/assessment/schemas/assessment";
 import { apiError, jsonResponse, zodErrorDetail } from "@/lib/api/responses";
 import { getServerEnv } from "@/lib/env/server";
@@ -29,7 +29,7 @@ export async function GET(_request: Request, context: RouteContext) {
   try {
     const env = getServerEnv();
     const { token } = await context.params;
-    const parsedToken = resultTokenSchema.parse(token);
+    const parsedToken = viewTokenSchema.parse(token);
     const hashSecret = resolveHashSecret(env.HASH_SECRET);
     const statelessResult = parseStatelessResultToken(parsedToken, hashSecret);
 
@@ -82,7 +82,7 @@ export async function DELETE(request: Request, context: RouteContext) {
   try {
     const env = getServerEnv();
     const { token } = await context.params;
-    const parsedToken = resultTokenSchema.parse(token);
+    const parsedToken = viewTokenSchema.parse(token);
     const input = deleteResultRequestSchema.parse(
       await request.json().catch(() => null),
     );

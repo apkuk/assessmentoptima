@@ -315,6 +315,12 @@
   stroke-width: 3;
 }
 
+.radar-chart__point circle {
+  fill: var(--ao-surface);
+  stroke: var(--ao-brand);
+  stroke-width: 2;
+}
+
 .radar-chart__label {
   fill: var(--ao-muted);
   font-size: 0.7rem;
@@ -323,6 +329,40 @@
 
 .dataset-grid {
   grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
+}
+
+.archetype-distribution {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.archetype-distribution__row {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.archetype-distribution__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--ao-ink-soft);
+  font-size: 0.9rem;
+  font-weight: 750;
+}
+
+.archetype-distribution__track {
+  height: 0.55rem;
+  border-radius: 999px;
+  background: var(--ao-bg-soft);
+  overflow: hidden;
+}
+
+.archetype-distribution__track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--ao-brand), var(--ao-science));
 }
 
 .table-wrap {
@@ -356,6 +396,60 @@ th {
 
 .markdown-output {
   white-space: pre-wrap;
+}
+
+.loading-panel,
+.error-panel {
+  display: grid;
+  width: min(100%, 42rem);
+  gap: 1rem;
+  border: 1px solid var(--ao-border);
+  border-radius: var(--ao-radius-md);
+  background: var(--ao-surface);
+  box-shadow: var(--ao-shadow-md);
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+
+.loading-panel {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+.loading-line {
+  width: min(100%, 24rem);
+  height: 0.7rem;
+  margin-top: 0.65rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--ao-bg-soft),
+    var(--ao-brand-soft),
+    var(--ao-bg-soft)
+  );
+  background-size: 220% 100%;
+  animation: ao-loading var(--ao-duration-slow) var(--ao-ease) infinite
+    alternate;
+}
+
+.loading-line[data-short="true"] {
+  width: min(70%, 16rem);
+}
+
+.error-panel h1 {
+  margin: 0;
+  font-family: var(--font-serif-editorial), ui-serif, Georgia, serif;
+  font-size: var(--ao-text-3xl);
+  line-height: 1;
+}
+
+@keyframes ao-loading {
+  from {
+    background-position: 0% 50%;
+  }
+
+  to {
+    background-position: 100% 50%;
+  }
 }
 
 .code-block {

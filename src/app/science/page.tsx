@@ -21,12 +21,12 @@ export const metadata: Metadata = {
 
 const pillars = [
   {
-    title: "Everyday work style",
-    body: "The assessment estimates patterns in reliable execution, learning, social influence, collaboration, emotional regulation, systems thinking, integrity, change agency, and AI-augmented judgement.",
+    title: "Work operating systems",
+    body: "The v2 model asks how people turn complexity into contribution through Operational Clarity, Human Coordination, and Adaptive Capacity.",
   },
   {
-    title: "Pressure and overuse",
-    body: "Each scale includes a pressure item so high strengths can be interpreted with the risk of overuse, not just celebrated as universally positive.",
+    title: "Pressure drift",
+    body: "Each domain includes one overuse item. It creates a pressure-drift signal for reflection, not a diagnosis or separate risk scale.",
   },
   {
     title: "Open research posture",
@@ -34,7 +34,7 @@ const pillars = [
   },
   {
     title: "AI as work practice",
-    body: "AI-Augmented Judgement is treated as a dynamic work-practice domain, not a fixed personality trait. Access, policy, role, and tool maturity all affect it.",
+    body: "Augmented Judgement is treated as a dynamic work-practice domain, not a fixed personality trait. Access, policy, role, and tool maturity all affect it.",
   },
   {
     title: "Developmental interpretation",
@@ -48,7 +48,7 @@ export default function SciencePage() {
       <PageHeader
         eyebrow="Methodology"
         title="The science behind the prototype"
-        lede="AssessmentOptima borrows a broad architecture from professional assessment practice: normal work style, pressure risk, motives and values, and role-relevant interpretation. The item bank and scale names are original."
+        lede="WorkStyle Compass is a developmental assessment of how people turn complexity into contribution. It looks at three work operating systems: Operational Clarity, Human Coordination, and Adaptive Capacity."
       />
 
       <ContentGrid>
@@ -62,12 +62,12 @@ export default function SciencePage() {
       <Section>
         <Surface title="What this is not" tone="pressure" variant="callout">
           <p>
-            This v0 is not a validated psychometric instrument. It has not yet
-            been through reliability analysis, factor validation, criterion
-            validation, fairness review, test-retest checks, norm development,
-            or qualified-user interpretation standards. It must not be used for
-            hiring, promotion, redundancy, diagnosis, or high-stakes employment
-            decisions.
+            This v2 prototype has not yet been validated for selection,
+            prediction, or other high-stakes use. It still needs reliability
+            analysis, factor validation, criterion validation, fairness review,
+            test-retest checks, norm development, and qualified-user
+            interpretation standards. It must not be used for hiring, promotion,
+            redundancy, diagnosis, or high-stakes employment decisions.
           </p>
         </Surface>
       </Section>

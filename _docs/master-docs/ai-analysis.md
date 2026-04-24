@@ -2,6 +2,12 @@
 
 Status: Implementation-current master reference for BYOK dataset analysis.
 
+Related source-of-truth docs:
+
+- [Assessment Model](./assessment-model.md) owns domain labels, composites, and pressure-drift language used in AI prompts.
+- [Data Architecture](./data-architecture.md) owns public export shape and AI run metadata limits.
+- [Privacy And Open Data](./privacy-and-open-data.md) owns privacy copy, prohibited data, and provider-key handling boundaries.
+
 ## Decision
 
 V0 AI analysis is **bring your own key** only.
@@ -60,7 +66,7 @@ The route handler should:
 
 1. Validate input with Zod.
 2. Fetch public dataset summary, not raw private submissions.
-3. Include data dictionary, aggregate stats, and v0 score-level public rows only.
+3. Include data dictionary, aggregate stats, and prototype score-level public rows only.
 4. Build a bounded prompt.
 5. Call the selected provider with the supplied key.
 6. Validate/normalise output for display where practical.

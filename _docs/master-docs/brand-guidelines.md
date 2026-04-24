@@ -115,8 +115,8 @@ The palette is semantic, not decorative. Use CSS variables from `src/app/styles/
 | `--ao-accent-soft` | `#fff1bd` | warnings, active filters, selection |
 | `--ao-motive` | `#7a3f86` | motives/values content |
 | `--ao-motive-soft` | `#f2e4f4` | motives/values backgrounds |
-| `--ao-pressure` | `#b42318` | pressure-risk content |
-| `--ao-pressure-soft` | `#fde7e3` | pressure-risk backgrounds |
+| `--ao-pressure` | `#b42318` | pressure-drift content |
+| `--ao-pressure-soft` | `#fde7e3` | pressure-drift backgrounds |
 | `--ao-success` | `#0a7c66` | completion and positive state |
 
 ## Accessibility Color Notes

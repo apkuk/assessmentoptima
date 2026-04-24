@@ -17,11 +17,15 @@ import {
   toPublicDatasetRows,
 } from "@/features/assessment/application/public-dataset";
 import { parseStatelessResultToken } from "@/features/assessment/application/stateless-result-token";
-import { scaleKeys, scales } from "@/features/assessment/application/model";
+import {
+  operatingSystemDefinitions,
+  scaleKeys,
+  scales,
+} from "@/features/assessment/application/model";
 import { ResultActions } from "@/features/assessment/components/result-actions";
 import {
   type AssessmentResultResponse,
-  resultTokenSchema,
+  viewTokenSchema,
 } from "@/features/assessment/schemas/assessment";
 import { getServerEnv } from "@/lib/env/server";
 import { hashResultToken, resolveHashSecret } from "@/lib/security/tokens";
@@ -36,7 +40,7 @@ async function getResultRecord(
   token: string,
 ): Promise<AssessmentResultResponse | null> {
   const env = getServerEnv();
-  const parsedToken = resultTokenSchema.parse(token);
+  const parsedToken = viewTokenSchema.parse(token);
   const hashSecret = resolveHashSecret(env.HASH_SECRET);
   const statelessResult = parseStatelessResultToken(parsedToken, hashSecret);
 
@@ -111,7 +115,7 @@ export default async function ResultPage({ params }: ResultPageProps) {
           <h1 className="page-title">Your WorkStyle profile</h1>
           <p className="lede">
             This is a developmental interpretation, not a verdict. Use it to
-            name likely strengths, pressure patterns, and experiments to test in
+            name likely strengths, pressure drifts, and experiments to test in
             real work.
           </p>
         </div>
@@ -137,10 +141,33 @@ export default async function ResultPage({ params }: ResultPageProps) {
 
       <section className="report-grid">
         <div className="report-card">
-          <p className="panel-label">Scale radar</p>
+          <p className="panel-label">Domain radar</p>
           <RadarChart order={scaleKeys} scores={result.scores} />
         </div>
 
+        <div className="report-card">
+          <p className="panel-label">Work operating systems</p>
+          <div className="scale-list">
+            {Object.values(operatingSystemDefinitions).map((system, index) => (
+              <ScoreBar
+                key={system.key}
+                label={system.name}
+                tone={
+                  index === 0 ? "brand" : index === 1 ? "science" : "motive"
+                }
+                value={result.composites[system.key] ?? 0}
+              />
+            ))}
+          </div>
+          <p>
+            These are composite summaries: operational clarity, human
+            coordination, and adaptive capacity. They are not norms or selection
+            scores.
+          </p>
+        </div>
+      </section>
+
+      <section className="report-grid">
         <div className="report-card">
           <p className="panel-label">Current public sample comparison</p>
           {comparison.suppressed ? (
@@ -164,11 +191,9 @@ export default async function ResultPage({ params }: ResultPageProps) {
             sample, not a representative norm.
           </p>
         </div>
-      </section>
 
-      <section className="report-grid">
         <div className="report-card">
-          <p className="panel-label">Scale scores</p>
+          <p className="panel-label">Domain scores</p>
           <div className="scale-list">
             {scaleKeys.map((scaleKey, index) => (
               <ScoreBar
@@ -192,8 +217,9 @@ export default async function ResultPage({ params }: ResultPageProps) {
           <h2>Make it observable</h2>
           <p>{result.experiment}</p>
           <p>
-            AI-Augmented Judgement is treated as a dynamic work-practice domain,
-            not a fixed personality trait.
+            Augmented Judgement is treated as a dynamic work-practice domain,
+            not a fixed personality trait. It is shaped by access, policy, role,
+            context, and tool maturity.
           </p>
           <p className="panel-label">Dataset status</p>
           <p>
@@ -224,19 +250,24 @@ export default async function ResultPage({ params }: ResultPageProps) {
       <section className="content-grid">
         <div className="callout" data-tone="pressure">
           <AlertTriangle aria-hidden="true" />
-          <h2>Pressure pattern risks</h2>
-          {result.pressureFlags.length > 0 ? (
-            result.pressureFlags.map((flag) => (
+          <h2>Pressure drift signals</h2>
+          {result.pressureDrifts.length > 0 ? (
+            result.pressureDrifts.map((flag) => (
               <p key={flag.itemId}>
                 <strong>{scales[flag.scale].shortName}:</strong> {flag.message}
               </p>
             ))
           ) : (
             <p>
-              No high pressure-pattern flags were triggered. Still look for
+              No strong pressure-drift signals were triggered. Still look for
               situations where a strength becomes overused.
             </p>
           )}
+          <p>
+            A pressure-drift signal is a reflection prompt, not a diagnosis. It
+            suggests where a useful style could become costly under strain,
+            overuse, or poor context fit.
+          </p>
         </div>
         <div className="callout" data-tone="science">
           <h2>Reflection prompts</h2>

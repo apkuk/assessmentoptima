@@ -7,15 +7,15 @@
 import { z } from "zod";
 
 export const scaleKeySchema = z.enum([
-  "delivery",
-  "learning",
-  "influence",
-  "collaboration",
-  "regulation",
-  "strategy",
-  "integrity",
-  "change",
-  "ai",
+  "commitment_rhythm",
+  "adaptive_learning",
+  "mobilising_communication",
+  "mutuality_repair",
+  "pressure_regulation",
+  "systems_sensemaking",
+  "trust_stewardship",
+  "change_navigation",
+  "augmented_judgement",
 ]);
 export const scaleKeys = scaleKeySchema.options;
 
@@ -155,16 +155,16 @@ export const scaleScoreSchema = z
     shortName: z.string(),
     score: z.number().int().min(0).max(100),
     mean: z.number().min(1).max(5),
-    band: z.enum(["low", "moderate", "high"]),
+    band: z.enum(["lower", "situational", "strong", "low", "moderate", "high"]),
     overuseRaw: answerValueSchema.optional(),
   })
   .strict();
 
-export const pressureFlagSchema = z
+export const pressureDriftSignalSchema = z
   .object({
     scale: scaleKeySchema,
     itemId: z.string(),
-    severity: z.enum(["watch", "high"]),
+    severity: z.enum(["watch", "strong_watch", "high"]),
     message: z.string(),
   })
   .strict();
@@ -181,7 +181,7 @@ export const assessmentResultSchema = z
   .object({
     scores: z.record(scaleKeySchema, scaleScoreSchema),
     composites: z.record(z.string(), z.number().int().min(0).max(100)),
-    pressureFlags: z.array(pressureFlagSchema),
+    pressureDrifts: z.array(pressureDriftSignalSchema),
     archetype: archetypeSchema,
     topScales: z.array(scaleKeySchema),
     lowScales: z.array(scaleKeySchema),
@@ -223,22 +223,20 @@ export const publicDatasetFields = [
   "row_id",
   "assessment_version",
   "created_month",
-  "delivery_score",
-  "learning_score",
-  "influence_score",
-  "collaboration_score",
-  "regulation_score",
-  "strategy_score",
-  "integrity_score",
-  "change_score",
-  "ai_score",
-  "operating_rhythm",
-  "trust_backbone",
-  "learning_engine",
-  "change_leadership",
-  "human_centred_influence",
+  "commitment_rhythm_score",
+  "adaptive_learning_score",
+  "mobilising_communication_score",
+  "mutuality_repair_score",
+  "pressure_regulation_score",
+  "systems_sensemaking_score",
+  "trust_stewardship_score",
+  "change_navigation_score",
+  "augmented_judgement_score",
+  "operational_clarity",
+  "human_coordination",
+  "adaptive_capacity",
   "archetype",
-  "pressure_flag_count",
+  "pressure_drift_count",
 ] as const;
 
 export const publicDatasetFieldSchema = z.enum(publicDatasetFields);
@@ -248,39 +246,36 @@ export const publicDatasetRowSchema = z
     row_id: z.string(),
     assessment_version: z.string(),
     created_month: z.string(),
-    delivery_score: z.number().int().min(0).max(100),
-    learning_score: z.number().int().min(0).max(100),
-    influence_score: z.number().int().min(0).max(100),
-    collaboration_score: z.number().int().min(0).max(100),
-    regulation_score: z.number().int().min(0).max(100),
-    strategy_score: z.number().int().min(0).max(100),
-    integrity_score: z.number().int().min(0).max(100),
-    change_score: z.number().int().min(0).max(100),
-    ai_score: z.number().int().min(0).max(100),
-    operating_rhythm: z.number().int().min(0).max(100),
-    trust_backbone: z.number().int().min(0).max(100),
-    learning_engine: z.number().int().min(0).max(100),
-    change_leadership: z.number().int().min(0).max(100),
-    human_centred_influence: z.number().int().min(0).max(100),
+    commitment_rhythm_score: z.number().int().min(0).max(100),
+    adaptive_learning_score: z.number().int().min(0).max(100),
+    mobilising_communication_score: z.number().int().min(0).max(100),
+    mutuality_repair_score: z.number().int().min(0).max(100),
+    pressure_regulation_score: z.number().int().min(0).max(100),
+    systems_sensemaking_score: z.number().int().min(0).max(100),
+    trust_stewardship_score: z.number().int().min(0).max(100),
+    change_navigation_score: z.number().int().min(0).max(100),
+    augmented_judgement_score: z.number().int().min(0).max(100),
+    operational_clarity: z.number().int().min(0).max(100),
+    human_coordination: z.number().int().min(0).max(100),
+    adaptive_capacity: z.number().int().min(0).max(100),
     archetype: z.string(),
-    pressure_flag_count: z.number().int().min(0),
+    pressure_drift_count: z.number().int().min(0),
   })
   .strict();
 
-export const resultTokenSchema = z.string().min(32);
+export const viewTokenSchema = z.string().min(32);
 export const publicShareIdSchema = z.string().min(2);
 
 export const deleteResultRequestSchema = z
   .object({
-    managementToken: resultTokenSchema,
+    managementToken: viewTokenSchema,
   })
   .strict();
 
 export const storedAssessmentSubmissionSchema = z
   .object({
-    viewTokenHash: z.string().min(32).optional(),
-    managementTokenHash: z.string().min(32).optional(),
-    tokenHash: z.string().min(32).optional(),
+    viewTokenHash: z.string().min(32),
+    managementTokenHash: z.string().min(32),
     publicShareId: publicShareIdSchema.optional(),
     publicRowId: z.string().uuid(),
     assessmentVersion: z.string().min(1),
@@ -292,16 +287,12 @@ export const storedAssessmentSubmissionSchema = z
     createdAt: z.date(),
     createdMonth: z.string().regex(/^\d{4}-\d{2}$/),
   })
-  .strict()
-  .refine((submission) => submission.viewTokenHash ?? submission.tokenHash, {
-    message: "A view token hash or legacy token hash is required.",
-  });
+  .strict();
 
 export const submitAssessmentResponseSchema = z
   .object({
-    viewToken: resultTokenSchema,
-    managementToken: resultTokenSchema,
-    resultToken: resultTokenSchema,
+    viewToken: viewTokenSchema,
+    managementToken: viewTokenSchema,
     resultUrl: z.string().min(1),
     publicShareUrl: z.string().min(1),
     publicDatasetEligible: z.boolean(),
@@ -386,7 +377,7 @@ export type Consent = z.infer<typeof consentSchema>;
 export type RespondentContext = z.infer<typeof respondentContextSchema>;
 export type AssessmentItem = z.infer<typeof assessmentItemSchema>;
 export type ScaleScore = z.infer<typeof scaleScoreSchema>;
-export type PressureFlag = z.infer<typeof pressureFlagSchema>;
+export type PressureDriftSignal = z.infer<typeof pressureDriftSignalSchema>;
 export type AssessmentResult = z.infer<typeof assessmentResultSchema>;
 export type SubmitAssessmentInput = z.infer<typeof submitAssessmentSchema>;
 export type AiAnalysisRequest = z.infer<typeof aiAnalysisRequestSchema>;

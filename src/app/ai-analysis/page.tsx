@@ -39,8 +39,8 @@ export default function AiAnalysisPage() {
           <div className="markdown-output">
             <strong>Key observations:</strong> Early data should be read as
             directional only. The most useful patterns are likely differences
-            between delivery, learning, trust, and change scales, not individual
-            labels in isolation.
+            between the three work operating systems and the nine domains, not
+            individual labels in isolation.
             {"\n\n"}
             <strong>Caveats:</strong> No norms, reliability claims, or subgroup
             conclusions should be made until sample size and validation work

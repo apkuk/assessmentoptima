@@ -7,7 +7,7 @@
 import { ImageResponse } from "next/og";
 
 import { appConfig } from "@/config/app";
-import { publicArchetypes } from "@/features/assessment/application/scoring";
+import { findPublicArchetype } from "@/features/assessment/application/scoring";
 
 export const runtime = "nodejs";
 export const size = appConfig.socialImageSize;
@@ -19,7 +19,7 @@ interface RouteContext {
 
 export async function GET(_request: Request, context: RouteContext) {
   const { slug } = await context.params;
-  const archetype = publicArchetypes.find((candidate) => candidate.id === slug);
+  const archetype = findPublicArchetype(slug);
 
   if (!archetype) {
     return new Response("Not found", { status: 404 });

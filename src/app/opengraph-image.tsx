@@ -79,7 +79,7 @@ export default function OpenGraphImage() {
             }}
           >
             Developmental reports, anonymised dataset, BYOK AI analysis, and a
-            public ChatGPT 5.5 / Codex 5.5 build story.
+            public ChatGPT 5.5 / Codex with GPT-5.5 build story.
           </div>
         </div>
 

@@ -1,6 +1,6 @@
 # AssessmentOptima PRD
 
-Status: Consolidated v0 product requirements.
+Status: Consolidated v0 product requirements with WorkStyle Compass v2 assessment model.
 
 Product brand: **AssessmentOptima**
 
@@ -29,8 +29,8 @@ Core positioning:
 This project is also a public AI-assisted build case study.
 
 - Ask 1: ChatGPT 5.5 Pro creates the behavioural-science research basis and Codex-ready PRD/research handoff in 47 minutes.
-- Ask 2: Codex 5.5 uses the PRD and master docs to build and launch the site on Vercel.
-- Target: stand up a strong v0 in about two hours from the AI-assisted workflow.
+- Ask 2: Codex with GPT-5.5 uses the PRD and master docs to build and launch the site on Vercel.
+- Target: stand up a strong v0 in about two hours from the AI-assisted workflow. The documented share-ready build ran to about 2.5 hours after extra hardening and UX polish.
 
 The public site must include a `/how-i-built-this` page that tells this story accurately. The 47-minute timing refers to the research/PRD document phase, not the full deployed application.
 
@@ -39,7 +39,7 @@ The public site must include a `/how-i-built-this` page that tells this story ac
 - [Application Architecture](./master-docs/application-architecture.md): hexagonal L0-L5 structure, dependency rules, Next.js/Vercel boundaries, and implementation sequence.
 - [Data Architecture](./master-docs/data-architecture.md): MongoDB collections, validation, public export rules, privacy constraints, and AI data handling.
 - [Brand Guidelines](./master-docs/brand-guidelines.md): visual identity, CSS tokens, typography, accessibility, chart palette, layout rules, and global CSS direction.
-- [Assessment Model](./master-docs/assessment-model.md): nine scales, 54-item bank, scoring, pressure flags, composites, archetypes, and report interpretation.
+- [Assessment Model](./master-docs/assessment-model.md): Work Operating System model, nine domains, 54-item bank, scoring, pressure-drift signals, composites, archetypes, and report interpretation.
 - [Product Routes And API](./master-docs/product-routes-and-api.md): public pages, API routes, request/response contracts, and page-level requirements.
 - [Privacy And Open Data](./master-docs/privacy-and-open-data.md): consent, context fields, anonymised exports, suppression, legal copy, and dataset licence.
 - [AI Analysis](./master-docs/ai-analysis.md): BYOK analysis flow, prompt guardrails, provider handling, and security requirements.
@@ -48,7 +48,9 @@ The public site must include a `/how-i-built-this` page that tells this story ac
 
 ## Research Inputs
 
-- [Research Notes](./research.md): behavioural-science research basis and source material.
+- [Assessment Science Research](./master-docs/assessment-science/research.md): behavioural-science research basis, validation posture, and Work Operating System rationale.
+- [WorkStyle Compass v2 Audit And Model](./master-docs/assessment-science/workstyle_compass_v2_assessment_audit_and_model.md): model audit, v2 naming, and psychometric caution notes.
+- [WorkStyle Compass v2 Item Bank](./master-docs/assessment-science/workstyle_compass_v2_item_bank.json): source item-bank handoff used for the implemented v2 model.
 - [Starting Thoughts](../StartingThoughts.md): initial product framing and v0 direction.
 
 ## Current Stack Decisions
@@ -65,7 +67,7 @@ Use the stack already established in this repository unless a later PRD revision
 | Validation | Zod at boundaries and domain contracts |
 | Styling | Tailwind CSS v4 plus global AssessmentOptima tokens |
 | Testing | Vitest 4 |
-| Charts | Recharts or accessible HTML/CSS charts |
+| Charts | Accessible SVG/CSS charts first |
 | Icons | Lucide React |
 | AI | BYOK-first OpenAI/Anthropic-compatible analysis |
 
@@ -79,6 +81,7 @@ In scope:
 - Premium, responsive UI following the brand guidelines.
 - Public pages:
   - landing;
+  - about/founder;
   - science/methodology;
   - privacy/data;
   - limitations;
@@ -135,7 +138,7 @@ Out of scope for v0:
 The build is successful when:
 
 1. A user can complete the assessment end-to-end on desktop and mobile.
-2. A user receives a results page with an archetype, nine scale scores, strengths, development edges, pressure-risk flags, interpretation guidance, and a 30-day experiment.
+2. A user receives a results page with an archetype, nine domain scores, three operating-system composites, strengths, development edges, pressure-drift signals, interpretation guidance, and a 30-day experiment.
 3. A consented respondent creates a MongoDB submission document.
 4. Private result viewing and deletion use separate tokens, and public sharing never exposes either token.
 5. Non-consented public dataset submissions are excluded from public exports.
@@ -145,7 +148,7 @@ The build is successful when:
 9. Public exports do not include PII, exact timestamps, IP addresses, user agents, emails, names, employer names, exact job titles, free text, or API keys.
 10. Filtered visualisations suppress results where `n < PUBLIC_DATASET_MIN_N`.
 11. BYOK AI analysis does not store, log, or expose the user key.
-12. `/how-i-built-this` explains the ChatGPT 5.5 Pro and Codex 5.5 workflow accurately.
+12. `/how-i-built-this` explains the ChatGPT 5.5 Pro and Codex with GPT-5.5 workflow accurately.
 13. `pnpm verify` passes.
 14. `pnpm build` passes.
 15. The app is deployable to Vercel with documented environment variables.
@@ -156,6 +159,7 @@ Public routes:
 
 ```text
 /
+/about
 /science
 /privacy
 /limitations

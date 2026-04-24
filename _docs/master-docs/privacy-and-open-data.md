@@ -52,76 +52,9 @@ Rules:
 
 All context fields are optional.
 
-The canonical context bucket values live in `src/features/assessment/schemas/assessment.ts`; this document describes them for product/privacy review. UI controls, export builders, aggregate filters, and tests must import the canonical values rather than retyping these unions.
+The canonical context bucket values live in `src/features/assessment/schemas/assessment.ts`; this document intentionally does not duplicate the enum lists. UI controls, export builders, aggregate filters, and tests must import the canonical values and labels from L0/L3 helpers rather than retyping them.
 
-```ts
-type AgeBand =
-  | "under_25"
-  | "25_34"
-  | "35_44"
-  | "45_54"
-  | "55_64"
-  | "65_plus"
-  | "prefer_not";
-
-type RegionBucket =
-  | "uk_ireland"
-  | "north_america"
-  | "europe"
-  | "asia_pacific"
-  | "middle_east_africa"
-  | "latin_america"
-  | "global_remote"
-  | "prefer_not";
-
-type SectorBucket =
-  | "technology"
-  | "finance"
-  | "healthcare"
-  | "education"
-  | "professional_services"
-  | "manufacturing"
-  | "public_nonprofit"
-  | "retail_hospitality"
-  | "media_creative"
-  | "other"
-  | "prefer_not";
-
-type RoleLevel =
-  | "student_early"
-  | "individual_contributor"
-  | "manager"
-  | "senior_manager"
-  | "director_vp"
-  | "c_suite_founder"
-  | "consultant_advisor"
-  | "prefer_not";
-
-type OrgSizeBand =
-  | "solo"
-  | "2_10"
-  | "11_50"
-  | "51_250"
-  | "251_1000"
-  | "1001_10000"
-  | "10000_plus"
-  | "prefer_not";
-
-type WorkMode =
-  | "onsite"
-  | "hybrid"
-  | "remote"
-  | "varies"
-  | "prefer_not";
-
-type YearsExperienceBand =
-  | "0_2"
-  | "3_5"
-  | "6_10"
-  | "11_20"
-  | "21_plus"
-  | "prefer_not";
-```
+The current optional context dimensions are age band, broad region, broad sector, role level, organisation size, work mode, and years of work experience. V0 row-level public exports omit these fields; they are retained only for private report context and threshold-protected aggregate analysis.
 
 ## Public Dataset Eligibility
 
@@ -159,22 +92,20 @@ The canonical field order and allowlist live in `src/features/assessment/schemas
 row_id
 assessment_version
 created_month
-delivery_score
-learning_score
-influence_score
-collaboration_score
-regulation_score
-strategy_score
-integrity_score
-change_score
-ai_score
-operating_rhythm
-trust_backbone
-learning_engine
-change_leadership
-human_centred_influence
+commitment_rhythm_score
+adaptive_learning_score
+mobilising_communication_score
+mutuality_repair_score
+pressure_regulation_score
+systems_sensemaking_score
+trust_stewardship_score
+change_navigation_score
+augmented_judgement_score
+operational_clarity
+human_coordination
+adaptive_capacity
 archetype
-pressure_flag_count
+pressure_drift_count
 ```
 
 ## Public JSON Shape
@@ -314,3 +245,10 @@ Test requirements:
 - public dataset includes only consented rows;
 - export fields match the dictionary;
 - small-cell suppression triggers correctly.
+
+## Related Docs
+
+- [Data Architecture](./data-architecture.md)
+- [Product Routes And API](./product-routes-and-api.md)
+- [Assessment Model](./assessment-model.md)
+- [Assessment Science Research](./assessment-science/research.md)

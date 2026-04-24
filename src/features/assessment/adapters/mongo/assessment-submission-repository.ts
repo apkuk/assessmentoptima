@@ -44,15 +44,8 @@ export class MongoAssessmentSubmissionRepository implements AssessmentSubmission
     const collection = await this.collection();
 
     await Promise.all([
-      collection.createIndex({ tokenHash: 1 }, { unique: true }),
-      collection.createIndex(
-        { viewTokenHash: 1 },
-        { unique: true, sparse: true },
-      ),
-      collection.createIndex(
-        { managementTokenHash: 1 },
-        { unique: true, sparse: true },
-      ),
+      collection.createIndex({ viewTokenHash: 1 }, { unique: true }),
+      collection.createIndex({ managementTokenHash: 1 }, { unique: true }),
       collection.createIndex(
         { publicShareId: 1 },
         { unique: true, sparse: true },
@@ -74,9 +67,7 @@ export class MongoAssessmentSubmissionRepository implements AssessmentSubmission
     viewTokenHash: string,
   ): Promise<StoredAssessmentSubmission | null> {
     const collection = await this.collection();
-    const document = await collection.findOne({
-      $or: [{ viewTokenHash }, { tokenHash: viewTokenHash }],
-    });
+    const document = await collection.findOne({ viewTokenHash });
 
     return document ? stripMongoId(document) : null;
   }
@@ -97,16 +88,8 @@ export class MongoAssessmentSubmissionRepository implements AssessmentSubmission
   }): Promise<boolean> {
     const collection = await this.collection();
     const result = await collection.deleteOne({
-      $or: [
-        {
-          viewTokenHash: input.viewTokenHash,
-          managementTokenHash: input.managementTokenHash,
-        },
-        {
-          tokenHash: input.viewTokenHash,
-          managementTokenHash: input.managementTokenHash,
-        },
-      ],
+      viewTokenHash: input.viewTokenHash,
+      managementTokenHash: input.managementTokenHash,
     });
 
     return result.deletedCount === 1;

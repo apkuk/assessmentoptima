@@ -7,7 +7,7 @@
 import { createAssessmentSubmissionRepository } from "@/features/assessment/adapters/mongo/assessment-submission-repository";
 import { appConfig } from "@/config/app";
 import { parseStatelessResultToken } from "@/features/assessment/application/stateless-result-token";
-import { resultTokenSchema } from "@/features/assessment/schemas/assessment";
+import { viewTokenSchema } from "@/features/assessment/schemas/assessment";
 import { apiError } from "@/lib/api/responses";
 import { getServerEnv } from "@/lib/env/server";
 import { isMongoConnectivityError } from "@/lib/mongo/client";
@@ -38,7 +38,7 @@ export async function GET(_request: Request, context: RouteContext) {
   try {
     const env = getServerEnv();
     const { token } = await context.params;
-    const parsedToken = resultTokenSchema.parse(token);
+    const parsedToken = viewTokenSchema.parse(token);
     const hashSecret = resolveHashSecret(env.HASH_SECRET);
     const statelessResult = parseStatelessResultToken(parsedToken, hashSecret);
     const repository = createAssessmentSubmissionRepository();

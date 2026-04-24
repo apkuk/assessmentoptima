@@ -2,18 +2,24 @@
  * File: src/features/assessment/application/scoring.ts
  * Created: 2026-04-23
  * Updated: 2026-04-24
- * Description: Pure scoring, pressure-flag, composite, and archetype logic.
+ * Description: Pure scoring, pressure-drift, composite, and archetype logic.
  */
 import type {
   AnswerMap,
   AnswerValue,
   AssessmentResult,
   ItemType,
-  PressureFlag,
+  PressureDriftSignal,
   ScaleKey,
   ScaleScore,
 } from "../schemas/assessment";
-import { expectedItemIds, items, scaleKeys, scales } from "./model";
+import {
+  expectedItemIds,
+  items,
+  operatingSystemDefinitions,
+  scaleKeys,
+  scales,
+} from "./model";
 
 export class AssessmentScoringError extends Error {
   constructor(message: string) {
@@ -51,14 +57,14 @@ export function assertCompleteAnswers(answers: AnswerMap): void {
 
 export function getBand(score: number): ScaleScore["band"] {
   if (score <= 39) {
-    return "low";
+    return "lower";
   }
 
   if (score <= 69) {
-    return "moderate";
+    return "situational";
   }
 
-  return "high";
+  return "strong";
 }
 
 function roundScore(mean: number): number {
@@ -73,10 +79,10 @@ function average(values: number[]): number {
   return values.reduce((sum, value) => sum + value, 0) / values.length;
 }
 
-function createPressureFlags(
+function createPressureDriftSignals(
   answers: AnswerMap,
   scores: Record<ScaleKey, ScaleScore>,
-): PressureFlag[] {
+): PressureDriftSignal[] {
   return items
     .filter((item) => item.type === "overuse")
     .flatMap((item) => {
@@ -97,95 +103,90 @@ function createPressureFlags(
         {
           scale: item.scale,
           itemId: item.id,
-          severity: raw === 5 ? "high" : "watch",
-          message: scales[item.scale].overuseRisk,
-        } satisfies PressureFlag,
+          severity: raw === 5 ? "strong_watch" : "watch",
+          message: scales[item.scale].pressureDrift,
+        } satisfies PressureDriftSignal,
       ];
     });
 }
 
-const compositeDefinitions = {
-  operatingRhythm: ["delivery", "regulation", "strategy"],
-  trustBackbone: ["integrity", "collaboration", "regulation"],
-  learningEngine: ["learning", "change", "ai"],
-  changeLeadership: ["change", "influence", "strategy"],
-  humanCentredInfluence: ["influence", "collaboration", "integrity"],
-} as const satisfies Record<string, readonly ScaleKey[]>;
+export const compositeDefinitions = operatingSystemDefinitions;
 
 const archetypes = [
   {
-    id: "builder",
-    name: "The Builder",
+    id: "grounded-builder",
+    name: "The Grounded Builder",
     pairs: [
-      ["delivery", "strategy"],
-      ["delivery", "integrity"],
+      ["commitment_rhythm", "systems_sensemaking"],
+      ["commitment_rhythm", "trust_stewardship"],
     ],
-    fallback: "delivery",
-    summary: "Turns priorities into reliable, high-quality progress.",
+    fallback: "commitment_rhythm",
+    summary: "Turns complexity into dependable, responsible progress.",
   },
   {
-    id: "catalyst",
-    name: "The Catalyst",
-    pairs: [["change", "influence"]],
-    fallback: "change",
-    summary: "Creates movement, energy, and visible momentum.",
-  },
-  {
-    id: "sensemaker",
-    name: "The Sensemaker",
-    pairs: [["strategy", "learning"]],
-    fallback: "strategy",
-    summary: "Finds patterns, learns fast, and clarifies complexity.",
-  },
-  {
-    id: "integrator",
-    name: "The Integrator",
+    id: "adaptive-explorer",
+    name: "The Adaptive Explorer",
     pairs: [
-      ["collaboration", "strategy"],
-      ["collaboration", "integrity"],
+      ["adaptive_learning", "augmented_judgement"],
+      ["adaptive_learning", "change_navigation"],
     ],
-    fallback: "collaboration",
-    summary: "Connects people, perspectives, and decisions.",
+    fallback: "adaptive_learning",
+    summary: "Experiments, learns quickly, and expands what is possible.",
   },
   {
-    id: "steward",
-    name: "The Steward",
+    id: "human-integrator",
+    name: "The Human Integrator",
     pairs: [
-      ["integrity", "regulation"],
-      ["integrity", "delivery"],
+      ["mutuality_repair", "trust_stewardship"],
+      ["mutuality_repair", "systems_sensemaking"],
     ],
-    fallback: "integrity",
-    summary: "Protects trust, standards, and responsible execution.",
+    fallback: "mutuality_repair",
+    summary: "Connects people, decisions, and trust across boundaries.",
   },
   {
-    id: "explorer",
-    name: "The Explorer",
+    id: "momentum-catalyst",
+    name: "The Momentum Catalyst",
+    pairs: [["change_navigation", "mobilising_communication"]],
+    fallback: "change_navigation",
+    summary: "Creates energy, urgency, and visible movement.",
+  },
+  {
+    id: "calm-operator",
+    name: "The Calm Operator",
+    pairs: [["pressure_regulation", "commitment_rhythm"]],
+    fallback: "pressure_regulation",
+    summary: "Brings steadiness, order, and follow-through under strain.",
+  },
+  {
+    id: "systems-translator",
+    name: "The Systems Translator",
+    pairs: [["systems_sensemaking", "mobilising_communication"]],
+    fallback: "systems_sensemaking",
+    summary: "Makes complexity understandable and actionable for others.",
+  },
+  {
+    id: "trust-anchor",
+    name: "The Trust Anchor",
+    pairs: [["trust_stewardship", "pressure_regulation"]],
+    fallback: "trust_stewardship",
+    summary: "Protects truth, fairness, and proportion under pressure.",
+  },
+  {
+    id: "augmented-sensemaker",
+    name: "The Augmented Sensemaker",
     pairs: [
-      ["learning", "ai"],
-      ["learning", "change"],
+      ["augmented_judgement", "systems_sensemaking"],
+      ["augmented_judgement", "adaptive_learning"],
     ],
-    fallback: "learning",
-    summary: "Experiments, adapts, and extends capability.",
-  },
-  {
-    id: "connector",
-    name: "The Connector",
-    pairs: [["influence", "collaboration"]],
-    fallback: "influence",
-    summary: "Builds energy, relationships, and shared commitment.",
-  },
-  {
-    id: "stabiliser",
-    name: "The Stabiliser",
-    pairs: [["regulation", "delivery"]],
-    fallback: "regulation",
-    summary: "Brings calm, order, and follow-through under pressure.",
+    fallback: "augmented_judgement",
+    summary:
+      "Uses digital tools to accelerate thinking while preserving judgement.",
   },
 ] as const;
 
 export const balancedArchetype = {
-  id: "balanced_operator",
-  name: "The Balanced Operator",
+  id: "balanced-contributor",
+  name: "The Balanced Contributor",
   summary: "Uses a broad mix of styles without one dominant pattern.",
 };
 
@@ -197,6 +198,10 @@ export const publicArchetypes = [
   })),
   balancedArchetype,
 ] as const;
+
+export function findPublicArchetype(slug: string) {
+  return publicArchetypes.find((archetype) => archetype.id === slug);
+}
 
 function hasPair(
   pair: readonly string[],
@@ -311,9 +316,11 @@ export function scoreAssessment(answers: AnswerMap): AssessmentResult {
   ) as Record<ScaleKey, ScaleScore>;
 
   const composites = Object.fromEntries(
-    Object.entries(compositeDefinitions).map(([key, scaleSet]) => [
+    Object.entries(compositeDefinitions).map(([key, definition]) => [
       key,
-      Math.round(average(scaleSet.map((scaleKey) => scores[scaleKey].score))),
+      Math.round(
+        average(definition.scaleKeys.map((scaleKey) => scores[scaleKey].score)),
+      ),
     ]),
   );
 
@@ -323,12 +330,12 @@ export function scoreAssessment(answers: AnswerMap): AssessmentResult {
   const lowScales = [...scaleKeys].sort(
     (a, b) => scores[a].score - scores[b].score,
   );
-  const pressureFlags = createPressureFlags(answers, scores);
+  const pressureDrifts = createPressureDriftSignals(answers, scores);
 
   return {
     scores,
     composites,
-    pressureFlags,
+    pressureDrifts,
     archetype: deriveArchetype(orderedScales, scores),
     topScales: orderedScales.slice(0, 3),
     lowScales: lowScales.slice(0, 2),
@@ -337,7 +344,7 @@ export function scoreAssessment(answers: AnswerMap): AssessmentResult {
     experiment: createExperiment(orderedScales, lowScales),
     reflectionPrompts: [
       "Where does this profile help you create value most reliably?",
-      "Which strength becomes costly when pressure rises?",
+      "Which strength might drift into something costly under pressure?",
       "What context brings out your best work style?",
       "What should a colleague know to collaborate with you well?",
     ],

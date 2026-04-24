@@ -22,25 +22,25 @@ import { routes } from "@/config/routes";
 export const metadata: Metadata = {
   title: "About Andrew Kilshaw",
   description:
-    "About Andrew Kilshaw, the founder building AssessmentOptima during an AI sabbatical focused on hands-on AI product work, learning, and practical public examples.",
+    "About Andrew Kilshaw, the practitioner behind AssessmentOptima and a hands-on AI sabbatical focused on building, testing, and sharing real AI product work.",
 };
 
 const focusAreas = [
   {
     title: "AI sabbatical",
-    body: "Andrew is currently taking an AI sabbatical: learning by building, testing the tools in real projects, and working out where AI genuinely changes professional and personal workflows.",
+    body: "Andrew is using this period to learn by building: testing AI tools in real product work and separating useful workflow changes from hype.",
   },
   {
     title: "Building phoque.ai",
-    body: "A major current project is phoque.ai, an AI-powered tutoring app exploring how learning can become more personal, adaptive, and practically useful.",
+    body: "phoque.ai is an AI-powered tutoring app exploring how learning can become more personal, adaptive, and practically useful.",
   },
   {
     title: "Sharing the work",
-    body: "On LinkedIn, Andrew shares practical examples of using AI properly: not just finished demos, but the operating model, prompts, reviews, trade-offs, and quality gates behind them.",
+    body: "On LinkedIn, Andrew shares the work behind the demos: prompts, reviews, trade-offs, quality gates, and the decisions that made the output better.",
   },
   {
     title: "AssessmentOptima",
-    body: `${appConfig.productName} is one of those proof points: a public work-style research prototype showing how AI-assisted product building can move from science and PRD to deployed software.`,
+    body: `${appConfig.productName} is a public proof point: a research-informed work-style prototype built with transparent AI assistance, privacy constraints, testing, and deployment in the loop.`,
   },
 ];
 
@@ -48,12 +48,12 @@ const careerSignals = [
   {
     label: "Sanofi",
     value: "SVP",
-    body: "Group Head of Organisational Capability & Transformation for a global biopharma organisation of 90k+ employees.",
+    body: "Group Head of Organisational Capability & Transformation in a 90k+ employee global biopharma organisation.",
   },
   {
     label: "Shell",
     value: "$1B+",
-    body: "Led global OD and learning work connected to a major Downstream transformation and energy-transition shift.",
+    body: "Led global OD and learning work connected to a major Downstream transformation and energy-transition agenda.",
   },
   {
     label: "Nike",
@@ -63,12 +63,12 @@ const careerSignals = [
   {
     label: "Enterprise",
     value: "300+",
-    body: "Built and led large global transformation, learning, people analytics, capability, and organisation-consulting teams.",
+    body: "Built and led global transformation, learning, people analytics, capability, and organisation-consulting teams.",
   },
 ];
 
 const experienceHighlights = [
-  "CEO and Founding Partner at TalentOptima, focused on organisational capability, transformation, AI, analytics, and research-to-practice work.",
+  "Founder and CEO at TalentOptima, focused on organisational capability, transformation, AI, analytics, and research-to-practice work.",
   "Former Group Head of Organisational Capability & Transformation at Sanofi, with responsibility across people analytics, transformation, enterprise learning, capability consulting, and workforce strategy.",
   "Former VP OD & Learning at Shell for Downstream, Integrated Gas, and New Energies.",
   "Former Nike executive across Asia Pacific & Latin America, Nike Digital, Jordan Brand strategy, global brand functions, and NikeU.",
@@ -85,9 +85,9 @@ export default function AboutPage() {
           <h1>Andrew Kilshaw</h1>
           <p className="lede">
             Andrew is a transformation, organisation capability, and AI
-            practitioner using this sabbatical to learn in public: building real
-            AI products, pressure-testing the workflow, and sharing practical
-            examples of what works.
+            practitioner using an AI sabbatical to build in public: shipping
+            real products, stress-testing the workflow, and sharing what
+            actually changes when AI becomes part of the work.
           </p>
           <ActionRow placement="hero">
             <a
@@ -125,14 +125,14 @@ export default function AboutPage() {
         <Surface
           prose
           label="Current chapter"
-          title="Hands-on AI, not slideware"
+          title="Hands-on AI in real products"
           variant="callout"
         >
           <p>
             The point of this project is not just the assessment. It is the
             process behind it: using AI as a serious product-building partner,
-            with behavioural science, privacy, architecture, UX, documentation,
-            testing, and deployment all in the loop.
+            while keeping behavioural science, privacy, architecture, UX,
+            documentation, testing, and deployment in the loop.
           </p>
           <ActionRow>
             <ButtonLink href={routes.howIBuiltThis}>
@@ -191,9 +191,8 @@ export default function AboutPage() {
         >
           <p>
             Andrew&apos;s bias is toward AI that survives contact with real
-            work: products that are useful, transparent about limits, grounded
-            in evidence where they make scientific claims, and built with enough
-            engineering discipline to be trusted.
+            work: useful outputs, transparent limits, evidence where scientific
+            claims are made, and enough engineering discipline to be trusted.
           </p>
           <p>
             {appConfig.productName} is intentionally framed that way. It is a

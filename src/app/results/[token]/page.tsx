@@ -19,11 +19,14 @@ import {
 import { parseStatelessResultToken } from "@/features/assessment/application/stateless-result-token";
 import {
   operatingSystemDefinitions,
+  items,
   scaleKeys,
   scales,
 } from "@/features/assessment/application/model";
 import { ResultActions } from "@/features/assessment/components/result-actions";
+import { SubmittedAnswers } from "@/features/assessment/components/submitted-answers";
 import {
+  type AnswerMap,
   type AssessmentResultResponse,
   viewTokenSchema,
 } from "@/features/assessment/schemas/assessment";
@@ -36,16 +39,20 @@ interface ResultPageProps {
   params: Promise<{ token: string }>;
 }
 
-async function getResultRecord(
-  token: string,
-): Promise<AssessmentResultResponse | null> {
+async function getResultRecord(token: string): Promise<
+  | (AssessmentResultResponse & {
+      answers: AnswerMap | null;
+      persisted: boolean;
+    })
+  | null
+> {
   const env = getServerEnv();
   const parsedToken = viewTokenSchema.parse(token);
   const hashSecret = resolveHashSecret(env.HASH_SECRET);
   const statelessResult = parseStatelessResultToken(parsedToken, hashSecret);
 
   if (statelessResult) {
-    return statelessResult;
+    return { ...statelessResult, answers: null, persisted: false };
   }
 
   const repository = createAssessmentSubmissionRepository();
@@ -63,6 +70,8 @@ async function getResultRecord(
     context: submission.context,
     result: submission.result,
     publicDatasetEligible: submission.publicDatasetEligible,
+    answers: submission.answers,
+    persisted: true,
   };
 }
 
@@ -106,6 +115,9 @@ export default async function ResultPage({ params }: ResultPageProps) {
     routes.archetype(result.archetype.id),
     env.NEXT_PUBLIC_APP_URL,
   ).toString();
+  const topScaleNames = result.topScales
+    .map((scaleKey) => scales[scaleKey].shortName)
+    .join(", ");
 
   return (
     <main className="page">
@@ -118,11 +130,19 @@ export default async function ResultPage({ params }: ResultPageProps) {
             name likely strengths, pressure drifts, and experiments to test in
             real work.
           </p>
+          <p className="report-meta">
+            Assessment version {record.assessmentVersion} · Submitted{" "}
+            {record.createdMonth} · Private report
+          </p>
         </div>
         <div className="archetype-panel">
           <p className="panel-label">Archetype</p>
           <h2>{result.archetype.name}</h2>
           <p>{result.archetype.summary}</p>
+          <p className="archetype-panel__basis">
+            This archetype is based on your strongest current signals:{" "}
+            {topScaleNames}.
+          </p>
           <div className="tag-list">
             {result.topScales.map((scaleKey) => (
               <span className="tag" key={scaleKey}>
@@ -276,6 +296,21 @@ export default async function ResultPage({ params }: ResultPageProps) {
           ))}
         </div>
       </section>
+
+      {record.answers ? (
+        <SubmittedAnswers answers={record.answers} />
+      ) : (
+        <section className="report-card section answer-audit">
+          <p className="panel-label">Submitted answers</p>
+          <h2>Answer appendix unavailable</h2>
+          <p>
+            This report was generated without persistent storage, so the private
+            result can show scores and interpretation but not the item-level
+            answer appendix.
+          </p>
+          <p>Expected answer count: {items.length}. Stored answer count: 0.</p>
+        </section>
+      )}
     </main>
   );
 }

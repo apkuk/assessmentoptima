@@ -8,7 +8,7 @@
  */
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { CalendarPlus, Copy, Share2, Trash2 } from "lucide-react";
+import { CalendarPlus, Copy, FileDown, Share2, Trash2 } from "lucide-react";
 
 import { appConfig } from "@/config/app";
 import { apiRoutes, routes } from "@/config/routes";
@@ -30,7 +30,7 @@ export function ResultActions({
   const router = useRouter();
   const [message, setMessage] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
-  const shareCopy = `I got ${archetypeName} on ${appConfig.productName}'s ${appConfig.assessmentName}. Developmental, open-research prototype, not selection.`;
+  const shareCopy = `I completed ${appConfig.assessmentName} by ${appConfig.productName}. My share-safe archetype was ${archetypeName}.\n\nDevelopmental, research-informed, and not a hiring or selection tool.`;
 
   async function copyShareText() {
     await navigator.clipboard.writeText(`${shareCopy}\n${publicShareUrl}`);
@@ -40,6 +40,13 @@ export function ResultActions({
   async function copyPrivateLink() {
     await navigator.clipboard.writeText(privateReportUrl);
     setMessage("Private result link copied.");
+  }
+
+  function savePdf() {
+    setMessage(
+      "Use your browser print dialog to save this private report as a PDF.",
+    );
+    window.print();
   }
 
   async function deleteResult() {
@@ -115,6 +122,10 @@ export function ResultActions({
         <CalendarPlus size={18} aria-hidden="true" />
         30-day calendar
       </a>
+      <button className="button-secondary" onClick={savePdf} type="button">
+        <FileDown size={18} aria-hidden="true" />
+        Save PDF
+      </button>
       <button
         className="button-ghost"
         disabled={isDeleting}

@@ -204,7 +204,7 @@ At **2026-04-23 21:51 BST**, the global visual foundation was tightened after UX
 - Button interactions gained hover, active, disabled, size, transition, and icon-slot treatment.
 - The global focus ring moved from amber-only to a brand ring with a soft halo.
 - Print styles were added so result/report pages do not print the navigation or action controls.
-- Root Open Graph metadata, a default generated OG image, and an SVG favicon were added for public sharing and browser chrome.
+- Root Open Graph metadata, a default generated OG image, and the AssessmentOptima PNG logo were added for public sharing and browser chrome.
 
 At **2026-04-23 21:59 BST**, the DRY/SSoT implementation pass was completed.
 

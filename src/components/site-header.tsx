@@ -6,10 +6,11 @@
  */
 import Link from "next/link";
 
-import { appConfig } from "@/config/app";
-import { routes } from "@/config/routes";
+import { BrandMark } from "@/components/brand-mark";
 import { SiteNav } from "@/components/site-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { appConfig } from "@/config/app";
+import { routes } from "@/config/routes";
 
 export function SiteHeader() {
   return (
@@ -19,9 +20,7 @@ export function SiteHeader() {
         href={routes.home}
         aria-label={`${appConfig.productName} home`}
       >
-        <span className="brand-mark" aria-hidden="true">
-          AO
-        </span>
+        <BrandMark priority />
         <span>
           <span className="brand-name">{appConfig.productName}</span>
           <span className="brand-line">Open work-style research</span>

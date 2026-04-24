@@ -84,7 +84,8 @@
   }
 
   .field-grid,
-  .item-row {
+  .item-row,
+  .usage-grid {
     grid-template-columns: 1fr;
   }
 

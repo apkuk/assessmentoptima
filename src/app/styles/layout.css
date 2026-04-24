@@ -29,20 +29,21 @@
 
 .brand-mark {
   display: grid;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 4.125rem;
+  height: 4.125rem;
   place-items: center;
-  border: 1px solid var(--ao-brand-strong);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--ao-brand) 36%, var(--ao-border));
   border-radius: var(--ao-radius-sm);
-  background:
-    linear-gradient(135deg, var(--ao-brand-strong), var(--ao-brand)),
-    var(--ao-brand);
-  color: white;
-  font-family: var(--font-geist-mono), ui-monospace, monospace;
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0;
+  background: var(--ao-surface);
   box-shadow: var(--ao-shadow-sm);
+}
+
+.brand-mark img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .brand-name,

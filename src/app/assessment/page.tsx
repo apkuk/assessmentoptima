@@ -18,8 +18,8 @@ export default function AssessmentPage() {
     <PageShell>
       <PageHeader
         eyebrow="WorkStyle Compass"
-        title="Your WorkStyle Compass"
-        lede="No right answers - just what is true for you at work right now. Takes about 8 minutes. You will get a developmental report at the end."
+        title="Take the assessment"
+        lede="A guided, private-first flow that takes about 8 minutes and returns a developmental work-style report."
       />
       <AssessmentForm />
     </PageShell>

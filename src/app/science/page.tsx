@@ -22,41 +22,43 @@ import { citations } from "@/config/app";
 import { routes } from "@/config/routes";
 
 export const metadata: Metadata = {
-  title: "Behavioural Science And Validation",
+  title: "Behavioural Science and Validation",
   description:
     "The behavioural science rationale, interpretation limits, and validation roadmap for WorkStyle Compass.",
 };
 
 const pillars = [
   {
-    title: "Work style, not diagnosis",
-    body: "WorkStyle Compass is a developmental work-style assessment. It blends behavioural habits, self-regulation, values, coordination patterns, and AI-era work practice. It is not a clinical tool or a hiring instrument.",
+    title: "A work-style construct, not a diagnosis",
+    body: "WorkStyle Compass describes self-reported work patterns. It blends trait-adjacent tendencies, behavioural habits, self-regulation, values, coordination patterns, and AI-era work practice. It is not a clinical tool or a hiring instrument.",
   },
   {
-    title: "Grounded in known constructs",
-    body: "The domains connect to established ideas such as conscientious follow-through, learning agility, social coordination, emotional regulation, systems thinking, integrity, change readiness, and responsible tool use.",
+    title: "Grounded in recognised constructs",
+    body: "The domains are informed by established ideas such as conscientious follow-through, learning orientation, social coordination, emotional regulation, systems thinking, integrity, change readiness, and responsible tool use.",
   },
   {
     title: "Pressure drift, not derailment",
-    body: "Each domain includes one overuse item. It creates a coaching prompt about where a useful style may become costly under pressure, not a diagnosis or separate risk scale.",
+    body: "Each domain includes one overuse item. It creates a coaching prompt about where a useful style may become costly under pressure. It is not a diagnosis, derailer scale, or validated risk score.",
   },
   {
-    title: "AI as work practice",
-    body: "Augmented Judgement is treated as a dynamic work-practice domain, not a fixed personality trait. Access, policy, role, and tool maturity all affect it.",
+    title: "AI as contextual work practice",
+    body: "Augmented Judgement is treated as a dynamic work-practice domain, not a fixed personality trait. Access, policy, role, task design, and tool maturity all affect it.",
   },
   {
-    title: "Open research is exploratory",
-    body: "The public dataset can support pattern-finding and better questions. It does not create norms, validity evidence, fairness evidence, or representative percentiles by itself.",
+    title: "Open data does not create norms",
+    body: "The public dataset can support pattern-finding and better research questions. A self-selected open sample does not create representative norms, validity evidence, fairness evidence, or selection guidance by itself.",
   },
 ];
 
 const roadmapItems = [
-  "Internal consistency per domain.",
-  "Factor structure across the three work operating systems.",
+  "Internal consistency and item performance per domain.",
+  "Exploratory and confirmatory factor structure across the three work operating systems.",
   "Test-retest stability over weeks and months.",
-  "Criterion links to real work outcomes.",
+  "Convergent and discriminant evidence against established personality and work-style measures.",
+  "Criterion links to relevant work outcomes.",
   "Subgroup fairness and adverse-impact review.",
-  "Qualified-user interpretation standards.",
+  "Norm development only after sample quality is defensible.",
+  "Qualified-user interpretation standards and technical documentation.",
 ];
 
 const pageNavItems = [
@@ -72,12 +74,11 @@ export default function SciencePage() {
       <section className="hero" data-layout="two">
         <div className="hero-copy">
           <p className="eyebrow">Behavioural science</p>
-          <h1>Research-informed, not validated yet</h1>
+          <h1>Research-informed, validation still pending</h1>
           <p className="lede">
-            This page explains the behavioural science logic, interpretation
-            limits, and validation work still needed. For a practical
-            explanation of what the assessment measures, start with the model
-            page.
+            This is the technical companion to the model page. It explains the
+            construct logic, self-report limits, evidence status, and validation
+            work needed before any stronger claim would be appropriate.
           </p>
           <ActionRow placement="hero">
             <ButtonLink href={routes.model} variant="secondary">
@@ -90,14 +91,14 @@ export default function SciencePage() {
         </div>
 
         <PageImage
-          alt="Behavioural science methodology image with anonymised item cards, research notes, and validation marks."
+          alt="Behavioural science methodology visual with anonymised item cards, research notes, and validation marks."
           aspect="landscape"
           className="science-hero-media"
           priority
           src="/images/science-page.png"
         >
           <p className="panel-label">Science posture</p>
-          <strong>Developmental. Exploratory. Transparent.</strong>
+          <strong>Evidence before claims.</strong>
         </PageImage>
       </section>
 
@@ -105,8 +106,8 @@ export default function SciencePage() {
         <Section id="evidence">
           <SectionHeader
             eyebrow="Evidence posture"
-            title="What the model is claiming"
-            lede="The site should be easy to share, but the scientific language has to stay disciplined. These are reflection hypotheses, not employment decisions or diagnoses."
+            title="What can be claimed today"
+            lede="The current instrument supports developmental hypotheses for reflection and conversation. It does not yet support prediction, employment decisions, diagnosis, or normative comparison."
           />
           <ContentGrid>
             {pillars.map((pillar) => (
@@ -135,11 +136,12 @@ export default function SciencePage() {
               decisions.
             </p>
             <p>
-              Before any stronger claim would be appropriate, the instrument
-              still needs reliability analysis, factor validation, criterion
-              validation, fairness and adverse-impact review, test-retest
-              checks, norm development, and qualified-user interpretation
-              guidance.
+              No individual result should be interpreted as evidence of
+              capability, potential, suitability, or employment risk. Before any
+              stronger claim would be appropriate, the instrument needs
+              reliability analysis, factor evidence, criterion evidence,
+              fairness review, test-retest checks, norm development, and
+              qualified-user interpretation guidance.
             </p>
           </Surface>
         </Section>
@@ -148,7 +150,7 @@ export default function SciencePage() {
           <SectionHeader
             eyebrow="Validation roadmap"
             title="What we test before claiming more"
-            lede="We are keeping a public list of the evidence needed before any stronger claim than developmental prototype would be appropriate."
+            lede="The roadmap separates product usefulness from scientific validation. The product can be useful now; stronger psychometric claims require evidence."
           />
           <ol className="science-roadmap">
             {roadmapItems.map((item, index) => (

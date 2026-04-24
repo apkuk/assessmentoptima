@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   title: "API Docs",
 };
 
-const exampleOrigin = "https://your-domain.vercel.app";
+const exampleOrigin = appConfig.productionAppUrl;
 
 const examples = [
   {

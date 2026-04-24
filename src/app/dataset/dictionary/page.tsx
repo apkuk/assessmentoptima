@@ -19,7 +19,7 @@ export default function DataDictionaryPage() {
       <PageHeader
         eyebrow="Dataset schema"
         title="Data dictionary"
-        lede="The v0 public dataset exposes anonymised score-level rows only. Respondent context fields are held back from row-level export until sample size and disclosure controls support safer release."
+        lede="The public dataset exposes anonymised score-level rows only. Respondent context fields are held back from row-level export until sample size and disclosure controls support safer release."
       />
 
       <section className="panel table-wrap">

@@ -43,8 +43,7 @@ export const operatingSystemDefinitions = {
   operationalClarity: {
     key: "operationalClarity",
     name: "Operational Clarity",
-    description:
-      "How the respondent turns complexity into usable work progress.",
+    description: "How you turn complexity into usable progress.",
     scaleKeys: [
       "commitment_rhythm",
       "systems_sensemaking",
@@ -54,8 +53,7 @@ export const operatingSystemDefinitions = {
   humanCoordination: {
     key: "humanCoordination",
     name: "Human Coordination",
-    description:
-      "How the respondent creates shared understanding, trust, and commitment.",
+    description: "How you create shared understanding, trust, and commitment.",
     scaleKeys: [
       "mobilising_communication",
       "mutuality_repair",
@@ -65,8 +63,7 @@ export const operatingSystemDefinitions = {
   adaptiveCapacity: {
     key: "adaptiveCapacity",
     name: "Adaptive Capacity",
-    description:
-      "How the respondent updates, recovers, and moves through uncertainty.",
+    description: "How you update, recover, and move through uncertainty.",
     scaleKeys: [
       "adaptive_learning",
       "pressure_regulation",

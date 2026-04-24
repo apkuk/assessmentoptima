@@ -78,7 +78,7 @@ Working wordmark:
 AssessmentOptima
 ```
 
-Use the wordmark plainly until a real logo exists. Do not invent a symbol unless the PRD later asks for one.
+Use the generated AssessmentOptima mark from `public/images/logo.png` in global chrome and browser/app icon surfaces. Pair it with the plain wordmark; do not introduce additional symbols or alternate marks.
 
 Recommended lockup:
 

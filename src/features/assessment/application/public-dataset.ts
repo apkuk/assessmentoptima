@@ -229,8 +229,45 @@ export function rowsToCsv(rows: PublicDatasetRow[]): string {
   return [header, ...body].join("\n");
 }
 
+const publicDatasetFieldDescriptions = {
+  row_id:
+    "Random public row identifier. It is not a respondent name, email, token, or database id.",
+  assessment_version:
+    "Assessment model version used when the response was scored.",
+  created_month:
+    "Month of submission, rounded to YYYY-MM for disclosure control.",
+  commitment_rhythm_score:
+    "0-100 score for converting intention into visible, reliable progress.",
+  adaptive_learning_score:
+    "0-100 score for updating beliefs and behaviour through evidence, feedback, and reflection.",
+  mobilising_communication_score:
+    "0-100 score for making ideas relevant, energising others, and creating commitment.",
+  mutuality_repair_score:
+    "0-100 score for building shared work through trust, contribution clarity, and repair.",
+  pressure_regulation_score:
+    "0-100 score for staying proportionate, recoverable, and choiceful under pressure.",
+  systems_sensemaking_score:
+    "0-100 score for seeing patterns, trade-offs, and downstream effects.",
+  trust_stewardship_score:
+    "0-100 score for protecting truth, fairness, humility, and decision quality.",
+  change_navigation_score:
+    "0-100 score for creating movement through uncertainty while managing adoption and capacity.",
+  augmented_judgement_score:
+    "0-100 score for using AI and digital tools while preserving verification, privacy, and accountability.",
+  operational_clarity:
+    "Composite 0-100 score across Commitment Rhythm, Systems Sensemaking, and Augmented Judgement.",
+  human_coordination:
+    "Composite 0-100 score across Mobilising Communication, Mutuality & Repair, and Trust Stewardship.",
+  adaptive_capacity:
+    "Composite 0-100 score across Adaptive Learning, Pressure Regulation, and Change Navigation.",
+  archetype:
+    "Share-safe archetype derived from the strongest current domain signals.",
+  pressure_drift_count:
+    "Count of pressure-drift prompts triggered by overuse items. This is a reflection signal, not a diagnosis.",
+} as const satisfies Record<(typeof PUBLIC_DATASET_FIELDS)[number], string>;
+
 export const dataDictionary = PUBLIC_DATASET_FIELDS.map((field) => ({
   field,
   public: true,
-  description: field.replaceAll("_", " "),
+  description: publicDatasetFieldDescriptions[field],
 }));

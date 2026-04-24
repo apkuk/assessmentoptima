@@ -20,7 +20,7 @@ import styles from "./how-i-built-this.module.css";
 export const metadata: Metadata = {
   title: "How I Built This",
   description:
-    "A transparent build story for AssessmentOptima: ChatGPT 5.5 research and PRD work, Codex with GPT-5.5 implementation, Vercel deployment, and the limits of the prototype.",
+    "A transparent build story for AssessmentOptima: ChatGPT 5.5 research and PRD work, Codex implementation, Vercel deployment, MongoDB persistence, and the limits of the prototype.",
 };
 
 const proofStats = [
@@ -30,14 +30,14 @@ const proofStats = [
   },
   {
     value: "2.5 hr",
-    label: "total AI-assisted sprint to a share-ready v0",
+    label: "total AI-assisted sprint to a share-ready prototype",
   },
   {
     value: "54",
     label: `${appConfig.assessmentName} assessment items`,
   },
   {
-    value: "30",
+    value: "38",
     label: "fast Vitest checks covering the core rules",
   },
 ];
@@ -51,7 +51,7 @@ const askCards = [
   {
     label: "Ask 2",
     title: "Build and launch the product",
-    body: "Codex with GPT-5.5 used the PRD and master docs to implement the Next.js app, strict TypeScript contracts, MongoDB persistence layer, public routes, tests, deployment wiring, and the build-story page you are reading.",
+    body: "Codex used the PRD and master docs to implement the Next.js app, strict TypeScript contracts, MongoDB persistence layer, public routes, tests, deployment wiring, and the build-story page you are reading.",
   },
 ];
 
@@ -84,7 +84,7 @@ const processSteps = [
   {
     label: "6",
     title: "User walkthrough closed the loop",
-    body: "A hands-on UI pass caught practical issues: formatting, image sizing, checkbox behavior, context dropdown labels, and flow quality. Those fixes became the final polish before calling the v0 done.",
+    body: "A hands-on UI pass caught practical issues: formatting, image sizing, checkbox behavior, context dropdown labels, report readability, and flow quality. Those fixes became the final polish before calling the prototype share-ready.",
   },
 ];
 
@@ -95,6 +95,7 @@ const shippedGroups = [
       "Gated Intro -> Consent -> About you -> Assessment -> Review flow",
       "54-item WorkStyle Compass assessment with nine scale scores",
       "Private result report with archetype, radar, strengths, pressure drifts, and 30-day experiment",
+      "Printable private report with submitted-answer appendix for the respondent's own records",
       "Developmental-only use boundary throughout the product",
     ],
   },
@@ -102,7 +103,7 @@ const shippedGroups = [
     title: "Open research layer",
     items: [
       "MongoDB Atlas document model for consented submissions",
-      "Score-first CSV/JSON export shape with no raw PII or v0 row-level context",
+      "Score-first CSV/JSON export shape with no raw PII or row-level context fields",
       "Small-cell suppression and provisional internal-consistency snapshot",
       "Data dictionary, citation blocks, and public API documentation",
     ],
@@ -120,9 +121,9 @@ const shippedGroups = [
     title: "AI layer",
     items: [
       "Bring-your-own-key OpenAI/Anthropic analysis flow",
-      "No public server-funded AI spend in v0",
+      "No public server-funded AI spend in the first public release",
       "Prompt transparency, example output, and cautious synthesis rules",
-      "Rate limiting and aggregate/export-safe dataset inputs",
+      "Provider/model selection, reasoning controls, latency, token usage, and estimated OpenAI cost reporting",
     ],
   },
 ];
@@ -160,7 +161,7 @@ const enterprisePractices = [
   },
   {
     title: "Use the right model for the right job",
-    body: "Strategy and documentation benefit from ChatGPT Pro-style deep reasoning. UI polish benefits from strong visual review. Implementation benefits from Codex with GPT-5.5 using high or extra-high reasoning on code.",
+    body: "Strategy and documentation benefit from ChatGPT Pro-style deep reasoning. UI polish benefits from strong visual review. Implementation benefits from Codex using high or extra-high reasoning on code.",
   },
   {
     title: "Documentation is part of the system",
@@ -182,14 +183,14 @@ const statusRows = [
     value: "pnpm verify and pnpm build pass.",
   },
   {
-    label: "Deployment",
+    label: "Persistence",
     value:
-      "The public Vercel deployment is live and core static/product routes return 200.",
+      "MongoDB Atlas persistence has been verified locally with a full 54-answer submission and private report retrieval.",
   },
   {
-    label: "Final launch blocker",
+    label: "Deployment",
     value:
-      "Production persistence routes need MongoDB Atlas network access from Vercel/serverless egress before the assessment can be shared as fully transactional.",
+      "The Vercel deployment is live; production submit/result/dataset smoke tests should be rerun after the latest hardening changes are pushed.",
   },
 ];
 
@@ -221,9 +222,9 @@ export default function HowIBuiltThisPage() {
           <p className={styles.lede}>
             {appConfig.productName} is the public platform. WorkStyle Compass is
             the developmental assessment inside it. This is also a transparent
-            case study in what ChatGPT 5.5 and Codex with GPT-5.5 can do when
-            the brief includes product thinking, behavioural science, privacy,
-            data architecture, UX, tests, and deployment.
+            case study in what frontier AI assistance can do when the brief
+            includes product thinking, behavioural science, privacy, data
+            architecture, UX, tests, deployment, and human judgement.
           </p>
           <div className={styles.heroActions}>
             <Link className="button" href={routes.assessment}>
@@ -278,8 +279,8 @@ export default function HowIBuiltThisPage() {
             The useful pattern was not one model doing everything in a straight
             line. It was multiple high-capability tools working in parallel:
             ChatGPT Pro for deep strategy and documentation, Claude Code for UI
-            critique, and Codex with GPT-5.5 high-reasoning implementation
-            inside VS Code. The project reached a share-ready v0 in about 2.5
+            critique, and Codex for high-reasoning implementation inside VS
+            Code. The project reached a share-ready prototype in about 2.5
             hours.
           </p>
         </div>
@@ -366,9 +367,7 @@ export default function HowIBuiltThisPage() {
       <section className={styles.statusSection}>
         <div>
           <p className={styles.panelKicker}>Where it stands</p>
-          <h2>
-            Green locally. Live on Vercel. One infrastructure fix remains.
-          </h2>
+          <h2>Green locally. Mongo verified. Production smoke next.</h2>
         </div>
         <div className={styles.statusList}>
           {statusRows.map((row) => (

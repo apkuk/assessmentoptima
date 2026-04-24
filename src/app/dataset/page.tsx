@@ -30,6 +30,19 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
+function SuppressedScaleList() {
+  return (
+    <div className="suppressed-list">
+      {scaleKeys.map((scaleKey) => (
+        <div className="suppressed-row" key={scaleKey}>
+          <span>{scales[scaleKey].name}</span>
+          <strong>Locked</strong>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 async function getDatasetState() {
   try {
     const env = getServerEnv();
@@ -78,9 +91,9 @@ export default async function DatasetPage() {
           <p className="eyebrow">Open dataset</p>
           <h1>WorkStyle Compass public dataset</h1>
           <p className="lede">
-            Download anonymised, scale-level records once the public release
-            threshold has been met. Until then, aggregate views remain
-            suppressed.
+            An anonymised, score-level dataset for exploratory research. Public
+            exports and aggregate views unlock only after the release threshold
+            is met.
           </p>
           <div className="action-row">
             {exportsAvailable ? (
@@ -139,7 +152,7 @@ export default async function DatasetPage() {
           <strong>{aggregates.suppressed ? "Hold" : "Open"}</strong>
           <p>
             {aggregates.suppressed
-              ? "Small-cell protection active."
+              ? "Small-cell protection is active."
               : "Dataset threshold met."}
           </p>
         </div>
@@ -156,16 +169,27 @@ export default async function DatasetPage() {
       <section className="dataset-grid section">
         <div className="dataset-card">
           <p className="panel-label">Scale averages</p>
-          <div className="scale-list">
-            {scaleKeys.map((scaleKey, index) => (
-              <ScoreBar
-                key={scaleKey}
-                label={scales[scaleKey].name}
-                tone={index % 2 === 0 ? "brand" : "science"}
-                value={aggregates.averageByScale[scaleKey] ?? 0}
-              />
-            ))}
-          </div>
+          {aggregates.suppressed ? (
+            <>
+              <p>
+                Averages are hidden until at least {aggregates.minGroupSize}
+                opted-in public rows are available. Current eligible rows:{" "}
+                {aggregates.rowCount}.
+              </p>
+              <SuppressedScaleList />
+            </>
+          ) : (
+            <div className="scale-list">
+              {scaleKeys.map((scaleKey, index) => (
+                <ScoreBar
+                  key={scaleKey}
+                  label={scales[scaleKey].name}
+                  tone={index % 2 === 0 ? "brand" : "science"}
+                  value={aggregates.averageByScale[scaleKey] ?? 0}
+                />
+              ))}
+            </div>
+          )}
         </div>
         <div className="dataset-card">
           <p className="panel-label">Archetypes</p>

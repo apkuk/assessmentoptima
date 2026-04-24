@@ -24,14 +24,14 @@ export default function AiAnalysisPage() {
     <PageShell>
       <PageHeader
         eyebrow="BYOK analysis"
-        title="Query the open dataset"
-        lede="Use your own OpenAI or Anthropic key to synthesise the public dataset without opening up the project owner's LLM budget. Your key is sent to the server for this request, is not stored by this app, and may be processed by your chosen provider under your account."
+        title="Analyse the public dataset"
+        lede="Once the release threshold is met, you can use your own OpenAI or Anthropic key to synthesise the public score-level dataset. Your key is sent to the server for this request, is not stored by this app, and may be processed by your chosen provider under your account."
       />
       <AiAnalysisForm />
 
       <ContentGrid className="section">
         <Surface
-          label="Example output"
+          label="Illustrative output"
           title="What visitors can expect"
           tone="science"
           variant="callout"
@@ -51,7 +51,7 @@ export default function AiAnalysisPage() {
             met.
           </div>
         </Surface>
-        <Surface label="Prompt transparency" title="Guardrail prompt">
+        <Surface label="Prompt transparency" title="Analysis guardrails">
           {aiAnalysisPromptPolicy.map((line) => (
             <p className="mono" key={line}>
               {line}

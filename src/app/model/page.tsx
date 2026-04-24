@@ -37,15 +37,15 @@ export const metadata: Metadata = {
 const reportOutputs = [
   {
     title: "Domain profile",
-    body: "Nine scores across clarity, coordination, adaptation, and AI-era judgement.",
+    body: "Nine domain scores across clarity, coordination, adaptation, and AI-era judgement.",
   },
   {
     title: "System summary",
-    body: "Three Work Operating System scores that show the broader pattern.",
+    body: "Three system scores that show the broader pattern behind the domains.",
   },
   {
     title: "Developmental readout",
-    body: "Strengths, development edges, pressure-drift prompts, and an archetype.",
+    body: "Strengths, development edges, pressure-drift signals, and an archetype.",
   },
   {
     title: "30-day experiment",
@@ -71,9 +71,9 @@ export default function ModelPage() {
           <p className="eyebrow">How it works</p>
           <h1>{`What ${appConfig.assessmentName} measures`}</h1>
           <p className="lede">
-            WorkStyle Compass looks at how you turn complex work into useful
-            contribution: how you create clarity, work with others, adapt when
-            pressure rises, and use AI with judgement.
+            WorkStyle Compass shows how you turn complex work into contribution:
+            creating clarity, coordinating with others, adapting under pressure,
+            and using AI with judgement.
           </p>
           <ActionRow placement="hero">
             <ButtonLink href={routes.assessment}>
@@ -86,7 +86,7 @@ export default function ModelPage() {
         </div>
 
         <PageImage
-          alt="Abstract Work Operating System visual with layered cards, radar geometry, and connected data marks."
+          alt="Work Operating System visual with layered cards, radar geometry, and connected data marks."
           aspect="landscape"
           className="model-hero-media"
           priority
@@ -103,13 +103,14 @@ export default function ModelPage() {
         </MetricCard>
         <MetricCard label="Output" value="Report">
           <p>
-            A developmental profile with strengths, pressure drift, and one
-            practical experiment.
+            A plain-English profile with strengths, pressure-drift signals, and
+            one practical experiment.
           </p>
         </MetricCard>
         <MetricCard label="Use" value="Reflection">
           <p>
-            For self-reflection, coaching, team learning, and open research.
+            Built for self-reflection, coaching, team learning, and open
+            research.
           </p>
         </MetricCard>
       </section>
@@ -119,7 +120,7 @@ export default function ModelPage() {
           <SectionHeader
             eyebrow="3 systems"
             title="The organising framework"
-            lede="The model groups work style into three operating systems. Each one is useful on its own; the real value is seeing how they combine."
+            lede="The framework groups your work style into three operating systems. Each one matters; the useful insight is how they combine."
           />
           <div className="domain-groups">
             {operatingSystems.map((system) => (
@@ -153,7 +154,7 @@ export default function ModelPage() {
           <SectionHeader
             eyebrow="9 domains"
             title="What the assessment looks for"
-            lede="Each domain describes a useful work pattern. Higher or lower scores are not automatically better; the value depends on role, context, and what the situation needs."
+            lede="Each domain describes a useful work pattern, not a good-or-bad trait. The value depends on role, context, and what the situation needs."
           />
           <div className="domain-groups">
             {operatingSystems.map((system) => (

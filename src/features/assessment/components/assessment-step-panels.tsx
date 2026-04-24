@@ -39,29 +39,34 @@ export function IntroStep() {
     <div className={styles.flowPanelInner}>
       <div>
         <p className="panel-label">Start here</p>
-        <h2>Your WorkStyle Compass</h2>
+        <h2>Before you begin</h2>
         <p className="lede">
-          No right answers - just what is true for you at work right now. Takes
-          about 8 minutes. You will get a developmental report at the end.
+          There are no ideal answers. Respond based on what feels true at work
+          right now, and you will get a practical development report at the end.
         </p>
         <div className={styles.stepMeta}>
           <span className={styles.metaPill}>About 8 minutes</span>
-          <span className={styles.metaPill}>54 statements</span>
-          <span className={styles.metaPill}>5 consent choices</span>
+          <span className={styles.metaPill}>54 short statements</span>
+          <span className={styles.metaPill}>3 required checks</span>
         </div>
       </div>
       <div className={styles.introGrid}>
         <article className={styles.introCard}>
           <h3>Private report</h3>
-          <p>Your answers generate a personal development profile.</p>
+          <p>Your answers generate a private developmental profile.</p>
         </article>
         <article className={styles.introCard}>
           <h3>Open research</h3>
-          <p>You choose whether anonymised scores can support the dataset.</p>
+          <p>
+            You decide whether anonymised score-level data can support the
+            public dataset.
+          </p>
         </article>
         <article className={styles.introCard}>
           <h3>Saved locally</h3>
-          <p>Progress is saved in this browser so you can come back later.</p>
+          <p>
+            Progress is saved in this browser only, so you can come back later.
+          </p>
         </article>
       </div>
     </div>
@@ -77,44 +82,45 @@ export function ConsentStep({ consentDraft, onChange }: ConsentStepProps) {
   return (
     <div className={styles.flowPanelInner}>
       <div>
-        <p className="panel-label">A quick check before we start</p>
-        <h2>Consent and use boundary</h2>
+        <p className="panel-label">Your choices</p>
+        <h2>Confirm how this will be used</h2>
         <p className="lede">
-          Three checks are required to generate and save your private report.
-          The research and open dataset choices are optional.
+          The first three checks let us generate and save your private report.
+          The last two are optional and control research use and open dataset
+          inclusion.
         </p>
       </div>
       <div className={styles.consentGrid}>
         <ConsentCard
           checked={consentDraft.useBoundaryAccepted}
-          label="I get that this is for self-reflection, not for hiring or promotion decisions."
+          label="I understand this is for self-reflection, coaching, and learning, not hiring, promotion, or other employment decisions."
           onChange={(checked) => onChange("useBoundaryAccepted", checked)}
           required
           title="Use boundary"
         />
         <ConsentCard
           checked={consentDraft.assessmentProcessing}
-          label="Process my answers to generate my report."
+          label="Use my answers to generate my developmental report."
           onChange={(checked) => onChange("assessmentProcessing", checked)}
           required
           title="Assessment processing"
         />
         <ConsentCard
           checked={consentDraft.privateResultStorage}
-          label="Save my private report so I can revisit it through this browser's private result link."
+          label="Save my private report so I can revisit it through a private result link."
           onChange={(checked) => onChange("privateResultStorage", checked)}
           required
           title="Private report"
         />
         <ConsentCard
           checked={consentDraft.researchStorage}
-          label="Keep my anonymised scores for research."
+          label="Keep my anonymised score-level data for research analysis."
           onChange={(checked) => onChange("researchStorage", checked)}
-          title="Research storage"
+          title="Research use"
         />
         <ConsentCard
           checked={consentDraft.publicDataset}
-          label="Include my anonymised scores in the open dataset once release rules are met."
+          label="Include my anonymised score-level data in the open dataset once release rules are met."
           onChange={(checked) => onChange("publicDataset", checked)}
           title="Open dataset"
         />
@@ -171,10 +177,11 @@ export function ContextStep({ context, onChange }: ContextStepProps) {
     <div className={styles.flowPanelInner}>
       <div>
         <p className="panel-label">A little context</p>
-        <h2>About you</h2>
+        <h2>Optional research context</h2>
         <p className={styles.contextCopy}>
-          Optional broad context helps future aggregate analysis. It is not
-          needed for your personal report, and every field can be skipped.
+          Broad buckets help us understand patterns in the open research sample.
+          They are not needed for your personal report, and every field can be
+          left as “Prefer Not to Say”.
         </p>
       </div>
       <RespondentContextForm context={context} onChange={onChange} />
@@ -217,15 +224,16 @@ export function QuestionsStep({
           <p className="panel-label">Assessment</p>
           <h2>{scale.name}</h2>
           <p>
-            Statements {questionStart}-{questionEnd} of {items.length}.
+            Six short statements · {questionStart}-{questionEnd} of{" "}
+            {items.length}.
           </p>
           <p className={styles.keyboardHint}>
-            Tip: use <kbd>1</kbd>-<kbd>5</kbd> on your keyboard to answer the
-            active statement.
+            Keyboard shortcut: use <kbd>1</kbd>-<kbd>5</kbd> to answer the
+            highlighted statement.
           </p>
         </div>
         <div className={styles.questionCount}>
-          {currentPageAnswered}/{currentQuestionItems.length} on this screen
+          {currentPageAnswered} of {currentQuestionItems.length} answered
         </div>
       </div>
       <div className={styles.pageProgress} aria-hidden="true">
@@ -236,7 +244,7 @@ export function QuestionsStep({
         />
       </div>
       <details className={styles.questionHelp}>
-        <summary>What is {scale.shortName}?</summary>
+        <summary>About {scale.name}</summary>
         <p>{scale.description}</p>
       </details>
       {transitionNote ? (
@@ -260,8 +268,8 @@ export function QuestionsStep({
         ))}
       </div>
       <p className={styles.transitionNote}>
-        Screen {questionPageIndex + 1} of {questionPageCount}. The next screen
-        opens automatically once this one is complete.
+        Section {questionPageIndex + 1} of {questionPageCount}. We will move to
+        the next section when all six statements are answered.
       </p>
     </div>
   );

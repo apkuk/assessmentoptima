@@ -30,7 +30,7 @@ export const aiAnalysisPromptPolicy = [
   "The model explores how people turn complexity into contribution through Operational Clarity, Human Coordination, and Adaptive Capacity.",
   "The instrument is research-informed and developmental, but it is not validated for hiring, promotion, diagnosis, redundancy, or high-stakes employment decisions.",
   "Be careful: separate observed patterns from speculation, avoid clinical claims, and mention sample size limits.",
-  "Rows are anonymised, score-level records only; no respondent context fields are included in the v0 row export.",
+  "Rows are anonymised, score-level records only; respondent context fields are excluded from the public row export.",
   "Return concise Markdown with: Key observations, Caveats, Practical interpretation, and Suggested next analysis.",
 ];
 

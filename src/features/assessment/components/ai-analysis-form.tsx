@@ -13,6 +13,7 @@ import { apiRoutes } from "@/config/routes";
 import { aiProviderModelDefaults } from "@/features/assessment/application/ai-analysis";
 import {
   aiAnalysisRequestSchema,
+  aiAnalysisResponseSchema,
   aiAnalysisTypes,
   aiProviders,
   anthropicModels,
@@ -20,6 +21,7 @@ import {
   openaiModels,
   openaiReasoningEfforts,
   openaiVerbosities,
+  type AiAnalysisResponse,
   type AiAnalysisRequest,
 } from "@/features/assessment/schemas/assessment";
 import {
@@ -47,10 +49,11 @@ const analysisTypeLabels: Record<AiAnalysisRequest["analysisType"], string> = {
 };
 
 const reasoningLabels: Record<OpenAiReasoningEffort, string> = {
-  minimal: "Minimal (fastest)",
+  none: "None (fastest)",
   low: "Low",
   medium: "Medium",
   high: "High (deepest)",
+  xhigh: "Extra high",
 };
 
 const verbosityLabels: Record<OpenAiVerbosity, string> = {
@@ -65,6 +68,39 @@ const thinkingLabels: Record<AnthropicThinkingEffort, string> = {
   medium: "Medium",
   high: "High",
 };
+
+function formatTokenCount(value: number | null): string {
+  return value === null ? "Not returned" : value.toLocaleString("en-GB");
+}
+
+function formatEstimatedCost(value: number | null): string {
+  if (value === null) {
+    return "Not estimated";
+  }
+
+  return value < 0.01 ? `$${value.toFixed(6)}` : `$${value.toFixed(4)}`;
+}
+
+function formatLatency(value: number): string {
+  return value >= 1000 ? `${(value / 1000).toFixed(1)}s` : `${value}ms`;
+}
+
+function formatModelTokens(value: number): string {
+  return value >= 1_000_000
+    ? `${(value / 1_000_000).toFixed(0)}M`
+    : `${(value / 1_000).toFixed(0)}K`;
+}
+
+function openAiModelHint(model: (typeof openaiModels)[number]): string {
+  const pricing = model.pricingUsdPerMillionTokens;
+
+  return [
+    model.description,
+    `Latency: ${model.latency}.`,
+    `Pricing: $${pricing.input}/$${pricing.output} per 1M input/output tokens.`,
+    `Context: ${formatModelTokens(model.contextWindowTokens)}; max output: ${formatModelTokens(model.maxOutputTokens)}.`,
+  ].join(" ");
+}
 
 export function AiAnalysisForm() {
   const [provider, setProvider] = useState<Provider>("openai");
@@ -84,9 +120,14 @@ export function AiAnalysisForm() {
     useState<AiAnalysisRequest["analysisType"]>("summarise_dataset");
   const [question, setQuestion] = useState("");
   const [analysis, setAnalysis] = useState("");
+  const [usage, setUsage] = useState<AiAnalysisResponse["usage"] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const activeOpenAiModel = useMemo(
+    () => openaiModels.find((model) => model.id === openaiModel),
+    [openaiModel],
+  );
   const activeAnthropicModel = useMemo(
     () => anthropicModels.find((model) => model.id === anthropicModel),
     [anthropicModel],
@@ -98,6 +139,7 @@ export function AiAnalysisForm() {
     event.preventDefault();
     setError(null);
     setAnalysis("");
+    setUsage(null);
     setIsSubmitting(true);
 
     try {
@@ -147,14 +189,9 @@ export function AiAnalysisForm() {
         throw new Error(formatClientApiError(apiFailure));
       }
 
-      if (
-        data &&
-        typeof data === "object" &&
-        "analysis" in data &&
-        typeof data.analysis === "string"
-      ) {
-        setAnalysis(data.analysis);
-      }
+      const parsed = aiAnalysisResponseSchema.parse(data);
+      setAnalysis(parsed.analysis);
+      setUsage(parsed.usage);
     } catch (analysisError) {
       setError(
         analysisError instanceof Error
@@ -171,11 +208,11 @@ export function AiAnalysisForm() {
       <form className="panel form-stack" onSubmit={handleSubmit}>
         <div>
           <p className="panel-label">Bring your own key</p>
-          <h2>Run a cautious synthesis</h2>
+          <h2>Run a guarded analysis</h2>
           <p>
-            Your provider key is sent to our server and forwarded to your chosen
-            provider for this one request. AssessmentOptima does not store it or
-            keep it in localStorage.
+            Your provider key is sent to the AssessmentOptima server and
+            forwarded to your chosen provider for this request only. The app
+            does not store it, log it, or keep it in localStorage.
           </p>
         </div>
 
@@ -227,8 +264,9 @@ export function AiAnalysisForm() {
             </label>
             <p className="field-hint">
               {provider === "openai"
-                ? (openaiModels.find((model) => model.id === openaiModel)
-                    ?.description ?? "")
+                ? activeOpenAiModel
+                  ? openAiModelHint(activeOpenAiModel)
+                  : ""
                 : (activeAnthropicModel?.description ?? "")}
             </p>
           </div>
@@ -371,18 +409,42 @@ export function AiAnalysisForm() {
           ) : (
             <Sparkles size={18} aria-hidden="true" />
           )}
-          Analyze dataset
+          Analyse dataset
         </button>
       </form>
 
       <div className="dataset-card">
         <p className="panel-label">Output</p>
         {analysis ? (
-          <div className="markdown-output">{analysis}</div>
+          <>
+            {usage ? (
+              <div className="usage-grid" aria-label="Provider usage summary">
+                <div>
+                  <span>Input tokens</span>
+                  <strong>{formatTokenCount(usage.inputTokens)}</strong>
+                </div>
+                <div>
+                  <span>Output tokens</span>
+                  <strong>{formatTokenCount(usage.outputTokens)}</strong>
+                </div>
+                <div>
+                  <span>Latency</span>
+                  <strong>{formatLatency(usage.latencyMs)}</strong>
+                </div>
+                <div>
+                  <span>Estimated cost</span>
+                  <strong>{formatEstimatedCost(usage.estimatedCostUsd)}</strong>
+                </div>
+              </div>
+            ) : null}
+            <div className="markdown-output">{analysis}</div>
+            {usage ? <p className="field-hint">{usage.costNote}</p> : null}
+          </>
         ) : (
           <p>
-            Results will appear here after the public dataset reaches the
-            release threshold and your provider request completes.
+            The public dataset is currently threshold-protected. Results will
+            appear here once the release threshold is met and your provider
+            request completes.
           </p>
         )}
       </div>

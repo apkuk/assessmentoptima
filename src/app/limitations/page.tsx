@@ -22,29 +22,45 @@ export default function LimitationsPage() {
     <PageShell>
       <PageHeader
         eyebrow="Responsible use"
-        title="Limits matter"
-        lede="AssessmentOptima is intentionally framed as an exploratory, developmental prototype. The boundary is part of the product."
+        title="Use it for reflection, not decisions about people"
+        lede="AssessmentOptima is intentionally framed as an exploratory, developmental prototype. Its limits are not fine print; they are part of using the product responsibly."
       />
 
       <ContentGrid>
+        <Surface prose title="Appropriate use" variant="callout">
+          <p>
+            WorkStyle Compass is designed for self-reflection, coaching
+            conversations, team learning, and open research. Treat results as
+            useful hypotheses about work style, not as fixed labels or proof of
+            capability.
+          </p>
+        </Surface>
         <Surface
           prose
-          title="Do not use for selection"
+          title="Do not use for employment decisions"
           tone="pressure"
           variant="callout"
         >
           <p>
             The assessment must not be used for hiring, promotion, redundancy,
-            diagnosis, compensation, disciplinary decisions, or any other
-            high-stakes decision about a person.
+            compensation, disciplinary decisions, diagnosis, or any other
+            high-stakes decision about a person. It is not a validated selection
+            instrument.
           </p>
         </Surface>
-        <Surface prose title="Validation roadmap">
+        <Surface prose title="How to read scores">
           <p>
-            A validated instrument would need internal consistency, factor
-            structure, test-retest reliability, criterion validity, subgroup
-            fairness, adverse-impact review, norm development, and qualified
-            interpretation guidance.
+            A high score is not automatically good, and a lower score is not
+            automatically a weakness. The value of any pattern depends on the
+            role, context, pressure level, and what the work currently needs.
+          </p>
+        </Surface>
+        <Surface prose title="Evidence still needed">
+          <p>
+            Stronger claims would require internal consistency evidence, factor
+            validation, test-retest reliability, criterion validity, subgroup
+            fairness checks, adverse-impact review, norm development, and
+            qualified interpretation guidance.
           </p>
         </Surface>
       </ContentGrid>

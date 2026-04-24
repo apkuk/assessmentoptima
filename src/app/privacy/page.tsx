@@ -44,13 +44,17 @@ export default function PrivacyPage() {
       </ContentGrid>
 
       <ContentGrid className="section">
-        <Surface prose title="Contact" tone="science" variant="callout">
+        <Surface
+          prose
+          title="Deletion and lookup"
+          tone="science"
+          variant="callout"
+        >
           <p>
-            Privacy and deletion queries should go to{" "}
-            <a href={`mailto:${appConfig.privacyContactEmail}`}>
-              {appConfig.privacyContactEmail}
-            </a>
-            .
+            The product does not collect names or email addresses, so there is
+            no account lookup route. If you create a private report, use the
+            deletion control attached to that report while you still have access
+            to its private management link.
           </p>
         </Surface>
         <Surface prose title="Retention" variant="callout">

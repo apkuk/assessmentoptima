@@ -10,9 +10,9 @@ Related source-of-truth docs:
 
 ## Decision
 
-V0 AI analysis is **bring your own key** only.
+AI analysis is **bring your own key** only.
 
-No public server-funded AI analysis in v0.
+No public server-funded AI analysis is enabled.
 
 The user may provide an OpenAI or Anthropic-compatible API key for a single analysis request. The key is sent to the AssessmentOptima server so the provider call can be made, then sent to the chosen provider under the user's account. The key must never be stored, logged, persisted to localStorage, returned in a response, or sent in a URL.
 
@@ -50,13 +50,15 @@ Recommended defaults:
 
 OpenAI:
 
-- use the current low-cost model available in implementation context;
-- allow editable model string so the product does not hard-fail when defaults change.
+- use `gpt-5.4` as the default model;
+- expose `gpt-5.4`, `gpt-5.4-mini`, and `gpt-5.4-nano` as the current OpenAI options;
+- expose reasoning effort values `none`, `low`, `medium`, `high`, and `xhigh`;
+- display model-level latency, context, max-output, and standard text-token pricing metadata from the L0 model catalogue.
 
 Anthropic:
 
 - use the current low-cost model available in implementation context;
-- allow editable model string so the product does not hard-fail when defaults change.
+- expose only model IDs in the L0 model catalogue.
 
 Do not hard-code outdated model names as the only allowed options.
 
@@ -70,7 +72,7 @@ The route handler should:
 4. Build a bounded prompt.
 5. Call the selected provider with the supplied key.
 6. Validate/normalise output for display where practical.
-7. Return model output.
+7. Return model output plus provider usage metadata.
 8. Store only non-sensitive metadata if event logging is enabled.
 
 The route handler must not:
@@ -137,11 +139,20 @@ Response:
   "provider": "openai",
   "model": "user-editable-model",
   "rowCount": 123,
-  "analysis": "..."
+  "analysis": "...",
+  "usage": {
+    "inputTokens": 1200,
+    "outputTokens": 450,
+    "totalTokens": 1650,
+    "reasoningTokens": 120,
+    "latencyMs": 1800,
+    "estimatedCostUsd": 0.00975,
+    "costNote": "Estimated from OpenAI standard text-token pricing. Excludes taxes, regional uplift, service-tier changes, and tool-call fees."
+  }
 }
 ```
 
-Warnings and boundaries are displayed in page copy and prompt guardrails rather than repeated in the current response payload.
+Warnings and boundaries are displayed in page copy and prompt guardrails. Usage metadata is returned to help users understand input tokens, output tokens, latency, and estimated cost for the specific BYOK call. Anthropic cost estimation is not enabled unless pricing metadata is added to the L0 catalogue.
 
 ## Event Logging
 
@@ -179,7 +190,7 @@ The `/ai-analysis` page must include:
 - run button;
 - loading state;
 - error state for invalid key/provider failure;
-- result panel;
+- result panel with input tokens, output tokens, latency, and estimated cost where available;
 - warning that outputs may be wrong;
 - warning that outputs are not employment advice;
 - statement that the API key is transmitted to the server only for this request and is not stored.

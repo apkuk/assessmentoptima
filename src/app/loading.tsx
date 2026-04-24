@@ -4,14 +4,14 @@
  * Updated: 2026-04-24
  * Description: Global branded loading fallback for App Router route transitions.
  */
+import { BrandMark } from "@/components/brand-mark";
+
 export default function Loading() {
   return (
     <main className="page" aria-busy="true" aria-live="polite">
       <section className="section">
         <div className="loading-panel">
-          <span className="brand-mark" aria-hidden="true">
-            AO
-          </span>
+          <BrandMark />
           <div>
             <p className="panel-label">Loading</p>
             <div className="loading-line" />

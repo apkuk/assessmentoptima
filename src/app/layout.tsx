@@ -46,6 +46,10 @@ export const metadata: Metadata = {
   description: "Research-informed work-style assessment platform.",
   applicationName: appConfig.productName,
   authors: [{ name: appConfig.productName }],
+  icons: {
+    icon: [{ url: appConfig.logoPath, type: "image/png" }],
+    apple: [{ url: appConfig.logoPath, type: "image/png" }],
+  },
   openGraph: {
     title: appConfig.productName,
     description:

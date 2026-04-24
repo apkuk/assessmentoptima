@@ -108,24 +108,48 @@ export const aiAnalysisTypes = [
 // Current BYOK catalogues. Keep these in sync with the public /ai-analysis form.
 export const openaiModels = [
   {
-    id: "gpt-5.4-pro",
-    label: "GPT-5.4 Pro",
-    description: "Highest quality, slower. For complex synthesis.",
-  },
-  {
     id: "gpt-5.4",
     label: "GPT-5.4",
-    description: "Flagship default. Balanced quality and latency.",
+    description:
+      "Best intelligence at scale for complex professional workflows.",
+    latency: "Fast",
+    contextWindowTokens: 1_050_000,
+    maxOutputTokens: 128_000,
+    knowledgeCutoff: "2025-08-31",
+    pricingUsdPerMillionTokens: {
+      input: 2.5,
+      cachedInput: 0.25,
+      output: 15,
+    },
   },
   {
     id: "gpt-5.4-mini",
     label: "GPT-5.4 mini",
-    description: "Faster and cheaper. Good general-purpose choice.",
+    description:
+      "Lower-latency, lower-cost option for strong general analysis.",
+    latency: "Faster",
+    contextWindowTokens: 400_000,
+    maxOutputTokens: 128_000,
+    knowledgeCutoff: "2025-08-31",
+    pricingUsdPerMillionTokens: {
+      input: 0.75,
+      cachedInput: 0.075,
+      output: 4.5,
+    },
   },
   {
     id: "gpt-5.4-nano",
     label: "GPT-5.4 nano",
-    description: "Fastest and cheapest. Best for short jobs.",
+    description: "Cheapest GPT-5.4-class model for simple, high-volume tasks.",
+    latency: "Faster",
+    contextWindowTokens: 400_000,
+    maxOutputTokens: 128_000,
+    knowledgeCutoff: "2025-08-31",
+    pricingUsdPerMillionTokens: {
+      input: 0.2,
+      cachedInput: 0.02,
+      output: 1.25,
+    },
   },
 ] as const;
 
@@ -164,10 +188,11 @@ export const anthropicModelIds = anthropicModels.map(
 ];
 
 export const openaiReasoningEfforts = [
-  "minimal",
+  "none",
   "low",
   "medium",
   "high",
+  "xhigh",
 ] as const;
 export const openaiVerbosities = ["low", "medium", "high"] as const;
 export const anthropicThinkingEfforts = [
@@ -300,12 +325,25 @@ export const aiAnalysisRequestSchema = z.discriminatedUnion("provider", [
   anthropicRequestSchema,
 ]);
 
+export const aiUsageSchema = z
+  .object({
+    inputTokens: z.number().int().min(0).nullable(),
+    outputTokens: z.number().int().min(0).nullable(),
+    totalTokens: z.number().int().min(0).nullable(),
+    reasoningTokens: z.number().int().min(0).nullable(),
+    latencyMs: z.number().int().min(0),
+    estimatedCostUsd: z.number().min(0).nullable(),
+    costNote: z.string().min(1),
+  })
+  .strict();
+
 export const aiAnalysisResponseSchema = z
   .object({
     provider: z.enum(aiProviders),
     model: z.string().min(1),
     rowCount: z.number().int().min(0),
     analysis: z.string(),
+    usage: aiUsageSchema,
   })
   .strict();
 
@@ -475,6 +513,7 @@ export type AssessmentResult = z.infer<typeof assessmentResultSchema>;
 export type SubmitAssessmentInput = z.infer<typeof submitAssessmentSchema>;
 export type AiAnalysisRequest = z.infer<typeof aiAnalysisRequestSchema>;
 export type AiAnalysisResponse = z.infer<typeof aiAnalysisResponseSchema>;
+export type AiUsage = z.infer<typeof aiUsageSchema>;
 export type PublicDatasetField = z.infer<typeof publicDatasetFieldSchema>;
 export type PublicDatasetRow = z.infer<typeof publicDatasetRowSchema>;
 export type StoredAssessmentSubmission = z.infer<

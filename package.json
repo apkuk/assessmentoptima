@@ -10,8 +10,10 @@
   },
   "scripts": {
     "dev": "next dev",
+    "dev:3001": "next dev --port 3001",
     "build": "next build",
     "start": "next start",
+    "start:3001": "next start --port 3001",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",
@@ -22,7 +24,10 @@
     "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
     "verify": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test",
-    "clean": "rm -rf .next dist coverage tsconfig.tsbuildinfo"
+    "stop:3001": "pids=$(lsof -ti tcp:3001); if [ -n \"$pids\" ]; then kill $pids; fi",
+    "clean": "rm -rf .next dist coverage tsconfig.tsbuildinfo",
+    "fresh": "pnpm clean && pnpm install && pnpm build && pnpm dev:3001",
+    "fresh:prod": "pnpm stop:3001 && pnpm clean && pnpm install && pnpm build && pnpm start:3001"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.2.4",

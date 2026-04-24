@@ -22,17 +22,6 @@ interface RespondentContextFormProps {
   ) => void;
 }
 
-function labelFromValue(value: string): string {
-  return value
-    .split("_")
-    .map((part) =>
-      part.length <= 2 || /^\d/.test(part)
-        ? part.toUpperCase()
-        : `${part[0]?.toUpperCase() ?? ""}${part.slice(1)}`,
-    )
-    .join(" ");
-}
-
 export function RespondentContextForm({
   context,
   onChange,
@@ -48,8 +37,8 @@ export function RespondentContextForm({
               onChange={(event) => onChange(field.key, event.target.value)}
             >
               {field.options.map((option) => (
-                <option key={option} value={option}>
-                  {labelFromValue(option)}
+                <option key={option.value} value={option.value}>
+                  {option.label}
                 </option>
               ))}
             </select>

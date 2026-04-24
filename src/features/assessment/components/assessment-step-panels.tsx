@@ -107,7 +107,6 @@ export function ConsentStep({ consentDraft, onChange }: ConsentStepProps) {
         />
         <ConsentCard
           checked={consentDraft.publicDataset}
-          disabled={!consentDraft.researchStorage}
           label="Include my anonymised scores in the open dataset once release rules are met."
           onChange={(checked) => onChange("publicDataset", checked)}
           title="Open dataset"
@@ -167,8 +166,8 @@ export function ContextStep({ context, onChange }: ContextStepProps) {
         <p className="panel-label">A little context</p>
         <h2>About you</h2>
         <p className={styles.contextCopy}>
-          This is optional. Broad context helps future aggregate analysis, but
-          it is not needed for your personal report.
+          Optional broad context helps future aggregate analysis. It is not
+          needed for your personal report, and every field can be skipped.
         </p>
       </div>
       <RespondentContextForm context={context} onChange={onChange} />

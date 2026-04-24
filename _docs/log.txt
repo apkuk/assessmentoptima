@@ -1,0 +1,111 @@
+andrewkilshaw@mac New_Hogan % pnpm build
+ ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL  Command "build" not found
+andrewkilshaw@mac New_Hogan % pnpm fresh
+
+> new-hogan@0.1.0 fresh /Users/andrewkilshaw/AI_Projects/New_Hogan
+> pnpm clean && pnpm install && pnpm build && pnpm dev
+
+
+> new-hogan@0.1.0 clean /Users/andrewkilshaw/AI_Projects/New_Hogan
+> rm -rf .next dist coverage tsconfig.tsbuildinfo
+
+Lockfile is up to date, resolution step is skipped
+Already up to date
+
+╭ Warning ───────────────────────────────────────────────────────────────────────────────────╮
+│                                                                                            │
+│   Ignored build scripts: unrs-resolver.                                                    │
+│   Run "pnpm approve-builds" to pick which dependencies should be allowed to run scripts.   │
+│                                                                                            │
+╰────────────────────────────────────────────────────────────────────────────────────────────╯
+
+Done in 242ms using pnpm v10.14.0
+
+> new-hogan@0.1.0 build /Users/andrewkilshaw/AI_Projects/New_Hogan
+> next build
+
+▲ Next.js 16.2.4 (Turbopack)
+- Environments: .env
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 1507ms
+✓ Finished TypeScript in 1425ms
+✓ Collecting page data using 7 workers in 337ms
+✓ Generating static pages using 7 workers (20/20) in 270ms
+✓ Finalizing page optimization in 10ms
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /ai-analysis
+├ ƒ /api/aggregates
+├ ƒ /api/ai/analyze
+├ ƒ /api/dataset.csv
+├ ƒ /api/dataset.json
+├ ƒ /api/dataset/dictionary.json
+├ ○ /api/docs
+├ ƒ /api/health
+├ ƒ /api/og/[token]
+├ ƒ /api/results/[token]
+├ ƒ /api/results/[token]/experiment.ics
+├ ƒ /api/submit
+├ ○ /assessment
+├ ƒ /dataset
+├ ○ /dataset/dictionary
+├ ○ /how-i-built-this
+├ ○ /icon.svg
+├ ○ /limitations
+├ ○ /opengraph-image
+├ ○ /privacy
+├ ƒ /results/[token]
+└ ○ /science
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+> new-hogan@0.1.0 dev /Users/andrewkilshaw/AI_Projects/New_Hogan
+> next dev
+
+⚠ Port 3000 is in use by process 53823, using available port 3001 instead.
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3001
+- Network:       http://192.168.86.169:3001
+- Environments: .env
+✓ Ready in 261ms
+
+ GET / 200 in 1087ms (next.js: 958ms, application-code: 128ms)
+ GET /assessment 200 in 349ms (next.js: 335ms, application-code: 14ms)
+[browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+✓ Compiled in 43ms
+✓ Compiled in 35ms
+✓ Compiled in 22ms
+ GET /assessment 200 in 73ms (next.js: 4ms, application-code: 68ms)
+✓ Compiled in 51ms
+[browser] Uncaught TypeError: value.split is not a function
+    at labelFromValue (src/features/assessment/application/respondent-context.ts:65:7)
+    at <unknown> (src/features/assessment/application/respondent-context.ts:80:31)
+    at Array.map (<anonymous>)
+    at <unknown> (src/features/assessment/application/respondent-context.ts:78:31)
+    at Array.map (<anonymous>)
+    at RespondentContextForm (src/features/assessment/application/respondent-context.ts:70:23)
+    at Set.forEach (<anonymous>)
+    at ContextStep (src/features/assessment/components/assessment-step-panels.tsx:173:7)
+    at AssessmentForm (src/features/assessment/components/assessment-form.tsx:488:11)
+    at AssessmentPage (src/app/assessment/page.tsx:26:7)
+  63 |       finance: "Finance",
+  64 |       healthcare: "Healthcare",
+> 65 |       education: "Education",
+     |       ^
+  66 |       professional_services: "Professional Services",
+  67 |       manufacturing: "Manufacturing",
+  68 |       public_nonprofit: "Public / Nonprofit",
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+✓ Compiled in 23ms
+ GET /assessment 200 in 60ms (next.js: 19ms, application-code: 41ms)
+✓ Compiled in 25ms
+
+ ELIFECYCLE  Command failed with exit code 143.
+ ELIFECYCLE  Command failed with exit code 143.
+andrewkilshaw@mac New_Hogan % 

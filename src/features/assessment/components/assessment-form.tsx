@@ -19,6 +19,7 @@ import {
   assessmentStorageKey,
   type AssessmentFlowStep,
   type ConsentDraft,
+  updateConsentDraft,
 } from "@/features/assessment/application/assessment-flow";
 import {
   CONSENT_VERSION,
@@ -273,12 +274,7 @@ export function AssessmentForm() {
   }
 
   function updateConsent(key: keyof ConsentDraft, value: boolean): void {
-    setConsentDraft((current) => ({
-      ...current,
-      [key]: value,
-      publicDataset:
-        key === "researchStorage" && !value ? false : current.publicDataset,
-    }));
+    setConsentDraft((current) => updateConsentDraft(current, key, value));
   }
 
   function validateBeforeNext(): boolean {

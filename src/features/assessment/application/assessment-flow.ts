@@ -48,3 +48,19 @@ export interface ConsentDraft {
   researchStorage: boolean;
   publicDataset: boolean;
 }
+
+export function updateConsentDraft(
+  current: ConsentDraft,
+  key: keyof ConsentDraft,
+  value: boolean,
+): ConsentDraft {
+  if (key === "researchStorage" && !value) {
+    return { ...current, researchStorage: false, publicDataset: false };
+  }
+
+  if (key === "publicDataset" && value) {
+    return { ...current, researchStorage: true, publicDataset: true };
+  }
+
+  return { ...current, [key]: value };
+}

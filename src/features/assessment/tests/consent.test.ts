@@ -8,7 +8,18 @@ import { describe, expect, it } from "vitest";
 
 import { appConfig } from "@/config/app";
 
+import {
+  type ConsentDraft,
+  updateConsentDraft,
+} from "../application/assessment-flow";
 import { consentSchema } from "../schemas/assessment";
+
+const initialConsentDraft: ConsentDraft = {
+  useBoundaryAccepted: false,
+  assessmentProcessing: false,
+  researchStorage: false,
+  publicDataset: false,
+};
 
 describe("consentSchema", () => {
   it("requires use-boundary acceptance", () => {
@@ -45,5 +56,29 @@ describe("consentSchema", () => {
     });
 
     expect(result.success).toBe(true);
+  });
+});
+
+describe("updateConsentDraft", () => {
+  it("enables research storage when public dataset is selected", () => {
+    expect(
+      updateConsentDraft(initialConsentDraft, "publicDataset", true),
+    ).toMatchObject({
+      researchStorage: true,
+      publicDataset: true,
+    });
+  });
+
+  it("clears public dataset when research storage is disabled", () => {
+    expect(
+      updateConsentDraft(
+        { ...initialConsentDraft, researchStorage: true, publicDataset: true },
+        "researchStorage",
+        false,
+      ),
+    ).toMatchObject({
+      researchStorage: false,
+      publicDataset: false,
+    });
   });
 });

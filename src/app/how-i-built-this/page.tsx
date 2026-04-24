@@ -180,17 +180,17 @@ const enterprisePractices = [
 const statusRows = [
   {
     label: "Local confidence",
-    value: "pnpm verify and pnpm build pass.",
+    value: "pnpm verify, pnpm build, and the production smoke path are green.",
   },
   {
     label: "Persistence",
     value:
-      "MongoDB Atlas persistence has been verified locally with a full 54-answer submission and private report retrieval.",
+      "MongoDB Atlas persistence is working in production for submit, private result retrieval, dataset eligibility, and delete-by-management-token.",
   },
   {
     label: "Deployment",
     value:
-      "The Vercel deployment is live; production submit/result/dataset smoke tests should be rerun after the latest hardening changes are pushed.",
+      "The Vercel deployment is live at assessmentoptima.vercel.app with the transactional assessment journey operational.",
   },
 ];
 
@@ -367,7 +367,7 @@ export default function HowIBuiltThisPage() {
       <section className={styles.statusSection}>
         <div>
           <p className={styles.panelKicker}>Where it stands</p>
-          <h2>Green locally. Mongo verified. Production smoke next.</h2>
+          <h2>Operational in production. More than a demo.</h2>
         </div>
         <div className={styles.statusList}>
           {statusRows.map((row) => (

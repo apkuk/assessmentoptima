@@ -350,7 +350,7 @@ At **2026-04-23 22:49 BST**, the public How I Built This UI was upgraded into a 
 
 - The page now presents the Ask 1 / Ask 2 narrative, 47-minute document phase, two-hour sprint target, shipped product proof points, and AI-human accountability in the public UI.
 - The story now makes the model-behaviour proof point clearer: speed mattered, but the stronger signal was connecting adjacent requirements across privacy, open data, sharing, maintainability, and deployment.
-- The page now includes an honest launch-status section: local verification/build and public Vercel routes are green, while production MongoDB persistence still needs Atlas network access from Vercel/serverless egress before the assessment can be shared as fully transactional.
+- The page included an honest launch-status section at that point: local verification/build and public Vercel routes were green, while production MongoDB persistence still needed Atlas network access from Vercel/serverless egress before the assessment could be shared as fully transactional.
 
 At **2026-04-23 22:59 BST**, the core assessment journey was made resilient to production persistence outages.
 
@@ -363,6 +363,12 @@ At **2026-04-23 23:02 BST**, the dataset page was polished for launch resilience
 
 - Public export buttons are locked while the dataset is suppressed or persistence is unavailable, preventing visitors from clicking into raw error responses.
 - The dataset page now explains that private reports work already, and public exports unlock when enough opted-in responses are available and live storage is ready.
+
+At **2026-04-24 14:57 BST**, the public build-story status was updated for the finished production state.
+
+- The How I Built This page now states that the product is operational in production rather than waiting on a production smoke pass.
+- MongoDB Atlas persistence is described as production-working for submit, private result retrieval, dataset eligibility, and delete-by-management-token.
+- The launch claim is now framed as a production-backed public prototype, not merely a local MVP or static demonstration.
 
 ## Required Sections
 

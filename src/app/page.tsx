@@ -19,10 +19,10 @@ import { appConfig } from "@/config/app";
 import { routes } from "@/config/routes";
 
 const mapRows = [
-  { label: "Commitment", value: 84, color: "var(--ao-brand)" },
-  { label: "Learning", value: 78, color: "var(--ao-science)" },
-  { label: "Trust", value: 72, color: "var(--ao-success)" },
-  { label: "Pressure drift", value: 41, color: "var(--ao-pressure)" },
+  { label: "Commitment Rhythm", value: 84, color: "var(--ao-brand)" },
+  { label: "Adaptive Learning", value: 78, color: "var(--ao-science)" },
+  { label: "Trust Stewardship", value: 72, color: "var(--ao-success)" },
+  { label: "Pressure Regulation", value: 41, color: "var(--ao-pressure)" },
 ];
 
 export default function Home() {
@@ -60,7 +60,7 @@ export default function Home() {
           src="/images/home-hero.png"
         >
           <div className="map-panel">
-            <p className="panel-label">Live report preview</p>
+            <p className="panel-label">Example report preview</p>
             {mapRows.map((row) => (
               <div className="map-row" key={row.label}>
                 <span>{row.label}</span>

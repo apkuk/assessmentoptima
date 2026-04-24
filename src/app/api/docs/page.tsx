@@ -6,6 +6,12 @@
  */
 import type { Metadata } from "next";
 
+import {
+  ContentGrid,
+  PageHeader,
+  PageShell,
+  Surface,
+} from "@/components/ui/page";
 import { appConfig } from "@/config/app";
 import { apiRoutes } from "@/config/routes";
 
@@ -40,28 +46,22 @@ const examples = [
 
 export default function ApiDocsPage() {
   return (
-    <main className="page">
-      <section className="section">
-        <p className="eyebrow">Research API</p>
-        <h1 className="page-title">API docs</h1>
-        <p className="lede">
-          Public endpoints expose aggregate and anonymised score-level data once
-          small-cell thresholds are met. Private result endpoints require the
-          respondent&apos;s unguessable view token, and deletion additionally
-          requires a separate management token.
-        </p>
-      </section>
+    <PageShell>
+      <PageHeader
+        eyebrow="Research API"
+        title="API docs"
+        lede="Public endpoints expose aggregate and anonymised score-level data once small-cell thresholds are met. Private result endpoints require the respondent's unguessable view token, and deletion additionally requires a separate management token."
+      />
 
-      <section className="content-grid">
+      <ContentGrid>
         {examples.map((example) => (
-          <article className="panel" key={example.title}>
-            <p className="panel-label">{example.title}</p>
+          <Surface key={example.title} label={example.title}>
             <pre className="code-block">
               <code>{example.command}</code>
             </pre>
-          </article>
+          </Surface>
         ))}
-      </section>
-    </main>
+      </ContentGrid>
+    </PageShell>
   );
 }

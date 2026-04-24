@@ -6,6 +6,7 @@
  */
 import type { Metadata } from "next";
 
+import { PageHeader, PageShell } from "@/components/ui/page";
 import { dataDictionary } from "@/features/assessment/application/public-dataset";
 
 export const metadata: Metadata = {
@@ -14,16 +15,12 @@ export const metadata: Metadata = {
 
 export default function DataDictionaryPage() {
   return (
-    <main className="page">
-      <section className="section">
-        <p className="eyebrow">Dataset schema</p>
-        <h1 className="page-title">Data dictionary</h1>
-        <p className="lede">
-          The v0 public dataset exposes anonymised score-level rows only.
-          Respondent context fields are held back from row-level export until
-          sample size and disclosure controls support safer release.
-        </p>
-      </section>
+    <PageShell>
+      <PageHeader
+        eyebrow="Dataset schema"
+        title="Data dictionary"
+        lede="The v0 public dataset exposes anonymised score-level rows only. Respondent context fields are held back from row-level export until sample size and disclosure controls support safer release."
+      />
 
       <section className="panel table-wrap">
         <table>
@@ -45,6 +42,6 @@ export default function DataDictionaryPage() {
           </tbody>
         </table>
       </section>
-    </main>
+    </PageShell>
   );
 }

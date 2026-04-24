@@ -57,6 +57,7 @@ Before adding a type, constant, enum-like array, field list, label map, route pa
 | Product names, assessment names, version defaults, database defaults, filenames, citation strings, local fallbacks, OG image sizes | `src/config/app.ts` |
 | Public page paths and API route builders | `src/config/routes.ts` |
 | Derived feature metadata such as respondent context labels, AI provider defaults, scoring composites, archetype rules, prompt guardrails, and page grouping logic | L3 application modules under `src/features/*/application/` |
+| Reusable page shells, headers, grids, action rows, button links, cards, surfaces, and metric primitives | `src/components/ui/*` |
 | Component-only presentational copy or layout arrays that do not mirror a schema/config/route/contract | The component or a nearby UI helper |
 
 Implementation rules:
@@ -67,6 +68,7 @@ Implementation rules:
 - Local interfaces are allowed for component props or route context. API/domain payload types should be schema-inferred or derived with `Pick<>`/`Omit<>` from L0 contracts.
 - Tests should import canonical field lists and constants unless the test is explicitly asserting the canonical list itself.
 - Docs should describe the same owners used in code and should not introduce alternate field names or route paths.
+- L5 pages should use `src/components/ui/*` primitives for repeated layout and surface patterns before adding raw class combinations inline.
 
 Change procedure:
 

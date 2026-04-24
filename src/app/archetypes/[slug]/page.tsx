@@ -5,9 +5,10 @@
  * Description: Public archetype share page that avoids exposing private result tokens or score profiles.
  */
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { ButtonLink } from "@/components/ui/actions";
+import { ContentGrid, PageShell, Surface } from "@/components/ui/page";
 import { appConfig } from "@/config/app";
 import { apiRoutes, routes } from "@/config/routes";
 import { publicArchetypes } from "@/features/assessment/application/scoring";
@@ -67,7 +68,7 @@ export default async function ArchetypePage({ params }: ArchetypePageProps) {
   }
 
   return (
-    <main className="page">
+    <PageShell>
       <section className="report-hero">
         <div>
           <p className="eyebrow">Public archetype</p>
@@ -81,30 +82,26 @@ export default async function ArchetypePage({ params }: ArchetypePageProps) {
             expose private result tokens, respondent context, detailed scores,
             or deletion credentials.
           </p>
-          <Link className="button" href={routes.assessment}>
-            Take the assessment
-          </Link>
+          <ButtonLink href={routes.assessment}>Take the assessment</ButtonLink>
         </aside>
       </section>
 
-      <section className="content-grid section">
-        <div className="panel">
-          <h2>What this means</h2>
+      <ContentGrid className="section">
+        <Surface title="What this means">
           <p>
             WorkStyle Compass archetypes are shorthand for a person&apos;s most
             visible current work-style pattern. They are developmental prompts,
             not fixed types, diagnoses, or selection recommendations.
           </p>
-        </div>
-        <div className="panel">
-          <h2>How to read it</h2>
+        </Surface>
+        <Surface title="How to read it">
           <p>
             A full private report includes scale scores, pressure risks, and a
             30-day experiment. Public share pages intentionally stay at the
             archetype level to keep respondent data private.
           </p>
-        </div>
-      </section>
-    </main>
+        </Surface>
+      </ContentGrid>
+    </PageShell>
   );
 }

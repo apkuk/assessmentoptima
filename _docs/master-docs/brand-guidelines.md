@@ -314,6 +314,23 @@ Future components may use either:
 - local CSS modules for complex component styling
 - global utility classes only when they are truly shared
 
+## Reusable UI Primitives
+
+Shared public-page patterns live in `src/components/ui/*`.
+
+Use these primitives before recreating the same class combinations in pages:
+
+- `PageShell`
+- `PageHeader`
+- `Section`
+- `ContentGrid`
+- `Surface`
+- `MetricCard`
+- `ActionRow`
+- `ButtonLink`
+
+If a new page repeats a layout, card, CTA, or metric pattern twice, add or extend a primitive rather than keeping the pattern inline.
+
 ## Sources
 
 - [WCAG 2.2](https://www.w3.org/TR/wcag/)

@@ -6,6 +6,12 @@
  */
 import type { Metadata } from "next";
 
+import {
+  ContentGrid,
+  PageHeader,
+  PageShell,
+  Surface,
+} from "@/components/ui/page";
 import { aiAnalysisPromptPolicy } from "@/features/assessment/application/ai-analysis";
 import { AiAnalysisForm } from "@/features/assessment/components/ai-analysis-form";
 
@@ -15,23 +21,21 @@ export const metadata: Metadata = {
 
 export default function AiAnalysisPage() {
   return (
-    <main className="page">
-      <section className="section">
-        <p className="eyebrow">BYOK analysis</p>
-        <h1 className="page-title">Query the open dataset</h1>
-        <p className="lede">
-          Use your own OpenAI or Anthropic key to synthesise the public dataset
-          without opening up the project owner&apos;s LLM budget. Your key is
-          sent to the server for this request, is not stored by this app, and
-          may be processed by your chosen provider under your account.
-        </p>
-      </section>
+    <PageShell>
+      <PageHeader
+        eyebrow="BYOK analysis"
+        title="Query the open dataset"
+        lede="Use your own OpenAI or Anthropic key to synthesise the public dataset without opening up the project owner's LLM budget. Your key is sent to the server for this request, is not stored by this app, and may be processed by your chosen provider under your account."
+      />
       <AiAnalysisForm />
 
-      <section className="content-grid section">
-        <div className="callout" data-tone="science">
-          <p className="panel-label">Example output</p>
-          <h2>What visitors can expect</h2>
+      <ContentGrid className="section">
+        <Surface
+          label="Example output"
+          title="What visitors can expect"
+          tone="science"
+          variant="callout"
+        >
           <div className="markdown-output">
             <strong>Key observations:</strong> Early data should be read as
             directional only. The most useful patterns are likely differences
@@ -46,17 +50,15 @@ export default function AiAnalysisPage() {
             distributions by broad role level once minimum-cell thresholds are
             met.
           </div>
-        </div>
-        <div className="panel">
-          <p className="panel-label">Prompt transparency</p>
-          <h2>Guardrail prompt</h2>
+        </Surface>
+        <Surface label="Prompt transparency" title="Guardrail prompt">
           {aiAnalysisPromptPolicy.map((line) => (
             <p className="mono" key={line}>
               {line}
             </p>
           ))}
-        </div>
-      </section>
-    </main>
+        </Surface>
+      </ContentGrid>
+    </PageShell>
   );
 }

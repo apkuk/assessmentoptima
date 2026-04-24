@@ -168,6 +168,8 @@ pnpm verify
 pnpm clean
 ```
 
+`pnpm dev` and `pnpm dev:3001` should open the local frontend in Chrome by default through `scripts/dev-open.mjs`. Use `OPEN_BROWSER=false` when running in automation or when a browser launch is not desired.
+
 Database migration scripts can be added only if/when a migration approach is selected for MongoDB schema/index setup.
 
 ## Deployment To Vercel

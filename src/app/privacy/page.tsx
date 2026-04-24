@@ -6,6 +6,12 @@
  */
 import type { Metadata } from "next";
 
+import {
+  ContentGrid,
+  PageHeader,
+  PageShell,
+  Surface,
+} from "@/components/ui/page";
 import { appConfig } from "@/config/app";
 
 export const metadata: Metadata = {
@@ -22,29 +28,23 @@ const rules = [
 
 export default function PrivacyPage() {
   return (
-    <main className="page">
-      <section className="section">
-        <p className="eyebrow">Data protection</p>
-        <h1 className="page-title">Privacy posture</h1>
-        <p className="lede">
-          The product is designed around data minimisation: collect only enough
-          information to generate a report and support safe, anonymised public
-          research.
-        </p>
-      </section>
+    <PageShell>
+      <PageHeader
+        eyebrow="Data protection"
+        title="Privacy posture"
+        lede="The product is designed around data minimisation: collect only enough information to generate a report and support safe, anonymised public research."
+      />
 
-      <section className="content-grid">
+      <ContentGrid>
         {rules.map((rule, index) => (
-          <div className="panel" key={rule}>
-            <p className="panel-label">Rule {index + 1}</p>
+          <Surface key={rule} label={`Rule ${index + 1}`}>
             <p>{rule}</p>
-          </div>
+          </Surface>
         ))}
-      </section>
+      </ContentGrid>
 
-      <section className="content-grid section">
-        <div className="callout" data-tone="science">
-          <h2>Contact</h2>
+      <ContentGrid className="section">
+        <Surface title="Contact" tone="science" variant="callout">
           <p>
             Privacy and deletion queries should go to{" "}
             <a href={`mailto:${appConfig.privacyContactEmail}`}>
@@ -52,12 +52,11 @@ export default function PrivacyPage() {
             </a>
             .
           </p>
-        </div>
-        <div className="callout">
-          <h2>Retention</h2>
+        </Surface>
+        <Surface title="Retention" variant="callout">
           <p>{appConfig.retentionPolicyPlaceholder}</p>
-        </div>
-      </section>
-    </main>
+        </Surface>
+      </ContentGrid>
+    </PageShell>
   );
 }

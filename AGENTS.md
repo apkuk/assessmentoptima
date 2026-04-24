@@ -23,12 +23,13 @@ Follow `_docs/master-docs/brand-guidelines.md` for visual design. The brand shou
 - Keep behavior at the edges validated. When the app adds forms, API routes, server actions, or imports, use schema validation rather than trusting untyped input.
 - Avoid premature framework churn. Start with Next.js App Router conventions when the app scaffold is added, because Vercel deployment is the target.
 - Keep UI and domain logic separate enough that scoring, export eligibility, and privacy rules can be tested without rendering React.
+- Build front-end pages from shared UI primitives first. Prefer `src/components/ui/*` for repeated page shells, headers, grids, surfaces, metrics, action rows, and button links instead of recreating raw class combinations inline. Add or extend a primitive when a pattern repeats across pages.
 
 ## Developer Experience
 
 - Every meaningful behavior change should be covered by a fast unit test unless the risk is genuinely trivial.
 - Use `pnpm verify` as the local confidence check. It runs strict typechecking, linting, format checks, and the Vitest suite.
-- Keep scripts boring and predictable: `dev`, `build`, `lint`, `test`, `test:watch`, `typecheck`, and `verify` should continue to work throughout the project.
+- Keep scripts boring and predictable: `dev`, `build`, `lint`, `test`, `test:watch`, `typecheck`, and `verify` should continue to work throughout the project. `pnpm dev` opens the local frontend in Chrome by default; set `OPEN_BROWSER=false` to suppress that behavior or `BROWSER="<app name>"` to override the browser.
 - Add dependencies only when they remove real complexity or match the selected stack. Avoid one-off libraries for simple formatting or data transforms.
 - Prefer clear file names and stable module boundaries over clever abstractions.
 

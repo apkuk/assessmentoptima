@@ -176,6 +176,7 @@ Legend:
 - [x] Brand-tinted focus ring with soft halo.
 - [x] Print stylesheet for reports.
 - [x] Default generated OG image and favicon.
+- [x] Shared public-page UI primitives for page shells, headers, grids, surfaces, metrics, action rows, and button links.
 
 ## Privacy And Dataset
 
@@ -227,6 +228,7 @@ Legend:
 
 - [x] `pnpm verify` passes.
 - [x] `pnpm build` passes.
+- [x] `pnpm dev` launches the local frontend in Chrome by default.
 - [x] End-to-end assessment works on desktop.
 - [ ] End-to-end assessment works on mobile.
 - [x] MongoDB write works.

@@ -210,6 +210,12 @@ At **2026-04-24 11:02 BST**, the public-launch hardening pass was completed from
 - Privacy copy now clarifies hosting-provider operational metadata, contact, and retention placeholders.
 - The global CSS was split into base, layout, reporting, and responsive layers so source files stay under the 600-line maintainability rule.
 
+At **2026-04-24 11:15 BST**, the frontend DX and reuse pass was added.
+
+- `pnpm dev` and `pnpm dev:3001` now start Next.js through `scripts/dev-open.mjs` and open the local frontend in Google Chrome by default.
+- Shared UI primitives were introduced under `src/components/ui/` for page shells, page headers, sections, content grids, surfaces, metric cards, action rows, and button links.
+- Repeated public-page markup was refactored to those primitives so new pages have a more consistent look and fewer inline class combinations.
+
 At **2026-04-23 22:07 BST**, the home page hero formatting was corrected after visual review.
 
 - The oversized viewport-scaled hero title was replaced with breakpoint-based display tokens.

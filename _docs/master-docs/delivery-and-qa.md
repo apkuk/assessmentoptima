@@ -11,7 +11,7 @@ Current implementation status as of 2026-04-24 12:50 BST:
 - A root `vercel.json` now forces the deployment to use the Next.js framework preset, `pnpm install --frozen-lockfile`, `pnpm build`, and default Next.js output handling.
 - Production environment variables have been added and production redeploy is ready at `https://assessmentoptima.vercel.app`.
 - `/`, `/dataset`, and `/api/health` return `200` in production.
-- Local production smoke testing now passes route checks and the Mongo-backed submit -> result -> delete flow. First Vercel `/api/submit` smoke testing previously exposed a MongoDB connectivity timeout in Vercel runtime; production persistence still needs a fresh Vercel smoke test after network/env confirmation.
+- Local production smoke testing now passes route checks and the Mongo-backed submit -> result -> delete flow. Vercel production version env values have been aligned to `wsc-v2.0` / `consent-v2.0`, and a fresh production deploy serves core routes. Production `/api/submit` still returns the signed stateless fallback, so Mongo-backed production persistence still needs Atlas network access from Vercel runtime.
 - The core assessment journey now has a signed stateless result-token fallback. If MongoDB is unreachable during submission, the user can still receive a private report, result API payload, dynamic OG image, and 30-day experiment calendar export. These fallback results are not added to the public dataset.
 - Remaining launch work is Vercel runtime persistence QA, mobile hands-on QA, final dataset licence decision, optional seed data, and deeper AI-provider test coverage.
 
@@ -304,7 +304,7 @@ Do not consider v0 complete until:
 - [ ] Mobile end-to-end assessment reviewed by a human.
 - [ ] Vercel preview deployment passes.
 - [x] Vercel production build/deployment serves core routes.
-- [ ] Vercel production persistence-backed submit/result smoke passes.
+- [!] Vercel production persistence-backed submit/result smoke currently falls back to stateless result tokens.
 
 ## Roadmap
 

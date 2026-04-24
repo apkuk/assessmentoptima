@@ -244,12 +244,13 @@ Legend:
 
 - [x] Vercel project linked.
 - [x] Vercel env vars configured.
+- [x] Vercel production version env values aligned to `wsc-v2.0` / `consent-v2.0`.
 - [!] MongoDB Atlas network/user permissions confirmed for Vercel.
 - [ ] Preview deployment passes.
 - [x] Production deployment builds and serves core non-persistence routes.
 - [x] Core route smoke test after deploy.
 - [ ] Dataset export smoke test after deploy.
-- [!] Submit/result smoke test after deploy.
+- [!] Submit/result smoke test after deploy returns the signed stateless fallback; Mongo-backed production persistence still needs Atlas network access.
 
 ## Acceptance
 
@@ -281,5 +282,5 @@ Legend:
 - [ ] Feedback polish pass after review.
 - [ ] Decide dataset licence.
 - [x] Add privacy/contact and retention placeholders.
-- [ ] Allow Vercel production functions to reach MongoDB Atlas, then rerun submit/result smoke.
+- [ ] Allow Vercel production functions to reach MongoDB Atlas, then rerun submit/result smoke. Current evidence: the same Vercel production env values can ping MongoDB from local, while Vercel production `/api/submit` falls back to `x-assessmentoptima-storage: stateless`.
 - [ ] Deploy Vercel preview.

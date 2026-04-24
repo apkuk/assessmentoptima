@@ -154,6 +154,7 @@ Legend:
 
 - [x] Landing page `/`.
 - [x] About/founder page `/about`.
+- [x] Practical model page `/model`.
 - [x] Science/methodology page `/science`.
 - [x] Privacy/data page `/privacy`.
 - [x] Limitations page `/limitations`.

@@ -1,7 +1,7 @@
 /**
  * File: src/app/layout.tsx
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Root Next.js layout, metadata, fonts, and shared site chrome.
  */
 import type { Metadata } from "next";
@@ -76,7 +76,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body
         className={`${plex.variable} ${editorial.variable} ${mono.variable}`}
       >

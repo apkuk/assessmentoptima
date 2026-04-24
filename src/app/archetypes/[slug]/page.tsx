@@ -78,7 +78,7 @@ export default async function ArchetypePage({ params }: ArchetypePageProps) {
           <h1 className="page-title">{archetype.name}</h1>
           <p className="lede">{archetype.summary}</p>
         </div>
-        <aside className="archetype-panel">
+        <div className="archetype-panel">
           <p className="panel-label">Share-safe summary</p>
           <p>
             This page shows only an archetype-level description. It does not
@@ -86,7 +86,7 @@ export default async function ArchetypePage({ params }: ArchetypePageProps) {
             or deletion credentials.
           </p>
           <ButtonLink href={routes.assessment}>Take the assessment</ButtonLink>
-        </aside>
+        </div>
       </section>
 
       <ContentGrid className="section">

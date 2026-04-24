@@ -375,7 +375,7 @@ export function AiAnalysisForm() {
         </button>
       </form>
 
-      <aside className="dataset-card">
+      <div className="dataset-card">
         <p className="panel-label">Output</p>
         {analysis ? (
           <div className="markdown-output">{analysis}</div>
@@ -385,7 +385,7 @@ export function AiAnalysisForm() {
             release threshold and your provider request completes.
           </p>
         )}
-      </aside>
+      </div>
     </section>
   );
 }

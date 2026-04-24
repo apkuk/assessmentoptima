@@ -26,7 +26,8 @@ Do not import MongoDB or provider SDKs into client components.
 | --- | --- | --- |
 | `/` | Landing page | Server Component |
 | `/about` | Founder/about page for Andrew Kilshaw and the AI sabbatical context | Server Component |
-| `/science` | Behavioural science and methodology | Server Component |
+| `/model` | Practical explanation of what WorkStyle Compass measures, how the report works, and how archetypes should be read | Server Component |
+| `/science` | Behavioural science rationale, interpretation limits, and validation roadmap | Server Component |
 | `/privacy` | Consent, data use, anonymisation, open dataset explanation | Server Component |
 | `/limitations` | Prohibited uses and validation roadmap | Server Component |
 | `/assessment` | Assessment flow | Client component inside App Router page |
@@ -97,13 +98,25 @@ Must include:
 
 Tone: credible, human, pragmatic, and focused on hands-on AI/product-building rather than biography for its own sake.
 
+### Model Page `/model`
+
+Must explain:
+
+- WorkStyle Compass as the assessment/instrument;
+- the Work Operating System model as the practical framework underneath it;
+- the three work operating systems: Operational Clarity, Human Coordination, and Adaptive Capacity;
+- the nine domains using canonical names from [Assessment Model](./assessment-model.md);
+- what the respondent gets back: domain scores, operating-system scores, archetype, strengths, development edges, pressure-drift prompts, current-sample comparison when safe, and a 30-day experiment;
+- archetypes as share-safe shorthand, not fixed personality labels.
+
+Tone: practical, clear, non-technical, and useful for someone deciding whether to take the assessment.
+
 ### Science Page `/science`
 
 Must explain:
 
-- the model is inspired by occupational psychology and professional assessment architecture;
-- the nine domains;
-- the three work operating systems: Operational Clarity, Human Coordination, and Adaptive Capacity;
+- the assessment is research-informed but not validated yet;
+- the behavioural science constructs behind the model;
 - pressure-drift signals as reflection prompts, not diagnoses;
 - self-report limitations;
 - no normative percentile claims yet;

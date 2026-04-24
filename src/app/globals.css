@@ -8,5 +8,6 @@
 @plugin "@tailwindcss/typography";
 @import "./styles/base.css";
 @import "./styles/layout.css";
+@import "./styles/experience.css";
 @import "./styles/reporting.css";
 @import "./styles/responsive.css";

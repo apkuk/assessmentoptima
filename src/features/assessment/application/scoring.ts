@@ -199,6 +199,8 @@ export const publicArchetypes = [
   balancedArchetype,
 ] as const;
 
+export type PublicArchetype = (typeof publicArchetypes)[number];
+
 export function findPublicArchetype(slug: string) {
   return publicArchetypes.find((archetype) => archetype.id === slug);
 }

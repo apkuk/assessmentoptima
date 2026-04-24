@@ -12,6 +12,7 @@ import {
   Activity,
   BarChart3,
   BookOpen,
+  Compass,
   FlaskConical,
   Menu,
   Sparkles,
@@ -24,6 +25,7 @@ import { routes } from "@/config/routes";
 
 const navItems = [
   { href: routes.assessment, label: "Assessment", icon: Activity },
+  { href: routes.model, label: "Model", icon: Compass },
   { href: routes.science, label: "Science", icon: FlaskConical },
   { href: routes.dataset, label: "Dataset", icon: BarChart3 },
   { href: routes.aiAnalysis, label: "AI analysis", icon: Sparkles },

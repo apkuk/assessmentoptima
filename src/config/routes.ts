@@ -8,6 +8,7 @@ export const routes = {
   home: "/",
   about: "/about",
   assessment: "/assessment",
+  model: "/model",
   science: "/science",
   privacy: "/privacy",
   limitations: "/limitations",

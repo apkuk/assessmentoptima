@@ -29,8 +29,8 @@ export function SiteHeader() {
       </Link>
 
       <div className="header-actions">
-        <ThemeToggle />
         <SiteNav />
+        <ThemeToggle />
       </div>
     </header>
   );

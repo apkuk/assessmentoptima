@@ -75,6 +75,7 @@
   display: flex;
   align-items: center;
   gap: 0.45rem;
+  margin-left: auto;
 }
 
 .site-nav::-webkit-scrollbar {
@@ -139,6 +140,11 @@
     border-color var(--ao-duration-fast) var(--ao-ease),
     color var(--ao-duration-fast) var(--ao-ease),
     transform var(--ao-duration-fast) var(--ao-ease);
+}
+
+.theme-toggle {
+  width: 2.45rem;
+  padding: 0;
 }
 
 .theme-toggle:hover,
@@ -215,7 +221,7 @@
 
 .hero {
   display: grid;
-  min-height: calc(100vh - 8.75rem);
+  min-height: min(42rem, calc(100vh - 8.75rem));
   align-items: center;
   gap: clamp(var(--ao-space-5), 3vw, var(--ao-space-8));
   padding: clamp(var(--ao-space-8), 5vw, var(--ao-space-section-lg)) 0;
@@ -223,6 +229,10 @@
 
 .hero[data-layout="two"] {
   grid-template-columns: minmax(0, 1.08fr) minmax(18rem, 0.62fr);
+}
+
+.hero > * {
+  min-width: 0;
 }
 
 .hero-copy {

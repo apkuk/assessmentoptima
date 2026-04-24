@@ -74,7 +74,6 @@
     display: inline-flex;
   }
 
-  .theme-toggle span,
   .nav-menu-button span {
     display: none;
   }

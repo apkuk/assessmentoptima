@@ -31,7 +31,7 @@ export function AssessmentStepper({
   const completion = Math.round((answeredCount / itemCount) * 100);
 
   return (
-    <aside className={styles.flowStatus} aria-label="Assessment progress">
+    <div className={styles.flowStatus} aria-label="Assessment progress">
       <div className={styles.saveStatus} aria-live="polite">
         {savedLabel}
       </div>
@@ -62,6 +62,6 @@ export function AssessmentStepper({
           </li>
         ))}
       </ol>
-    </aside>
+    </div>
   );
 }

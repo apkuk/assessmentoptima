@@ -14,6 +14,7 @@ import {
   Section,
   Surface,
 } from "@/components/ui/page";
+import { PageImage } from "@/components/ui/page-media";
 import { appConfig } from "@/config/app";
 import { routes } from "@/config/routes";
 
@@ -21,7 +22,7 @@ const mapRows = [
   { label: "Commitment", value: 84, color: "var(--ao-brand)" },
   { label: "Learning", value: 78, color: "var(--ao-science)" },
   { label: "Trust", value: 72, color: "var(--ao-success)" },
-  { label: "Drift", value: 41, color: "var(--ao-pressure)" },
+  { label: "Pressure drift", value: 41, color: "var(--ao-pressure)" },
 ];
 
 export default function Home() {
@@ -29,25 +30,35 @@ export default function Home() {
     <PageShell>
       <section className="hero" data-layout="two" aria-labelledby="home-title">
         <div className="hero-copy">
-          <p className="eyebrow">Public research prototype</p>
+          <p className="eyebrow">Public research study</p>
           <h1 id="home-title">{appConfig.productName}</h1>
           <p className="lede">
             Take a 10-minute work-style assessment, get a developmental report,
             and contribute to an anonymised open dataset on how people create
-            clarity, coordinate with others, adapt under pressure, and use AI at
-            work.
+            clarity, work with others, adapt under pressure, and use AI at work.
           </p>
+          <div className="hero-meta" aria-label="Assessment summary">
+            <span>54 statements</span>
+            <span>About 10 minutes</span>
+            <span>Developmental only</span>
+          </div>
           <ActionRow placement="hero">
             <ButtonLink href={routes.assessment}>
               Start assessment <ArrowRight size={18} aria-hidden="true" />
             </ButtonLink>
-            <ButtonLink href={routes.science} variant="secondary">
-              Read the science
+            <ButtonLink href={routes.model} variant="secondary">
+              See the model
             </ButtonLink>
           </ActionRow>
         </div>
 
-        <div className="assessment-map" aria-label="Assessment report preview">
+        <PageImage
+          alt="Editorial image of anonymised assessment charts, radar data, and research cards on a calm lab desk."
+          aspect="landscape"
+          className="home-hero-media"
+          priority
+          src="/images/home-hero.png"
+        >
           <div className="map-panel">
             <p className="panel-label">Live report preview</p>
             {mapRows.map((row) => (
@@ -67,18 +78,27 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </div>
+        </PageImage>
       </section>
 
       <section className="metric-grid" aria-label="Product principles">
-        <MetricCard label="Use boundary" value="Dev">
-          <p>Self-reflection, coaching, team learning, and research only.</p>
+        <MetricCard label="Use boundary" value="Reflection">
+          <p>
+            For self-reflection, coaching, team learning, and research only.
+          </p>
         </MetricCard>
-        <MetricCard label="Dataset posture" value="Open">
-          <p>Score-level rows, private context, and threshold protection.</p>
+        <MetricCard label="Open dataset" value="Shared safely">
+          <p>
+            Only score-level data is shared. Private context stays private, and
+            exports open only when enough responses make the data safe to
+            release.
+          </p>
         </MetricCard>
         <MetricCard label="Build story" value="AI">
-          <p>Transparent ChatGPT and Codex workflow, documented end-to-end.</p>
+          <p>
+            A transparent ChatGPT and Codex build workflow, documented
+            end-to-end.
+          </p>
         </MetricCard>
       </section>
 
@@ -88,8 +108,8 @@ export default function Home() {
             <ShieldCheck aria-hidden="true" />
             <p>
               No names, emails, employer names, job-title free text, or raw IP
-              storage. The open dataset uses anonymised score-level fields with
-              minimum-cell protection before public release.
+              storage. Public data is limited to anonymised scores and only
+              released when sample sizes are large enough.
             </p>
           </Surface>
           <Surface
@@ -99,9 +119,9 @@ export default function Home() {
           >
             <Sparkles aria-hidden="true" />
             <p>
-              Visitors can download the dataset or use their own provider key
-              for cautious synthesis. The prototype does not store user API
-              keys.
+              Visitors can download the dataset or use their own OpenAI or
+              Anthropic key for cautious analysis. The site does not store user
+              API keys.
             </p>
           </Surface>
         </ContentGrid>

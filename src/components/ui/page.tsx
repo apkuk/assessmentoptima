@@ -9,6 +9,11 @@ import type { ReactNode } from "react";
 type SurfaceVariant = "panel" | "callout" | "report-card" | "dataset-card";
 type Tone = "science" | "pressure";
 
+export interface PageNavItem {
+  href: string;
+  label: string;
+}
+
 function mergeClassName(...values: Array<string | undefined>): string {
   return values.filter(Boolean).join(" ");
 }
@@ -20,14 +25,56 @@ export function PageShell({ children }: { children: ReactNode }) {
 export function Section({
   children,
   className,
+  id,
 }: {
   children: ReactNode;
   className?: string;
+  id?: string;
 }) {
   return (
-    <section className={mergeClassName("section", className)}>
+    <section className={mergeClassName("section", className)} id={id}>
       {children}
     </section>
+  );
+}
+
+export function PageBody({
+  children,
+  navItems,
+}: {
+  children: ReactNode;
+  navItems: readonly PageNavItem[];
+}) {
+  return (
+    <div className="page-layout">
+      <nav className="page-local-nav" aria-label="On this page">
+        <p>On this page</p>
+        {navItems.map((item) => (
+          <a href={item.href} key={item.href}>
+            {item.label}
+          </a>
+        ))}
+      </nav>
+      <div className="page-layout__content">{children}</div>
+    </div>
+  );
+}
+
+export function SectionHeader({
+  eyebrow,
+  lede,
+  title,
+}: {
+  eyebrow: string;
+  lede?: string;
+  title: string;
+}) {
+  return (
+    <div className="section-head">
+      <p className="eyebrow">{eyebrow}</p>
+      <h2>{title}</h2>
+      {lede ? <p>{lede}</p> : null}
+    </div>
   );
 }
 

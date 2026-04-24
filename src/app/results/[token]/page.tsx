@@ -119,7 +119,7 @@ export default async function ResultPage({ params }: ResultPageProps) {
             real work.
           </p>
         </div>
-        <aside className="archetype-panel">
+        <div className="archetype-panel">
           <p className="panel-label">Archetype</p>
           <h2>{result.archetype.name}</h2>
           <p>{result.archetype.summary}</p>
@@ -136,7 +136,7 @@ export default async function ResultPage({ params }: ResultPageProps) {
             publicShareUrl={publicShareUrl}
             viewToken={token}
           />
-        </aside>
+        </div>
       </section>
 
       <section className="report-grid">

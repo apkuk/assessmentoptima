@@ -11,11 +11,11 @@ import { ActionRow, ButtonLink } from "@/components/ui/actions";
 import {
   ContentGrid,
   MetricCard,
-  PageHeader,
   PageShell,
   Section,
   Surface,
 } from "@/components/ui/page";
+import { PageImage } from "@/components/ui/page-media";
 import { appConfig } from "@/config/app";
 import { routes } from "@/config/routes";
 
@@ -79,11 +79,47 @@ const experienceHighlights = [
 export default function AboutPage() {
   return (
     <PageShell>
-      <PageHeader
-        eyebrow="About the builder"
-        title="Andrew Kilshaw"
-        lede="Andrew is a transformation, organisation capability, and AI practitioner using this sabbatical to learn in public: building real AI products, pressure-testing the workflow, and sharing practical examples of what works."
-      />
+      <section className="hero" data-layout="two">
+        <div className="hero-copy">
+          <p className="eyebrow">About the builder</p>
+          <h1>Andrew Kilshaw</h1>
+          <p className="lede">
+            Andrew is a transformation, organisation capability, and AI
+            practitioner using this sabbatical to learn in public: building real
+            AI products, pressure-testing the workflow, and sharing practical
+            examples of what works.
+          </p>
+          <ActionRow placement="hero">
+            <a
+              className="button"
+              href="https://www.linkedin.com/in/apkilshaw/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              LinkedIn <ExternalLink aria-hidden="true" size={16} />
+            </a>
+            <a
+              className="button-secondary"
+              href="https://talentoptima.co/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              TalentOptima <ExternalLink aria-hidden="true" size={16} />
+            </a>
+          </ActionRow>
+        </div>
+
+        <PageImage
+          alt="Portrait of Andrew Kilshaw, founder of AssessmentOptima."
+          aspect="portrait"
+          objectPosition="center 18%"
+          priority
+          src="/images/APK_Tech.png"
+        >
+          <p className="panel-label">AI sabbatical</p>
+          <strong>Building in public</strong>
+        </PageImage>
+      </section>
 
       <Section>
         <Surface
@@ -102,22 +138,6 @@ export default function AboutPage() {
             <ButtonLink href={routes.howIBuiltThis}>
               Read the build story <ArrowRight aria-hidden="true" size={16} />
             </ButtonLink>
-            <a
-              className="button-secondary"
-              href="https://talentoptima.co/"
-              rel="noreferrer"
-              target="_blank"
-            >
-              TalentOptima <ExternalLink aria-hidden="true" size={16} />
-            </a>
-            <a
-              className="button-secondary"
-              href="https://www.linkedin.com/in/apkilshaw/"
-              rel="noreferrer"
-              target="_blank"
-            >
-              LinkedIn <ExternalLink aria-hidden="true" size={16} />
-            </a>
             <a
               className="button-secondary"
               href="https://phoque.ai"

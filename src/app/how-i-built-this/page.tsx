@@ -7,6 +7,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { PageImage } from "@/components/ui/page-media";
 import { appConfig } from "@/config/app";
 import { routes } from "@/config/routes";
 import {
@@ -234,17 +235,29 @@ export default function HowIBuiltThisPage() {
           </div>
         </div>
 
-        <aside className={styles.receiptPanel} aria-label="Build proof points">
-          <p className={styles.panelKicker}>Build receipts</p>
-          <div className={styles.statGrid}>
-            {proofStats.map((stat) => (
-              <div className={styles.stat} key={stat.label}>
-                <strong>{stat.value}</strong>
-                <span>{stat.label}</span>
-              </div>
-            ))}
+        <div className={styles.heroMedia}>
+          <PageImage
+            alt="AI-assisted product build visual with documentation layers, code panels, test checkmarks, and timeline markers."
+            aspect="wide"
+            className={styles.heroImage}
+            priority
+            src="/images/how-i-built-this-page.png"
+          >
+            <p className={styles.panelKicker}>Build method</p>
+            <strong>AI-assisted, human-accountable.</strong>
+          </PageImage>
+          <div className={styles.receiptPanel} aria-label="Build proof points">
+            <p className={styles.panelKicker}>Build receipts</p>
+            <div className={styles.statGrid}>
+              {proofStats.map((stat) => (
+                <div className={styles.stat} key={stat.label}>
+                  <strong>{stat.value}</strong>
+                  <span>{stat.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
-        </aside>
+        </div>
       </section>
 
       <section className={styles.askGrid} aria-label="The two asks">

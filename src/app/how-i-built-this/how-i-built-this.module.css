@@ -24,6 +24,15 @@
   max-width: 55rem;
 }
 
+.heroMedia {
+  display: grid;
+  gap: 1rem;
+}
+
+.heroImage {
+  min-height: 19rem;
+}
+
 .hero h1,
 .sectionHeader h2,
 .statusSection h2,
@@ -316,6 +325,7 @@
 
 @media (max-width: 72rem) {
   .hero,
+  .heroMedia,
   .askGrid,
   .dotGrid,
   .processGrid,

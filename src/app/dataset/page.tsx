@@ -9,6 +9,8 @@ import Link from "next/link";
 import { Download } from "lucide-react";
 
 import { ScoreBar } from "@/components/score-bar";
+import { CodeBlock } from "@/components/ui/code-block";
+import { PageImage } from "@/components/ui/page-media";
 import { appConfig, citations } from "@/config/app";
 import { apiRoutes, routes } from "@/config/routes";
 import { createAssessmentSubmissionRepository } from "@/features/assessment/adapters/mongo/assessment-submission-repository";
@@ -71,39 +73,54 @@ export default async function DatasetPage() {
 
   return (
     <main className="page">
-      <section className="section">
-        <p className="eyebrow">Open dataset</p>
-        <h1 className="page-title">WorkStyle Compass public dataset</h1>
-        <p className="lede">
-          Download anonymised, scale-level records once the public release
-          threshold has been met. Until then, aggregate views remain suppressed.
-        </p>
-        <div className="action-row">
-          {exportsAvailable ? (
-            <>
-              <Link className="button" href={apiRoutes.datasetCsv}>
-                <Download size={18} aria-hidden="true" />
-                CSV export
-              </Link>
-              <Link className="button-secondary" href={apiRoutes.datasetJson}>
-                JSON export
-              </Link>
-            </>
-          ) : (
-            <>
-              <button className="button" disabled type="button">
-                <Download size={18} aria-hidden="true" />
-                CSV export locked
-              </button>
-              <button className="button-secondary" disabled type="button">
-                JSON export locked
-              </button>
-            </>
-          )}
-          <Link className="button-ghost" href={routes.datasetDictionary}>
-            Data dictionary
-          </Link>
+      <section className="hero" data-layout="two">
+        <div className="hero-copy">
+          <p className="eyebrow">Open dataset</p>
+          <h1>WorkStyle Compass public dataset</h1>
+          <p className="lede">
+            Download anonymised, scale-level records once the public release
+            threshold has been met. Until then, aggregate views remain
+            suppressed.
+          </p>
+          <div className="action-row">
+            {exportsAvailable ? (
+              <>
+                <Link className="button" href={apiRoutes.datasetCsv}>
+                  <Download size={18} aria-hidden="true" />
+                  CSV export
+                </Link>
+                <Link className="button-secondary" href={apiRoutes.datasetJson}>
+                  JSON export
+                </Link>
+              </>
+            ) : (
+              <>
+                <button className="button" disabled type="button">
+                  <Download size={18} aria-hidden="true" />
+                  CSV export locked
+                </button>
+                <button className="button-secondary" disabled type="button">
+                  JSON export locked
+                </button>
+              </>
+            )}
+            <Link className="button-ghost" href={routes.datasetDictionary}>
+              Data dictionary
+            </Link>
+          </div>
         </div>
+
+        <PageImage
+          alt="An anonymised data observatory visual with grouped score dots, distribution bands, and privacy-preserving aggregate cells."
+          aspect="landscape"
+          priority
+          src="/images/dataset-page.png"
+        >
+          <p className="panel-label">Release status</p>
+          <strong>
+            {aggregates.suppressed ? "Threshold protected" : "Exports open"}
+          </strong>
+        </PageImage>
       </section>
 
       <section className="metric-grid">
@@ -238,9 +255,9 @@ export default async function DatasetPage() {
             If you reference {appConfig.assessmentName} in research, teaching,
             or writing, please cite it in the form below.
           </p>
-          <pre className="code-block">
-            <code>{citations.assessment}</code>
-          </pre>
+          <CodeBlock label="BibTeX citation for the WorkStyle Compass assessment">
+            {citations.assessment}
+          </CodeBlock>
         </div>
         <div className="callout">
           <h2>Cite this dataset</h2>
@@ -249,9 +266,9 @@ export default async function DatasetPage() {
             met. Until then, use the placeholder below and link back to the
             dataset page so citations can be updated.
           </p>
-          <pre className="code-block">
-            <code>DOI: {appConfig.datasetDoiPlaceholder}</code>
-          </pre>
+          <CodeBlock label="Dataset DOI placeholder">
+            {`DOI: ${appConfig.datasetDoiPlaceholder}`}
+          </CodeBlock>
         </div>
       </section>
     </main>

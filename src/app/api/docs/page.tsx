@@ -6,6 +6,7 @@
  */
 import type { Metadata } from "next";
 
+import { CodeBlock } from "@/components/ui/code-block";
 import {
   ContentGrid,
   PageHeader,
@@ -56,9 +57,9 @@ export default function ApiDocsPage() {
       <ContentGrid>
         {examples.map((example) => (
           <Surface key={example.title} label={example.title}>
-            <pre className="code-block">
-              <code>{example.command}</code>
-            </pre>
+            <CodeBlock label={`${example.title} curl example`}>
+              {example.command}
+            </CodeBlock>
           </Surface>
         ))}
       </ContentGrid>

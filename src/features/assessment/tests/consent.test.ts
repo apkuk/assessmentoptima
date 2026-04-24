@@ -1,7 +1,7 @@
 /**
  * File: src/features/assessment/tests/consent.test.ts
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Unit tests for canonical consent schema behavior.
  */
 import { describe, expect, it } from "vitest";
@@ -17,6 +17,7 @@ import { consentSchema } from "../schemas/assessment";
 const initialConsentDraft: ConsentDraft = {
   useBoundaryAccepted: false,
   assessmentProcessing: false,
+  privateResultStorage: false,
   researchStorage: false,
   publicDataset: false,
 };
@@ -26,6 +27,7 @@ describe("consentSchema", () => {
     const result = consentSchema.safeParse({
       useBoundaryAccepted: false,
       assessmentProcessing: true,
+      privateResultStorage: true,
       researchStorage: true,
       publicDataset: true,
       consentVersion: appConfig.defaultConsentVersion,
@@ -38,6 +40,20 @@ describe("consentSchema", () => {
     const result = consentSchema.safeParse({
       useBoundaryAccepted: true,
       assessmentProcessing: false,
+      privateResultStorage: true,
+      researchStorage: true,
+      publicDataset: true,
+      consentVersion: appConfig.defaultConsentVersion,
+    });
+
+    expect(result.success).toBe(false);
+  });
+
+  it("requires private result storage for the token-based v0 report", () => {
+    const result = consentSchema.safeParse({
+      useBoundaryAccepted: true,
+      assessmentProcessing: true,
+      privateResultStorage: false,
       researchStorage: true,
       publicDataset: true,
       consentVersion: appConfig.defaultConsentVersion,
@@ -50,6 +66,7 @@ describe("consentSchema", () => {
     const result = consentSchema.safeParse({
       useBoundaryAccepted: true,
       assessmentProcessing: true,
+      privateResultStorage: true,
       researchStorage: true,
       publicDataset: false,
       consentVersion: appConfig.defaultConsentVersion,

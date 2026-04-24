@@ -79,7 +79,7 @@ Open work-style research assessment
 
 ## Color System
 
-The palette is semantic, not decorative. Use CSS variables from `src/app/globals.css` as the source of truth.
+The palette is semantic, not decorative. Use CSS variables from `src/app/styles/base.css` as the source of truth, imported through `src/app/globals.css`.
 
 ### Foundation
 
@@ -227,7 +227,7 @@ Secondary actions are white/surface with `--ao-border-strong`.
 
 Danger actions must use `--ao-pressure` and clear destructive copy.
 
-Current implementation includes hover, active, disabled, size, transition, and icon-slot treatment. Keep button styling in `src/app/globals.css` unless a component library is introduced.
+Current implementation includes hover, active, disabled, size, transition, and icon-slot treatment. Keep shared button styling in `src/app/styles/layout.css` unless a component library is introduced.
 
 ### Forms
 
@@ -246,7 +246,7 @@ Results should be structured like a premium debrief:
 
 - scale summary
 - radar chart
-- dataset percentile badges when thresholds are met
+- current public sample comparison badges when thresholds are met
 - social/share actions
 - narrative interpretation
 - strengths
@@ -290,6 +290,10 @@ Current implementation:
 
 ```text
 src/app/globals.css
+src/app/styles/base.css
+src/app/styles/layout.css
+src/app/styles/reporting.css
+src/app/styles/responsive.css
 postcss.config.mjs
 src/app/layout.tsx
 ```
@@ -302,7 +306,7 @@ The global CSS includes:
 - global reset
 - focus-visible treatment
 - reduced-motion handling
-- initial branded scaffold components
+- shared layout, reporting, responsive, and print surfaces split below the 600-line maintainability threshold
 
 Future components may use either:
 

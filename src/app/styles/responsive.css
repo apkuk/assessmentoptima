@@ -1,0 +1,116 @@
+/**
+ * File: src/app/styles/responsive.css
+ * Created: 2026-04-24
+ * Updated: 2026-04-24
+ * Description: Responsive and print styles for the global AssessmentOptima UI.
+ */
+@media (min-width: 42.01rem) {
+  .hero h1,
+  .page-title {
+    font-size: var(--ao-text-display-md);
+  }
+
+  .lede {
+    font-size: var(--ao-text-xl);
+  }
+
+  .section h2 {
+    font-size: var(--ao-text-4xl);
+  }
+}
+
+@media (min-width: 82rem) {
+  .hero h1 {
+    font-size: var(--ao-text-display-lg);
+  }
+}
+
+@media (max-width: 64rem) {
+  .site-header,
+  .page-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .hero[data-layout="two"],
+  .assessment-shell,
+  .report-hero,
+  .report-grid,
+  .dataset-grid,
+  .content-grid,
+  .metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .progress-rail {
+    position: static;
+  }
+
+  .assessment-map {
+    width: 100%;
+    min-height: 24rem;
+    justify-self: stretch;
+  }
+}
+
+@media (max-width: 42rem) {
+  .hero h1,
+  .page-title {
+    font-size: var(--ao-text-display-sm);
+  }
+
+  .field-grid,
+  .item-row {
+    grid-template-columns: 1fr;
+  }
+
+  .likert {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .likert span {
+    width: 100%;
+  }
+}
+
+@media print {
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    background: white;
+  }
+
+  .site-header,
+  .page-footer,
+  .result-actions,
+  .hero-actions,
+  .action-row,
+  .site-nav {
+    display: none !important;
+  }
+
+  .page {
+    width: 100%;
+    padding: 0;
+  }
+
+  .report-hero,
+  .report-grid,
+  .content-grid,
+  .dataset-grid,
+  .metric-grid {
+    break-inside: avoid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .metric,
+  .panel,
+  .callout,
+  .report-card,
+  .dataset-card,
+  .archetype-panel {
+    box-shadow: none;
+  }
+}

@@ -286,6 +286,7 @@ Current public/server endpoints:
 
 ```text
 GET  /how-i-built-this
+GET  /archetypes/[slug]
 POST /api/submit
 GET  /api/results/[token]
 DELETE /api/results/[token]
@@ -295,6 +296,7 @@ GET  /api/dataset.csv
 GET  /api/dataset/dictionary.json
 GET  /api/aggregates
 GET  /api/og/[token]
+GET  /api/og/archetype/[slug]
 POST /api/ai/analyze
 GET  /api/health
 ```

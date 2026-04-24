@@ -1,7 +1,7 @@
 /**
  * File: src/config/app.ts
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Product-level constants shared across environment, routes, UI, and exports.
  */
 export const appConfig = {
@@ -14,11 +14,15 @@ export const appConfig = {
   defaultConsentVersion: "consent-v1.0",
   localDevelopmentHashSecret: "assessmentoptima-local-development-token-secret",
   publicDatasetFilename: "assessmentoptima-public-dataset.csv",
+  privacyContactEmail: "privacy@assessmentoptima.com",
+  retentionPolicyPlaceholder:
+    "Private report records are retained for the public prototype until deletion is requested or a formal retention schedule is published.",
   experimentCalendarFilename: "assessmentoptima-30-day-experiment.ics",
   calendarProductId: "-//AssessmentOptima//WorkStyle Compass//EN",
   datasetDoiPlaceholder: "10.0000/assessmentoptima.dataset.v0",
   socialImageSize: { width: 1200, height: 630 },
   socialImageContentType: "image/png",
+  reliabilityMinRespondents: 100,
 } as const;
 
 export const citations = {

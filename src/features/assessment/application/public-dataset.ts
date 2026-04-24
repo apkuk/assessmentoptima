@@ -1,7 +1,7 @@
 /**
  * File: src/features/assessment/application/public-dataset.ts
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Public dataset allowlist, export shaping, CSV, and aggregate helpers.
  */
 import type {
@@ -28,7 +28,6 @@ export type ExportableSubmission = Pick<
   | "createdMonth"
   | "consent"
   | "publicDatasetEligible"
-  | "context"
   | "result"
 >;
 
@@ -41,26 +40,15 @@ export function isPublicDatasetEligible(input: {
   );
 }
 
-function optionalValue(value: string | undefined): string {
-  return value ?? "prefer_not";
-}
-
 export function toPublicDatasetRow(
   submission: ExportableSubmission,
 ): PublicDatasetRow {
-  const { context, result } = submission;
+  const { result } = submission;
 
   return publicDatasetRowSchema.parse({
     row_id: submission.publicRowId,
     assessment_version: submission.assessmentVersion,
     created_month: submission.createdMonth,
-    age_band: optionalValue(context.ageBand),
-    region_bucket: optionalValue(context.regionBucket),
-    sector_bucket: optionalValue(context.sectorBucket),
-    role_level: optionalValue(context.roleLevel),
-    org_size_band: optionalValue(context.orgSizeBand),
-    work_mode: optionalValue(context.workMode),
-    years_experience_band: optionalValue(context.yearsExperienceBand),
     delivery_score: result.scores.delivery.score,
     learning_score: result.scores.learning.score,
     influence_score: result.scores.influence.score,
@@ -184,11 +172,11 @@ export function calculateDatasetComparison(input: {
       suppressed: true,
       rowCount: input.rows.length,
       minGroupSize: input.minGroupSize,
-      percentileByScale: {},
+      currentSampleComparisonByScale: {},
     });
   }
 
-  const percentileByScale = Object.fromEntries(
+  const currentSampleComparisonByScale = Object.fromEntries(
     scaleKeys.map((scaleKey) => {
       const candidateScore = input.result.scores[scaleKey].score;
       const lowerOrEqual = input.rows.filter(
@@ -206,7 +194,7 @@ export function calculateDatasetComparison(input: {
     suppressed: false,
     rowCount: input.rows.length,
     minGroupSize: input.minGroupSize,
-    percentileByScale,
+    currentSampleComparisonByScale,
   });
 }
 

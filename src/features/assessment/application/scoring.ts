@@ -1,7 +1,7 @@
 /**
  * File: src/features/assessment/application/scoring.ts
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Pure scoring, pressure-flag, composite, and archetype logic.
  */
 import type {
@@ -188,6 +188,15 @@ export const balancedArchetype = {
   name: "The Balanced Operator",
   summary: "Uses a broad mix of styles without one dominant pattern.",
 };
+
+export const publicArchetypes = [
+  ...archetypes.map((archetype) => ({
+    id: archetype.id,
+    name: archetype.name,
+    summary: archetype.summary,
+  })),
+  balancedArchetype,
+] as const;
 
 function hasPair(
   pair: readonly string[],

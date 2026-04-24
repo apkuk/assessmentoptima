@@ -8,7 +8,7 @@ V0 AI analysis is **bring your own key** only.
 
 No public server-funded AI analysis in v0.
 
-The user may provide an OpenAI or Anthropic-compatible API key for a single analysis request. The key must never be stored, logged, persisted to localStorage, or sent in a URL.
+The user may provide an OpenAI or Anthropic-compatible API key for a single analysis request. The key is sent to the AssessmentOptima server so the provider call can be made, then sent to the chosen provider under the user's account. The key must never be stored, logged, persisted to localStorage, returned in a response, or sent in a URL.
 
 ## User Inputs
 
@@ -60,7 +60,7 @@ The route handler should:
 
 1. Validate input with Zod.
 2. Fetch public dataset summary, not raw private submissions.
-3. Include data dictionary and aggregate stats.
+3. Include data dictionary, aggregate stats, and v0 score-level public rows only.
 4. Build a bounded prompt.
 5. Call the selected provider with the supplied key.
 6. Validate/normalise output for display where practical.
@@ -73,6 +73,7 @@ The route handler must not:
 - include the API key in a URL;
 - log request body;
 - send raw private submission documents to the provider;
+- send respondent context fields to the provider in v0;
 - send non-consented data;
 - claim causal findings;
 - recommend hiring, promotion, diagnosis, or individual suitability decisions.
@@ -176,6 +177,7 @@ The `/ai-analysis` page must include:
 - warning that outputs may be wrong;
 - warning that outputs are not employment advice;
 - statement that the API key is transmitted to the server only for this request and is not stored.
+- statement that the selected provider may process the request under the user's account.
 
 ## Implementation Notes
 

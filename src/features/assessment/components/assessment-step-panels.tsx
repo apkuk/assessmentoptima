@@ -1,7 +1,7 @@
 /**
  * File: src/features/assessment/components/assessment-step-panels.tsx
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Render-only panels for the gated WorkStyle Compass assessment flow.
  */
 import { CheckCircle2 } from "lucide-react";
@@ -47,7 +47,7 @@ export function IntroStep() {
         <div className={styles.stepMeta}>
           <span className={styles.metaPill}>About 8 minutes</span>
           <span className={styles.metaPill}>54 statements</span>
-          <span className={styles.metaPill}>4 consent choices</span>
+          <span className={styles.metaPill}>5 consent choices</span>
         </div>
       </div>
       <div className={styles.introGrid}>
@@ -80,8 +80,8 @@ export function ConsentStep({ consentDraft, onChange }: ConsentStepProps) {
         <p className="panel-label">A quick check before we start</p>
         <h2>Consent and use boundary</h2>
         <p className="lede">
-          Two checks are required to generate your report. The research and open
-          dataset choices are optional.
+          Three checks are required to generate and save your private report.
+          The research and open dataset choices are optional.
         </p>
       </div>
       <div className={styles.consentGrid}>
@@ -94,8 +94,15 @@ export function ConsentStep({ consentDraft, onChange }: ConsentStepProps) {
         />
         <ConsentCard
           checked={consentDraft.assessmentProcessing}
-          label="Generate and store my private report."
+          label="Process my answers to generate my report."
           onChange={(checked) => onChange("assessmentProcessing", checked)}
+          required
+          title="Assessment processing"
+        />
+        <ConsentCard
+          checked={consentDraft.privateResultStorage}
+          label="Save my private report so I can revisit it through this browser's private result link."
+          onChange={(checked) => onChange("privateResultStorage", checked)}
           required
           title="Private report"
         />
@@ -270,7 +277,7 @@ export function ReviewStep({ answers, consentDraft }: ReviewStepProps) {
         <h2>Ready to generate your report</h2>
         <p className="lede">
           Check the completion summary, then submit. Your report will be private
-          unless you choose to share the result link yourself.
+          to its result link; public sharing uses an archetype-only page.
         </p>
       </div>
       <div className={styles.reviewGrid}>

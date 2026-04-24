@@ -1,7 +1,7 @@
 /**
  * File: src/app/ai-analysis/page.tsx
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Public BYOK AI analysis page for the anonymised dataset.
  */
 import type { Metadata } from "next";
@@ -21,7 +21,9 @@ export default function AiAnalysisPage() {
         <h1 className="page-title">Query the open dataset</h1>
         <p className="lede">
           Use your own OpenAI or Anthropic key to synthesise the public dataset
-          without opening up the project owner&apos;s LLM budget.
+          without opening up the project owner&apos;s LLM budget. Your key is
+          sent to the server for this request, is not stored by this app, and
+          may be processed by your chosen provider under your account.
         </p>
       </section>
       <AiAnalysisForm />

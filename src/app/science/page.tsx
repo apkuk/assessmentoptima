@@ -1,7 +1,7 @@
 /**
  * File: src/app/science/page.tsx
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Public methodology and behavioural science explanation page.
  */
 import type { Metadata } from "next";
@@ -23,7 +23,11 @@ const pillars = [
   },
   {
     title: "Open research posture",
-    body: "The public dataset supports exploratory analysis. It does not create norms, validity evidence, or fairness evidence by itself.",
+    body: "The public dataset supports exploratory analysis. It does not create norms, validity evidence, fairness evidence, or representative percentiles by itself.",
+  },
+  {
+    title: "AI as work practice",
+    body: "AI-Augmented Judgement is treated as a dynamic work-practice domain, not a fixed personality trait. Access, policy, role, and tool maturity all affect it.",
   },
   {
     title: "Developmental interpretation",

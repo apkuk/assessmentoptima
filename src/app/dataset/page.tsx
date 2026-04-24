@@ -1,7 +1,7 @@
 /**
  * File: src/app/dataset/page.tsx
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Public dataset dashboard with exports and aggregate signals.
  */
 import type { Metadata } from "next";
@@ -36,7 +36,7 @@ async function getDatasetState() {
     const aggregates = calculateAggregates(rows, env.PUBLIC_DATASET_MIN_N);
     const reliability = calculateReliabilitySnapshot(
       submissions,
-      env.PUBLIC_DATASET_MIN_N,
+      appConfig.reliabilityMinRespondents,
     );
 
     return { rows, aggregates, reliability, error: null };
@@ -44,7 +44,10 @@ async function getDatasetState() {
     return {
       rows: [],
       aggregates: calculateAggregates([], 10),
-      reliability: calculateReliabilitySnapshot([], 10),
+      reliability: calculateReliabilitySnapshot(
+        [],
+        appConfig.reliabilityMinRespondents,
+      ),
       error: isMongoConnectivityError(error)
         ? "Live dataset storage is still connecting. Private reports work, and public exports will unlock once MongoDB Atlas accepts Vercel traffic and the release threshold is met."
         : error instanceof Error
@@ -155,8 +158,8 @@ export default async function DatasetPage() {
 
       <section className="section">
         <div className="dataset-card">
-          <p className="panel-label">Reliability snapshot</p>
-          <h2>Provisional internal consistency</h2>
+          <p className="panel-label">Internal consistency snapshot</p>
+          <h2>Suppressed until sample size is credible</h2>
           {reliability.suppressed ? (
             <p>
               Cronbach&apos;s alpha is suppressed until at least{" "}
@@ -190,8 +193,9 @@ export default async function DatasetPage() {
             </div>
           )}
           <p>
-            This is a live research signal, not validation evidence. Alpha is
-            recomputed from public-consented records and labelled provisional.
+            This is early descriptive evidence, not validation. Alpha is
+            recomputed from public-consented records only after the higher
+            reliability threshold is met.
           </p>
         </div>
       </section>

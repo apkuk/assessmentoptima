@@ -1,7 +1,7 @@
 /**
  * File: src/features/assessment/tests/scoring.test.ts
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Unit tests for assessment model integrity and scoring rules.
  */
 import { describe, expect, it } from "vitest";
@@ -34,11 +34,15 @@ describe("assessment model", () => {
     expect(scaleKeys).toHaveLength(9);
   });
 
-  it("has six items and one overuse item per scale", () => {
+  it("has four core, one reverse, and one overuse item per scale", () => {
     for (const scaleKey of scaleKeys) {
       const scaleItems = items.filter((item) => item.scale === scaleKey);
 
       expect(scaleItems).toHaveLength(6);
+      expect(scaleItems.filter((item) => item.type === "core")).toHaveLength(4);
+      expect(scaleItems.filter((item) => item.type === "reverse")).toHaveLength(
+        1,
+      );
       expect(scaleItems.filter((item) => item.type === "overuse")).toHaveLength(
         1,
       );
@@ -73,7 +77,7 @@ describe("scoreAssessment", () => {
     answers.D3 = 1;
     answers.D4 = 5;
     answers.D5 = 1;
-    answers.D6 = 1;
+    answers.D6 = 5;
 
     const result = scoreAssessment(answers);
 

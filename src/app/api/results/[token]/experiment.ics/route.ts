@@ -1,7 +1,7 @@
 /**
  * File: src/app/api/results/[token]/experiment.ics/route.ts
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Generates a 30-day experiment calendar reminder for a private result.
  */
 import { createAssessmentSubmissionRepository } from "@/features/assessment/adapters/mongo/assessment-submission-repository";
@@ -44,7 +44,7 @@ export async function GET(_request: Request, context: RouteContext) {
     const repository = createAssessmentSubmissionRepository();
     const submission = statelessResult
       ? null
-      : await repository.findByTokenHash(
+      : await repository.findByViewTokenHash(
           hashResultToken(parsedToken, hashSecret),
         );
 

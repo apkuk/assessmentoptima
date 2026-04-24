@@ -1,7 +1,7 @@
 /**
  * File: src/features/assessment/schemas/assessment.ts
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Canonical L0 Zod schemas and inferred types for assessment contracts.
  */
 import { z } from "zod";
@@ -118,6 +118,7 @@ export const consentSchema = z
   .object({
     useBoundaryAccepted: z.literal(true),
     assessmentProcessing: z.literal(true),
+    privateResultStorage: z.literal(true).default(true),
     researchStorage: z.boolean(),
     publicDataset: z.boolean(),
     consentVersion: z.string().min(1),
@@ -222,13 +223,6 @@ export const publicDatasetFields = [
   "row_id",
   "assessment_version",
   "created_month",
-  "age_band",
-  "region_bucket",
-  "sector_bucket",
-  "role_level",
-  "org_size_band",
-  "work_mode",
-  "years_experience_band",
   "delivery_score",
   "learning_score",
   "influence_score",
@@ -254,13 +248,6 @@ export const publicDatasetRowSchema = z
     row_id: z.string(),
     assessment_version: z.string(),
     created_month: z.string(),
-    age_band: z.string(),
-    region_bucket: z.string(),
-    sector_bucket: z.string(),
-    role_level: z.string(),
-    org_size_band: z.string(),
-    work_mode: z.string(),
-    years_experience_band: z.string(),
     delivery_score: z.number().int().min(0).max(100),
     learning_score: z.number().int().min(0).max(100),
     influence_score: z.number().int().min(0).max(100),
@@ -281,10 +268,20 @@ export const publicDatasetRowSchema = z
   .strict();
 
 export const resultTokenSchema = z.string().min(32);
+export const publicShareIdSchema = z.string().min(2);
+
+export const deleteResultRequestSchema = z
+  .object({
+    managementToken: resultTokenSchema,
+  })
+  .strict();
 
 export const storedAssessmentSubmissionSchema = z
   .object({
-    tokenHash: z.string().min(32),
+    viewTokenHash: z.string().min(32).optional(),
+    managementTokenHash: z.string().min(32).optional(),
+    tokenHash: z.string().min(32).optional(),
+    publicShareId: publicShareIdSchema.optional(),
     publicRowId: z.string().uuid(),
     assessmentVersion: z.string().min(1),
     consent: consentSchema,
@@ -295,12 +292,18 @@ export const storedAssessmentSubmissionSchema = z
     createdAt: z.date(),
     createdMonth: z.string().regex(/^\d{4}-\d{2}$/),
   })
-  .strict();
+  .strict()
+  .refine((submission) => submission.viewTokenHash ?? submission.tokenHash, {
+    message: "A view token hash or legacy token hash is required.",
+  });
 
 export const submitAssessmentResponseSchema = z
   .object({
+    viewToken: resultTokenSchema,
+    managementToken: resultTokenSchema,
     resultToken: resultTokenSchema,
     resultUrl: z.string().min(1),
+    publicShareUrl: z.string().min(1),
     publicDatasetEligible: z.boolean(),
   })
   .strict();
@@ -342,7 +345,7 @@ export const datasetComparisonSchema = z
     suppressed: z.boolean(),
     rowCount: z.number().int().min(0),
     minGroupSize: z.number().int().min(1),
-    percentileByScale: z.partialRecord(
+    currentSampleComparisonByScale: z.partialRecord(
       scaleKeySchema,
       z.number().int().min(0).max(100),
     ),

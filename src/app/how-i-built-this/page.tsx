@@ -1,7 +1,7 @@
 /**
  * File: src/app/how-i-built-this/page.tsx
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Public build-story page documenting the ChatGPT and Codex workflow.
  */
 import type { Metadata } from "next";
@@ -36,7 +36,7 @@ const proofStats = [
     label: `${appConfig.assessmentName} assessment items`,
   },
   {
-    value: "20",
+    value: "30",
     label: "fast Vitest checks covering the core rules",
   },
 ];
@@ -68,16 +68,16 @@ const shippedGroups = [
     title: "Open research layer",
     items: [
       "MongoDB Atlas document model for consented submissions",
-      "Anonymised CSV/JSON export shape with coarse buckets and no raw PII",
-      "Small-cell suppression and provisional reliability snapshot",
+      "Score-first CSV/JSON export shape with no raw PII or v0 row-level context",
+      "Small-cell suppression and provisional internal-consistency snapshot",
       "Data dictionary, citation blocks, and public API documentation",
     ],
   },
   {
     title: "Share and credibility layer",
     items: [
-      "Dynamic archetype Open Graph cards for LinkedIn/social previews",
-      "Shareable result links, LinkedIn share copy, and delete-by-token",
+      "Share-safe archetype Open Graph cards for LinkedIn/social previews",
+      "Public archetype links, LinkedIn share copy, and separate management-token deletion",
       "Git-derived build receipts and AI-human accountability",
       "A public explanation of what is validated, what is not, and why that matters",
     ],
@@ -97,7 +97,7 @@ const connectedDots = [
   {
     prompt: "Privacy-aware open dataset",
     implication:
-      "Consent, Mongo storage, public export allowlists, monthly timestamps, no raw PII, result-token hashing, and threshold protection all had to line up.",
+      "Consent, Mongo storage, public export allowlists, monthly timestamps, no raw PII, separate private tokens, and threshold protection all had to line up.",
   },
   {
     prompt: "Launch this on LinkedIn",

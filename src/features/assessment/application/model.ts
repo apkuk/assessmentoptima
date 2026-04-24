@@ -1,7 +1,7 @@
 /**
  * File: src/features/assessment/application/model.ts
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: WorkStyle Compass scale definitions and v0 item bank.
  */
 import { appConfig } from "@/config/app";
@@ -156,8 +156,8 @@ export const items: AssessmentItem[] = [
   {
     id: "D6",
     scale: "delivery",
-    type: "reverse",
-    text: "I lose track of details when several priorities compete.",
+    type: "core",
+    text: "I can keep track of important details when several priorities compete.",
   },
   {
     id: "L1",
@@ -355,13 +355,13 @@ export const items: AssessmentItem[] = [
     id: "H3",
     scale: "integrity",
     type: "reverse",
-    text: "I sometimes bend rules if the outcome seems important enough.",
+    text: "When the desired outcome is clear, I can be tempted to treat formal process as flexible.",
   },
   {
     id: "H4",
     scale: "integrity",
     type: "core",
-    text: "I seek fair outcomes even when nobody is watching.",
+    text: "I consider who may be disadvantaged by a decision, even when that concern is not being raised by others.",
   },
   {
     id: "H5",

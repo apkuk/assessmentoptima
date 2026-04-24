@@ -129,6 +129,7 @@ Legend:
 - [x] `GET /api/dataset/dictionary.json`.
 - [x] `POST /api/ai/analyze`.
 - [x] `GET /api/og/[token]`.
+- [x] `GET /api/og/archetype/[slug]`.
 - [x] `DELETE /api/results/[token]`.
 - [x] `GET /api/results/[token]/experiment.ics`.
 - [x] Public API docs page at `/api/docs`.
@@ -141,6 +142,7 @@ Legend:
 - [x] Limitations page `/limitations`.
 - [x] Assessment page `/assessment`.
 - [x] Results page `/results/[token]`.
+- [x] Public archetype share page `/archetypes/[slug]`.
 - [x] Dataset dashboard `/dataset`.
 - [x] Dataset dictionary `/dataset/dictionary`.
 - [x] AI analysis page `/ai-analysis`.
@@ -166,7 +168,7 @@ Legend:
 - [x] BYOK AI analysis form.
 - [x] Radar chart.
 - [x] Result share actions.
-- [x] Dataset percentile badges.
+- [x] Current public sample comparison badges.
 - [x] Reliability snapshot block.
 - [x] Git-derived build timeline.
 - [x] AI-human accountability panel.
@@ -188,8 +190,11 @@ Legend:
 - [x] Public dataset no-data state.
 - [x] Public dataset suppression state.
 - [ ] Dataset licence copy.
-- [x] Delete-by-token flow.
-- [x] Provisional reliability snapshot.
+- [x] Separate private view and management/delete tokens.
+- [x] Public archetype sharing that does not expose private result URLs.
+- [x] Score-first public row exports with v0 context fields omitted.
+- [x] Delete-by-management-token flow.
+- [x] Provisional internal-consistency snapshot with higher sample threshold.
 
 ## AI Analysis
 
@@ -231,9 +236,9 @@ Legend:
 - [x] JSON export works.
 - [x] Small-n suppression works.
 - [x] BYOK key is not stored or logged.
-- [x] Dynamic archetype OG image works.
+- [x] Share-safe archetype OG image works.
 - [x] 30-day experiment calendar export works.
-- [x] Delete-by-token works.
+- [x] Delete-by-management-token works.
 - [x] How I Built This page includes 47-minute research/PRD phase and two-hour build target accurately.
 - [x] How I Built This page includes timestamped build-log milestones through deployment.
 - [x] README complete.
@@ -244,6 +249,6 @@ Legend:
 - [ ] User product/UI review on mobile.
 - [ ] Feedback polish pass after review.
 - [ ] Decide dataset licence.
-- [ ] Add privacy/contact placeholder.
+- [x] Add privacy/contact and retention placeholders.
 - [ ] Allow Vercel production functions to reach MongoDB Atlas, then rerun submit/result smoke.
 - [ ] Deploy Vercel preview.

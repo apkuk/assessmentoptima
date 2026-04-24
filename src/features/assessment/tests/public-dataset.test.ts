@@ -1,7 +1,7 @@
 /**
  * File: src/features/assessment/tests/public-dataset.test.ts
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Unit tests for public dataset eligibility, exports, and suppression.
  */
 import { describe, expect, it } from "vitest";
@@ -15,6 +15,7 @@ import {
   PUBLIC_DATASET_FIELDS,
   applySmallCellSuppression,
   calculateAggregates,
+  calculateDatasetComparison,
   isPublicDatasetEligible,
   rowsToCsv,
   toPublicDatasetRow,
@@ -35,20 +36,12 @@ function submission(
     consent: {
       useBoundaryAccepted: true,
       assessmentProcessing: true,
+      privateResultStorage: true,
       researchStorage: true,
       publicDataset: true,
       consentVersion: appConfig.defaultConsentVersion,
     },
     publicDatasetEligible: true,
-    context: {
-      ageBand: "35_44",
-      regionBucket: "uk_ireland",
-      sectorBucket: "technology",
-      roleLevel: "manager",
-      orgSizeBand: "51_250",
-      workMode: "hybrid",
-      yearsExperienceBand: "11_20",
-    },
     result: scoreAssessment(completeAnswers(4)),
     ...overrides,
   };
@@ -81,6 +74,8 @@ describe("public export row", () => {
     expect(row).not.toHaveProperty("_id");
     expect(row).not.toHaveProperty("createdAt");
     expect(row).not.toHaveProperty("answers");
+    expect(row).not.toHaveProperty("age_band");
+    expect(row).not.toHaveProperty("role_level");
     expect(row).not.toHaveProperty("resultTokenHash");
   });
 
@@ -114,5 +109,22 @@ describe("small-cell suppression and aggregates", () => {
     expect(aggregates.suppressed).toBe(false);
     expect(aggregates.rowCount).toBe(10);
     expect(aggregates.averageByScale.delivery).toBeGreaterThan(0);
+  });
+
+  it("labels comparisons as current sample comparisons, not norms", () => {
+    const rows = Array.from({ length: 10 }, (_, index) =>
+      toPublicDatasetRow(submission({ publicRowId: `row-${index}` })),
+    );
+    const comparison = calculateDatasetComparison({
+      result: submission().result,
+      rows,
+      minGroupSize: 10,
+    });
+
+    expect(comparison.suppressed).toBe(false);
+    expect(comparison.currentSampleComparisonByScale.delivery).toBeGreaterThan(
+      0,
+    );
+    expect(comparison).not.toHaveProperty("percentileByScale");
   });
 });

@@ -1,12 +1,14 @@
 /**
  * File: src/features/assessment/application/assessment-flow.ts
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: UI flow constants for the gated WorkStyle Compass assessment.
  */
 import { answerValues, type AnswerValue } from "../schemas/assessment";
 
 export const assessmentStorageKey = "assessmentoptima.workstyle-compass.v1";
+export const resultManagementTokenStoragePrefix =
+  "assessmentoptima.result-management.v1";
 export const assessmentPageSize = 9;
 
 export const assessmentFlowSteps = [
@@ -45,6 +47,7 @@ export const likertOptions = answerValues.map((value) => {
 export interface ConsentDraft {
   useBoundaryAccepted: boolean;
   assessmentProcessing: boolean;
+  privateResultStorage: boolean;
   researchStorage: boolean;
   publicDataset: boolean;
 }

@@ -1,7 +1,7 @@
 /**
  * File: src/app/api/results/[token]/route.ts
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Retrieves a respondent result report by private token.
  */
 import { ZodError } from "zod";
@@ -10,6 +10,7 @@ import { createAssessmentSubmissionRepository } from "@/features/assessment/adap
 import { parseStatelessResultToken } from "@/features/assessment/application/stateless-result-token";
 import {
   assessmentResultResponseSchema,
+  deleteResultRequestSchema,
   resultTokenSchema,
 } from "@/features/assessment/schemas/assessment";
 import { apiError, jsonResponse, zodErrorDetail } from "@/lib/api/responses";
@@ -39,7 +40,7 @@ export async function GET(_request: Request, context: RouteContext) {
     }
 
     const repository = createAssessmentSubmissionRepository();
-    const submission = await repository.findByTokenHash(
+    const submission = await repository.findByViewTokenHash(
       hashResultToken(parsedToken, hashSecret),
     );
 
@@ -77,11 +78,14 @@ export async function GET(_request: Request, context: RouteContext) {
   }
 }
 
-export async function DELETE(_request: Request, context: RouteContext) {
+export async function DELETE(request: Request, context: RouteContext) {
   try {
     const env = getServerEnv();
     const { token } = await context.params;
     const parsedToken = resultTokenSchema.parse(token);
+    const input = deleteResultRequestSchema.parse(
+      await request.json().catch(() => null),
+    );
     const hashSecret = resolveHashSecret(env.HASH_SECRET);
     const statelessResult = parseStatelessResultToken(parsedToken, hashSecret);
 
@@ -90,9 +94,10 @@ export async function DELETE(_request: Request, context: RouteContext) {
     }
 
     const repository = createAssessmentSubmissionRepository();
-    const deleted = await repository.deleteByTokenHash(
-      hashResultToken(parsedToken, hashSecret),
-    );
+    const deleted = await repository.deleteByManagementTokenHash({
+      viewTokenHash: hashResultToken(parsedToken, hashSecret),
+      managementTokenHash: hashResultToken(input.managementToken, hashSecret),
+    });
 
     if (!deleted) {
       return apiError(404, "Result not found.");

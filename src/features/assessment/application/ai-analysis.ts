@@ -1,7 +1,7 @@
 /**
  * File: src/features/assessment/application/ai-analysis.ts
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Prompt construction for BYOK AI analysis of the public dataset.
  */
 import type {
@@ -27,7 +27,7 @@ export const aiAnalysisPromptPolicy = [
   "You are analysing an open, anonymised work-style assessment dataset.",
   "The instrument is research-informed and developmental, but it is not validated for hiring, promotion, diagnosis, redundancy, or high-stakes employment decisions.",
   "Be careful: separate observed patterns from speculation, avoid clinical claims, and mention sample size limits.",
-  "Rows are anonymised, scale-level records only. Use them for cautious pattern finding.",
+  "Rows are anonymised, score-level records only; no respondent context fields are included in the v0 row export.",
   "Return concise Markdown with: Key observations, Caveats, Practical interpretation, and Suggested next analysis.",
 ];
 

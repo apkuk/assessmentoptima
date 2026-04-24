@@ -170,15 +170,15 @@ At **2026-04-23 21:40 BST**, the first full Next.js v0 build passed locally.
 
 At **2026-04-23 21:49 BST**, the shareability and credibility slice from external feedback was implemented.
 
-- Dynamic archetype OG images were added at `/api/og/[token]` for LinkedIn/social previews.
-- The result report gained a radar chart, dataset percentile comparison badges, share actions, LinkedIn share link, 30-day experiment calendar export, and a delete-my-submission flow.
-- Dataset credibility was strengthened with a live, small-cell-protected Cronbach's alpha reliability snapshot labelled provisional.
+- Dynamic archetype OG images were added for LinkedIn/social previews.
+- The result report gained a radar chart, current-sample comparison badges, share actions, LinkedIn share link, 30-day experiment calendar export, and a delete-my-submission flow.
+- Dataset credibility was strengthened with a live, small-cell-protected internal-consistency snapshot labelled provisional.
 - The AI analysis page gained a baked example output and published prompt guardrails so first-time visitors can understand the feature without supplying a key.
 - The How I Built This page gained git-derived build receipts and an AI-human accountability section.
 - API documentation was added at `/api/docs` with curl examples.
 - BYOK AI analysis gained rate limiting with optional Upstash Redis REST support and a local fallback.
 - `pnpm verify` and `pnpm build` both passed after the slice.
-- Smoke tests passed for result page rendering, dynamic OG image, calendar export, API docs, and delete-by-token.
+- Smoke tests passed for result page rendering, dynamic OG image, calendar export, API docs, and delete-by-management-token.
 
 At **2026-04-23 21:51 BST**, the global visual foundation was tightened after UX/CSS feedback.
 
@@ -198,6 +198,17 @@ At **2026-04-23 21:59 BST**, the DRY/SSoT implementation pass was completed.
 - Public dataset helper interfaces were replaced with schema-derived types and `Pick<>` from the canonical stored submission contract.
 - Master docs were updated to match the actual file structure and SSoT rules.
 - `pnpm verify` and `pnpm build` passed after the consolidation.
+
+At **2026-04-24 11:02 BST**, the public-launch hardening pass was completed from ChatGPT Pro review feedback.
+
+- Private result viewing and deletion were split into separate view and management tokens, with only hashes stored in MongoDB.
+- LinkedIn sharing was moved away from `/results/[token]` and onto share-safe `/archetypes/[slug]` pages with public archetype OG cards.
+- Public row-level dataset exports were tightened to score-level fields only for v0; respondent context remains private for aggregate analysis until sample size and disclosure controls justify release.
+- Result comparisons were renamed from percentiles to current public sample comparisons, with explicit "not a representative norm" copy.
+- The Delivery item-bank inconsistency was fixed so each scale has four core items, one reverse item, and one overuse item.
+- BYOK AI copy now states that keys are sent to the server for the request, are not stored by the app, and may be processed by the chosen provider.
+- Privacy copy now clarifies hosting-provider operational metadata, contact, and retention placeholders.
+- The global CSS was split into base, layout, reporting, and responsive layers so source files stay under the 600-line maintainability rule.
 
 At **2026-04-23 22:07 BST**, the home page hero formatting was corrected after visual review.
 

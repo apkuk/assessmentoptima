@@ -3,7 +3,7 @@
 /**
  * File: src/features/assessment/components/assessment-form.tsx
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Gated client-side assessment flow with autosave, consent, context, questionnaire pages, review, and submit.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -17,6 +17,7 @@ import {
   assessmentPageSize,
   assessmentStepLabels,
   assessmentStorageKey,
+  resultManagementTokenStoragePrefix,
   type AssessmentFlowStep,
   type ConsentDraft,
   updateConsentDraft,
@@ -61,6 +62,7 @@ interface SavedAssessmentState {
 const initialConsent: ConsentDraft = {
   useBoundaryAccepted: false,
   assessmentProcessing: false,
+  privateResultStorage: false,
   researchStorage: false,
   publicDataset: false,
 };
@@ -162,7 +164,8 @@ export function AssessmentForm() {
   const consent = useMemo<Consent | null>(() => {
     if (
       !consentDraft.useBoundaryAccepted ||
-      !consentDraft.assessmentProcessing
+      !consentDraft.assessmentProcessing ||
+      !consentDraft.privateResultStorage
     ) {
       return null;
     }
@@ -170,6 +173,7 @@ export function AssessmentForm() {
     return {
       useBoundaryAccepted: true,
       assessmentProcessing: true,
+      privateResultStorage: true,
       researchStorage: consentDraft.researchStorage,
       publicDataset: consentDraft.publicDataset,
       consentVersion: CONSENT_VERSION,
@@ -279,7 +283,7 @@ export function AssessmentForm() {
 
   function validateBeforeNext(): boolean {
     if (step === "consent" && !consent) {
-      setError("Please accept the two required checks before continuing.");
+      setError("Please accept the three required checks before continuing.");
       return false;
     }
 
@@ -333,7 +337,7 @@ export function AssessmentForm() {
     setError(null);
 
     if (!consent) {
-      setError("Please accept the two required checks before submitting.");
+      setError("Please accept the three required checks before submitting.");
       goToStep("consent");
       return;
     }
@@ -370,6 +374,10 @@ export function AssessmentForm() {
       }
 
       const parsed = submitAssessmentResponseSchema.parse(data);
+      window.localStorage.setItem(
+        `${resultManagementTokenStoragePrefix}.${parsed.viewToken}`,
+        parsed.managementToken,
+      );
       window.localStorage.removeItem(assessmentStorageKey);
       router.push(parsed.resultUrl);
     } catch (submissionError) {

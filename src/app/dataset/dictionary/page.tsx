@@ -1,7 +1,7 @@
 /**
  * File: src/app/dataset/dictionary/page.tsx
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Human-readable public dataset data dictionary page.
  */
 import type { Metadata } from "next";
@@ -19,8 +19,9 @@ export default function DataDictionaryPage() {
         <p className="eyebrow">Dataset schema</p>
         <h1 className="page-title">Data dictionary</h1>
         <p className="lede">
-          The public dataset exposes only anonymised, scale-level and coarse
-          context fields.
+          The v0 public dataset exposes anonymised score-level rows only.
+          Respondent context fields are held back from row-level export until
+          sample size and disclosure controls support safer release.
         </p>
       </section>
 

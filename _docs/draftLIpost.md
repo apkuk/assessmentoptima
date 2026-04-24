@@ -30,7 +30,7 @@ The brief was deliberately ambitious:
 
 The ChatGPT 5.5 Pro research/PRD phase produced the research-backed methodology and build brief in 47 minutes.
 
-Codex then used that context to build the actual app locally: Next.js App Router, strict TypeScript, pnpm, Vitest, MongoDB Atlas, Zod schemas, scoring logic, public routes, API routes, result pages, dataset export, dynamic OG cards, delete-by-token, BYOK AI analysis, rate limiting, and a public build-story page.
+Codex then used that context to build the actual app locally: Next.js App Router, strict TypeScript, pnpm, Vitest, MongoDB Atlas, Zod schemas, scoring logic, public routes, API routes, result pages, dataset export, share-safe OG cards, separate view/delete tokens, BYOK AI analysis, rate limiting, and a public build-story page.
 
 ## The Thing That Felt Different
 
@@ -43,7 +43,7 @@ Examples:
 - I asked for documentation and architecture, and it pushed the project toward a schema-first L0 model so Zod contracts became the single source of truth.
 - I asked for privacy-aware open data, and it connected consent, Mongo storage, public export allowlists, monthly timestamp rounding, small-cell suppression, result-token hashing, and no raw PII.
 - I asked for a "How I Built This" page, and it turned that into a build-log discipline, timestamped milestones, and a public case-study route.
-- I shared UX feedback from Claude Code, and Codex did not just debate it. It implemented the high-ROI pieces: dynamic archetype OG images, radar charts, "you vs dataset" percentile badges, reliability snapshot, prompt transparency, API docs, deletion, calendar export, and rate limiting.
+- I shared UX feedback from Claude Code, and Codex did not just debate it. It implemented the high-ROI pieces: public archetype OG images, radar charts, current-sample comparison badges, an internal-consistency snapshot, prompt transparency, API docs, deletion, calendar export, and rate limiting.
 - I pushed on DRY/SSoT, and it moved route strings, product constants, model defaults, context field metadata, and schema-like values into the right shared modules.
 
 That is the behaviour I care about: it was not waiting to be spoon-fed every adjacent implication.
@@ -59,18 +59,19 @@ The local v0 now includes:
 - consent and optional context capture;
 - private results report;
 - archetype, nine scale scores, radar chart, strengths, development edges, pressure flags, reflection prompts, and 30-day experiment;
-- dynamic LinkedIn/social OG image per result;
-- share actions and LinkedIn share link;
-- "you vs dataset" percentile badges when public thresholds are met;
+- share-safe LinkedIn/social OG image per archetype;
+- share actions and LinkedIn share link that do not expose private result URLs;
+- current public sample comparison badges when public thresholds are met;
 - MongoDB persistence;
 - CSV and JSON public dataset exports;
 - data dictionary;
 - small-cell suppression;
-- provisional Cronbach's alpha reliability snapshot;
+- provisional internal-consistency snapshot once the higher sample threshold is met;
 - BYOK OpenAI/Anthropic analysis route and UI;
 - prompt transparency and example AI output;
 - AI route rate limiting;
-- delete-by-token endpoint and UI;
+- separate private view and management/delete tokens;
+- delete-by-management-token endpoint and UI;
 - 30-day calendar export;
 - public API docs;
 - "How I Built This" page with git-derived build receipts and AI-human accountability.

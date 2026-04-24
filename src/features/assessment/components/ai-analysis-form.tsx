@@ -3,7 +3,7 @@
 /**
  * File: src/features/assessment/components/ai-analysis-form.tsx
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: BYOK AI analysis form for synthesising the public dataset.
  */
 import { useState } from "react";
@@ -92,8 +92,9 @@ export function AiAnalysisForm() {
           <p className="panel-label">Bring your own key</p>
           <h2>Run a cautious synthesis</h2>
           <p>
-            Your provider key is sent to the selected provider for this request
-            only. AssessmentOptima does not store it.
+            Your provider key is sent to the server and then to the selected
+            provider for this request only. AssessmentOptima does not store it
+            or place it in localStorage.
           </p>
         </div>
 

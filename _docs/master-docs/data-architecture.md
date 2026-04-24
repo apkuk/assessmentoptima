@@ -17,7 +17,7 @@ The Next.js app should use the official MongoDB Node.js driver through a server-
 - Support public aggregate dashboards and anonymised CSV/JSON exports.
 - Keep AI analysis runs auditable without storing user-provided BYOK secrets.
 - Make privacy failures difficult by separating public-export fields from private operational metadata.
-- Store only a hash of private result tokens so database rows do not expose private result URLs.
+- Store only hashes of private view and management tokens so database rows do not expose private result URLs or deletion credentials.
 
 ## Database
 
@@ -46,12 +46,16 @@ This is the source of truth for respondent answers, scores, and public dataset e
 ```ts
 type AssessmentSubmissionDocument = {
   _id: ObjectId;
-  tokenHash: string;
+  viewTokenHash: string;
+  managementTokenHash: string;
+  tokenHash?: string; // legacy alias while older rows/deploys settle.
+  publicShareId?: string; // optional if a future share-specific page is used.
   publicRowId: string;
   assessmentVersion: string;
   consent: {
     useBoundaryAccepted: true;
     assessmentProcessing: true;
+    privateResultStorage: true;
     researchStorage: boolean;
     publicDataset: boolean;
     consentVersion: string;
@@ -80,6 +84,9 @@ Indexes:
 ```text
 assessment_submissions
 - { tokenHash: 1 } unique
+- { viewTokenHash: 1 } unique sparse
+- { managementTokenHash: 1 } unique sparse
+- { publicShareId: 1 } unique sparse
 - { publicRowId: 1 } unique
 - { publicDatasetEligible: 1, createdMonth: 1 }
 ```
@@ -90,7 +97,9 @@ Rules:
 - `createdMonth` is safe for export; `createdAt` is operational and should not be included in public datasets.
 - Store item responses by stable `itemId`, not array position alone.
 - Store calculated scores at submission time so later scoring model changes do not rewrite historical meaning.
-- Generate a raw result token for the user, store only `sha256(token + HASH_SECRET)`, and query by `tokenHash`.
+- Generate separate raw `viewToken` and `managementToken` values for the user, store only hashes, and query results by `viewTokenHash`.
+- Deletion must require both the private result URL token and the management token. Never use the public share URL as a deletion credential.
+- Public sharing should use archetype-level pages such as `/archetypes/[slug]`, not `/results/[token]`.
 
 ### `assessment_models`
 
@@ -227,14 +236,6 @@ Allowed v0 export fields:
 row_id
 assessment_version
 created_month
-region_bucket
-age_band
-sector_bucket
-role_level
-org_size_band
-employment_type
-work_mode
-years_experience_band
 delivery_score
 learning_score
 influence_score
@@ -259,6 +260,9 @@ Excluded v0 export fields:
 _id
 internal_submission_id
 tokenHash
+viewTokenHash
+managementTokenHash
+publicShareId
 createdAt
 IP address
 user agent
@@ -273,7 +277,9 @@ raw AI prompts
 API keys
 ```
 
-Aggregate pages and filtered exports must enforce a minimum group size. Default threshold: `n >= 10`. If the PRD makes demographic slicing prominent, consider `n >= 20`.
+Context fields may be stored privately for aggregate analysis, but v0 row-level CSV/JSON exports are score-first and omit respondent context to reduce uniqueness risk while the sample is small.
+
+Aggregate pages and filtered views must enforce a minimum group size. Default threshold: `n >= 10`. If the PRD makes demographic slicing prominent, consider `n >= 20`.
 
 ## Mongo Connection Policy
 

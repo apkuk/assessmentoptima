@@ -101,10 +101,11 @@ In scope:
   - CSV;
   - JSON;
   - data dictionary.
-- Dynamic archetype Open Graph cards for shareable results.
-- Delete-by-token result deletion.
+- Share-safe archetype pages with dynamic Open Graph cards.
+- Private result pages with separate view and management/delete tokens.
+- Delete-by-management-token result deletion.
 - 30-day experiment calendar export.
-- Provisional reliability snapshot on the public dataset page.
+- Provisional internal-consistency snapshot on the public dataset page once the higher sample threshold is met.
 - BYOK AI synthesis:
   - user provides OpenAI or Anthropic key;
   - key is used only for that request;
@@ -136,16 +137,18 @@ The build is successful when:
 1. A user can complete the assessment end-to-end on desktop and mobile.
 2. A user receives a results page with an archetype, nine scale scores, strengths, development edges, pressure-risk flags, interpretation guidance, and a 30-day experiment.
 3. A consented respondent creates a MongoDB submission document.
-4. Non-consented public dataset submissions are excluded from public exports.
-5. The dataset page shows aggregate results and handles no-data state.
-6. CSV and JSON export endpoints work.
-7. Public exports do not include PII, exact timestamps, IP addresses, user agents, emails, names, employer names, exact job titles, free text, or API keys.
-8. Filtered visualisations suppress results where `n < PUBLIC_DATASET_MIN_N`.
-9. BYOK AI analysis does not store, log, or expose the user key.
-10. `/how-i-built-this` explains the ChatGPT 5.5 Pro and Codex 5.5 workflow accurately.
-11. `pnpm verify` passes.
-12. `pnpm build` passes.
-13. The app is deployable to Vercel with documented environment variables.
+4. Private result viewing and deletion use separate tokens, and public sharing never exposes either token.
+5. Non-consented public dataset submissions are excluded from public exports.
+6. The dataset page shows aggregate results and handles no-data state.
+7. CSV and JSON export endpoints work.
+8. Public row-level exports are score-first and do not include respondent context fields in v0.
+9. Public exports do not include PII, exact timestamps, IP addresses, user agents, emails, names, employer names, exact job titles, free text, or API keys.
+10. Filtered visualisations suppress results where `n < PUBLIC_DATASET_MIN_N`.
+11. BYOK AI analysis does not store, log, or expose the user key.
+12. `/how-i-built-this` explains the ChatGPT 5.5 Pro and Codex 5.5 workflow accurately.
+13. `pnpm verify` passes.
+14. `pnpm build` passes.
+15. The app is deployable to Vercel with documented environment variables.
 
 ## Required Routes
 
@@ -158,6 +161,7 @@ Public routes:
 /limitations
 /assessment
 /results/[token]
+/archetypes/[slug]
 /dataset
 /dataset/dictionary
 /ai-analysis
@@ -177,6 +181,7 @@ GET  /api/dataset.csv
 GET  /api/dataset.json
 GET  /api/dataset/dictionary.json
 GET  /api/og/[token]
+GET  /api/og/archetype/[slug]
 POST /api/ai/analyze
 GET  /api/health
 ```

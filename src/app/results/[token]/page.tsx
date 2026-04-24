@@ -1,7 +1,7 @@
 /**
  * File: src/app/results/[token]/page.tsx
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Private respondent report page rendered from a result token.
  */
 import type { Metadata } from "next";
@@ -10,7 +10,7 @@ import { AlertTriangle, CheckCircle2, Lightbulb } from "lucide-react";
 
 import { RadarChart } from "@/components/radar-chart";
 import { ScoreBar } from "@/components/score-bar";
-import { apiRoutes, routes } from "@/config/routes";
+import { routes } from "@/config/routes";
 import { createAssessmentSubmissionRepository } from "@/features/assessment/adapters/mongo/assessment-submission-repository";
 import {
   calculateDatasetComparison,
@@ -45,7 +45,7 @@ async function getResultRecord(
   }
 
   const repository = createAssessmentSubmissionRepository();
-  const submission = await repository.findByTokenHash(
+  const submission = await repository.findByViewTokenHash(
     hashResultToken(parsedToken, hashSecret),
   );
 
@@ -62,37 +62,15 @@ async function getResultRecord(
   };
 }
 
-export async function generateMetadata({
-  params,
-}: ResultPageProps): Promise<Metadata> {
-  const { token } = await params;
-  const env = getServerEnv();
-  const record = await getResultRecord(token).catch(() => null);
-  const title = record
-    ? `${record.result.archetype.name} | AssessmentOptima`
-    : "AssessmentOptima Result";
+export async function generateMetadata(): Promise<Metadata> {
+  const title = "Private AssessmentOptima Result";
   const description =
-    record?.result.archetype.summary ??
-    "A private WorkStyle Compass result from AssessmentOptima.";
+    "A private WorkStyle Compass result. Public sharing uses archetype-only pages.";
 
   return {
     title,
     description,
-    openGraph: {
-      title,
-      description,
-      images: [
-        {
-          url: new URL(
-            apiRoutes.resultOg(token),
-            env.NEXT_PUBLIC_APP_URL,
-          ).toString(),
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
-    },
+    openGraph: { title, description },
   };
 }
 
@@ -116,8 +94,12 @@ export default async function ResultPage({ params }: ResultPageProps) {
     rows: publicRows,
     minGroupSize: env.PUBLIC_DATASET_MIN_N,
   });
-  const shareUrl = new URL(
+  const privateReportUrl = new URL(
     routes.result(token),
+    env.NEXT_PUBLIC_APP_URL,
+  ).toString();
+  const publicShareUrl = new URL(
+    routes.archetype(result.archetype.id),
     env.NEXT_PUBLIC_APP_URL,
   ).toString();
 
@@ -145,9 +127,10 @@ export default async function ResultPage({ params }: ResultPageProps) {
             ))}
           </div>
           <ResultActions
-            token={token}
             archetypeName={result.archetype.name}
-            shareUrl={shareUrl}
+            privateReportUrl={privateReportUrl}
+            publicShareUrl={publicShareUrl}
+            viewToken={token}
           />
         </aside>
       </section>
@@ -159,26 +142,26 @@ export default async function ResultPage({ params }: ResultPageProps) {
         </div>
 
         <div className="report-card">
-          <p className="panel-label">You vs. the dataset</p>
+          <p className="panel-label">Current public sample comparison</p>
           {comparison.suppressed ? (
             <p>
-              Dataset comparison unlocks when at least {comparison.minGroupSize}{" "}
-              public rows exist. Current public row count: {comparison.rowCount}
-              .
+              Current-sample comparison unlocks when at least{" "}
+              {comparison.minGroupSize} public rows exist. Current public row
+              count: {comparison.rowCount}.
             </p>
           ) : (
             <div className="tag-list">
               {result.topScales.map((scaleKey) => (
                 <span className="tag tag-large" key={scaleKey}>
-                  {scales[scaleKey].shortName}: P
-                  {comparison.percentileByScale[scaleKey] ?? 0}
+                  {scales[scaleKey].shortName}: higher than{" "}
+                  {comparison.currentSampleComparisonByScale[scaleKey] ?? 0}%
                 </span>
               ))}
             </div>
           )}
           <p>
-            Percentiles are provisional, small-cell protected, and recomputed
-            from opted-in public dataset rows.
+            Sample n={comparison.rowCount}. This is a self-selected current
+            sample, not a representative norm.
           </p>
         </div>
       </section>
@@ -208,6 +191,10 @@ export default async function ResultPage({ params }: ResultPageProps) {
           <p className="panel-label">30-day experiment</p>
           <h2>Make it observable</h2>
           <p>{result.experiment}</p>
+          <p>
+            AI-Augmented Judgement is treated as a dynamic work-practice domain,
+            not a fixed personality trait.
+          </p>
           <p className="panel-label">Dataset status</p>
           <p>
             {record.publicDatasetEligible

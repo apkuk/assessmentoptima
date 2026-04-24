@@ -1,0 +1,154 @@
+/**
+ * File: src/app/styles/base.css
+ * Created: 2026-04-24
+ * Updated: 2026-04-24
+ * Description: Global CSS tokens, root theme variables, resets, focus states, and motion preferences.
+ */
+@theme inline {
+  --font-sans: var(--font-plex);
+  --font-serif: var(--font-serif-editorial);
+  --font-mono: var(--font-geist-mono);
+  --color-background: var(--ao-bg);
+  --color-foreground: var(--ao-ink);
+  --color-surface: var(--ao-surface);
+  --color-brand: var(--ao-brand);
+  --color-accent: var(--ao-accent);
+  --color-science: var(--ao-science);
+  --color-motive: var(--ao-motive);
+  --color-pressure: var(--ao-pressure);
+  --color-success: var(--ao-success);
+  --color-border: var(--ao-border);
+  --color-muted: var(--ao-muted);
+  --text-xs: var(--ao-text-xs);
+  --text-sm: var(--ao-text-sm);
+  --text-base: var(--ao-text-base);
+  --text-lg: var(--ao-text-lg);
+  --text-xl: var(--ao-text-xl);
+  --text-2xl: var(--ao-text-2xl);
+  --text-3xl: var(--ao-text-3xl);
+  --text-4xl: var(--ao-text-4xl);
+  --text-display: var(--ao-text-display-lg);
+  --spacing-section-sm: var(--ao-space-section-sm);
+  --spacing-section-lg: var(--ao-space-section-lg);
+}
+
+:root {
+  color-scheme: light;
+  --ao-bg: #f7f9f8;
+  --ao-bg-soft: #edf5f2;
+  --ao-surface: #ffffff;
+  --ao-surface-raised: #fbfdfc;
+  --ao-surface-tint: #e4f1ee;
+  --ao-ink: #13201e;
+  --ao-ink-soft: #2d3c38;
+  --ao-muted: #53635f;
+  --ao-subtle: #73827e;
+  --ao-border: #d7e2de;
+  --ao-border-strong: #a7b9b3;
+  --ao-brand: #00615f;
+  --ao-brand-strong: #003f3e;
+  --ao-brand-soft: #d8eeeb;
+  --ao-science: #2458b8;
+  --ao-science-soft: #e1eaff;
+  --ao-accent: #d89b00;
+  --ao-accent-strong: #6f5300;
+  --ao-accent-soft: #fff1bd;
+  --ao-motive: #7a3f86;
+  --ao-motive-soft: #f2e4f4;
+  --ao-pressure: #b42318;
+  --ao-pressure-soft: #fde7e3;
+  --ao-success: #0a7c66;
+  --ao-focus-ring: rgb(0 97 95 / 0.16);
+  --ao-text-xs: 0.75rem;
+  --ao-text-sm: 0.875rem;
+  --ao-text-base: 1rem;
+  --ao-text-lg: 1.125rem;
+  --ao-text-xl: 1.25rem;
+  --ao-text-2xl: 1.5rem;
+  --ao-text-3xl: 2rem;
+  --ao-text-4xl: 2.6rem;
+  --ao-text-display-sm: 3.15rem;
+  --ao-text-display-md: 4rem;
+  --ao-text-display-lg: 4.35rem;
+  --ao-space-1: 0.25rem;
+  --ao-space-2: 0.5rem;
+  --ao-space-3: 0.75rem;
+  --ao-space-4: 1rem;
+  --ao-space-5: 1.25rem;
+  --ao-space-6: 1.5rem;
+  --ao-space-8: 2rem;
+  --ao-space-10: 2.5rem;
+  --ao-space-12: 3rem;
+  --ao-space-section-sm: 2rem;
+  --ao-space-section-lg: 4.5rem;
+  --ao-radius-xs: 0.25rem;
+  --ao-radius-sm: 0.375rem;
+  --ao-radius-md: 0.5rem;
+  --ao-radius-lg: 0.75rem;
+  --ao-shadow-sm: 0 1px 2px rgb(19 32 30 / 0.08);
+  --ao-shadow-md: 0 16px 48px rgb(19 32 30 / 0.11);
+  --ao-shadow-lg: 0 28px 80px rgb(19 32 30 / 0.16);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--ao-bg);
+  color: var(--ao-ink);
+  font-family: var(--font-plex), ui-sans-serif, system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: linear-gradient(
+    180deg,
+    var(--ao-surface-raised) 0%,
+    var(--ao-bg) 34rem
+  );
+  color: var(--ao-ink);
+}
+
+body::selection {
+  background: var(--ao-accent-soft);
+  color: var(--ao-ink);
+}
+
+a {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  text-underline-offset: 0.18em;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ao-brand);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px var(--ao-focus-ring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,7 +1,7 @@
 /**
  * File: src/config/routes.ts
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Canonical route and API path builders for the app.
  */
 export const routes = {
@@ -15,6 +15,7 @@ export const routes = {
   aiAnalysis: "/ai-analysis",
   howIBuiltThis: "/how-i-built-this",
   apiDocs: "/api/docs",
+  archetype: (slug: string) => `/archetypes/${slug}`,
   result: (token: string) => `/results/${token}`,
 } as const;
 
@@ -30,4 +31,5 @@ export const apiRoutes = {
   resultExperimentIcs: (token: string) =>
     `/api/results/${token}/experiment.ics`,
   resultOg: (token: string) => `/api/og/${token}`,
+  archetypeOg: (slug: string) => `/api/og/archetype/${slug}`,
 } as const;

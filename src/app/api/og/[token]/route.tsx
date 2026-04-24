@@ -1,8 +1,8 @@
 /**
  * File: src/app/api/og/[token]/route.tsx
  * Created: 2026-04-23
- * Updated: 2026-04-23
- * Description: Dynamic social card for a shareable AssessmentOptima result.
+ * Updated: 2026-04-24
+ * Description: Private-token social card endpoint retained for internal result previews.
  */
 import { ImageResponse } from "next/og";
 
@@ -30,7 +30,7 @@ export async function GET(_request: Request, context: RouteContext) {
   const repository = createAssessmentSubmissionRepository();
   const submission = statelessResult
     ? null
-    : await repository.findByTokenHash(
+    : await repository.findByViewTokenHash(
         hashResultToken(parsedToken, hashSecret),
       );
   const result = statelessResult?.result ?? submission?.result;

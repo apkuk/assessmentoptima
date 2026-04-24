@@ -1,7 +1,7 @@
 /**
  * File: src/lib/security/tokens.ts
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Result token, token hashing, public row ID, and month helpers.
  */
 import { createHash, randomBytes, randomUUID } from "node:crypto";
@@ -32,6 +32,10 @@ export function hashResultToken(token: string, secret: string): string {
 
 export function createPublicRowId(): string {
   return randomUUID();
+}
+
+export function createPublicShareId(): string {
+  return randomBytes(9).toString("base64url");
 }
 
 export function getCreatedMonth(date = new Date()): string {

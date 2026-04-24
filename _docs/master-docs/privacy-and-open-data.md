@@ -36,16 +36,17 @@ Consent screen must include these checkboxes. None may be pre-ticked.
 
 1. "I understand this is for self-reflection and research, not hiring, diagnosis, or employment decisions."
 2. "I consent to my answers being processed to generate my report."
-3. "I consent to my anonymised scores being stored for research."
-4. "I consent to my anonymised scores being included in the public open dataset."
+3. "I consent to my private report being stored so I can revisit it through a private result link."
+4. "I consent to my anonymised scores being stored for research."
+5. "I consent to my anonymised scores being included in the public open dataset."
 
 Rules:
 
-- #1 and #2 are required to continue.
-- #3 controls research-storage eligibility.
-- #4 is optional.
-- Public exports include only submissions where #4 is true and export eligibility passes.
-- In the current v0, a private result is stored to support the result token; public export eligibility still requires both research storage and public dataset consent.
+- #1, #2, and #3 are required for the current token-based v0 report flow.
+- #4 controls research-storage eligibility.
+- #5 is optional.
+- Public exports include only submissions where #4 and #5 are true and export eligibility passes.
+- A future no-storage mode may generate an immediate report without a revisit link or dataset contribution.
 
 ## Context Fields
 
@@ -127,6 +128,12 @@ type YearsExperienceBand =
 A submission is eligible for the public dataset when:
 
 ```ts
+consent.researchStorage === true;
+```
+
+and:
+
+```ts
 consent.publicDataset === true;
 ```
 
@@ -152,13 +159,6 @@ The canonical field order and allowlist live in `src/features/assessment/schemas
 row_id
 assessment_version
 created_month
-age_band
-region_bucket
-sector_bucket
-role_level
-org_size_band
-work_mode
-years_experience_band
 delivery_score
 learning_score
 influence_score
@@ -209,6 +209,8 @@ raw item-level answers
 raw AI prompts
 API keys
 ```
+
+V0 row-level exports intentionally omit respondent context fields. Coarse context may be used for aggregate dashboards or later research exports only when minimum-cell and uniqueness-risk checks are satisfied.
 
 ## Row IDs
 
@@ -268,6 +270,10 @@ AI page must include:
 
 > AI analysis is generated from the public dataset and may be incomplete or wrong. Do not use it to make employment or individual suitability decisions.
 
+AI page must also state:
+
+> Your provider key is sent to the server for this request so the provider call can be made. The app does not store it. Your provider may process the request under your account.
+
 ## Dataset Licence
 
 Recommended v0 posture:
@@ -301,6 +307,7 @@ Test requirements:
 
 - cannot submit without use-boundary acceptance;
 - cannot submit without processing consent;
+- cannot submit without private result storage consent in the current v0 report flow;
 - public dataset false means no public export;
 - consent defaults are not pre-ticked;
 - exact timestamp is not exported;

@@ -2,10 +2,10 @@
 
 Status: Implementation-current master reference for testing, deployment, README, and roadmap.
 
-Current implementation status as of 2026-04-23 22:24 BST:
+Current implementation status as of 2026-04-24 11:02 BST:
 
 - Next.js App Router, strict TypeScript, pnpm, Tailwind v4, ESLint, Prettier, and Vitest are implemented.
-- L0 schemas, Mongo repository, API routes, assessment flow, result report, dataset exports, BYOK AI analysis, dynamic OG cards, delete-by-token, and How I Built This are implemented.
+- L0 schemas, Mongo repository, API routes, assessment flow, result report, score-first dataset exports, BYOK AI analysis, share-safe archetype OG cards, separate view/delete tokens, and How I Built This are implemented.
 - `pnpm verify`, `pnpm build`, and linked `vercel build --prod` pass locally.
 - The first GitHub-triggered Vercel deployment exposed a project configuration issue: Vercel was set to Framework Preset `Other` and expected a static `public` output directory after the Next.js build.
 - A root `vercel.json` now forces the deployment to use the Next.js framework preset, `pnpm install --frozen-lockfile`, `pnpm build`, and default Next.js output handling.
@@ -13,7 +13,7 @@ Current implementation status as of 2026-04-23 22:24 BST:
 - `/`, `/dataset`, and `/api/health` return `200` in production.
 - First synthetic `/api/submit` smoke testing exposed a MongoDB connectivity timeout in Vercel runtime. Atlas network access still needs to allow Vercel/serverless egress before persistence-backed routes can pass.
 - The core assessment journey now has a signed stateless result-token fallback. If MongoDB is unreachable during submission, the user can still receive a private report, result API payload, dynamic OG image, and 30-day experiment calendar export. These fallback results are not added to the public dataset.
-- Remaining launch work is MongoDB Atlas network access/runtime persistence QA, mobile hands-on QA, final dataset licence/contact decisions, and optional seed/logging/test expansion.
+- Remaining launch work is MongoDB Atlas network access/runtime persistence QA, mobile hands-on QA, final dataset licence decision, and optional seed/logging/test expansion.
 
 ## Build Order
 
@@ -66,7 +66,7 @@ Required coverage:
 - reverse scoring works;
 - overuse item is excluded from core score;
 - all scales have exactly six items;
-- each scale has exactly one overuse item;
+- each scale has exactly four core items, one reverse item, and one overuse item;
 - every answer is required;
 - score conversion is correct;
 - pressure flags trigger correctly;

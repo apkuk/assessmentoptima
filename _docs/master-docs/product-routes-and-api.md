@@ -23,6 +23,7 @@ Do not import MongoDB or provider SDKs into client components.
 | `/limitations` | Prohibited uses and validation roadmap | Server Component |
 | `/assessment` | Assessment flow | Client component inside App Router page |
 | `/results/[token]` | Personal results report | Server fetch plus client visualisation |
+| `/archetypes/[slug]` | Share-safe public archetype page | Static/server page |
 | `/dataset` | Public aggregate dashboard | Server data plus client charts |
 | `/dataset/dictionary` | Data dictionary and export schema | Server Component |
 | `/ai-analysis` | BYOK AI synthesis UI | Client component |
@@ -33,15 +34,16 @@ Do not import MongoDB or provider SDKs into client components.
 
 | Route | Method | Purpose |
 | --- | --- | --- |
-| `/api/submit` | POST | Validate consent, score assessment, persist eligible response, return result token |
-| `/api/results/[token]` | GET | Fetch respondent result by token |
-| `/api/results/[token]` | DELETE | Delete respondent submission by private token |
+| `/api/submit` | POST | Validate consent, score assessment, persist eligible response, return view and management tokens |
+| `/api/results/[token]` | GET | Fetch respondent result by private view token |
+| `/api/results/[token]` | DELETE | Delete respondent submission by private view token plus management token |
 | `/api/results/[token]/experiment.ics` | GET | Download the 30-day experiment calendar reminder |
 | `/api/aggregates` | GET | Return aggregate dashboard data with small-cell suppression |
 | `/api/dataset.csv` | GET | Download anonymised public CSV |
 | `/api/dataset.json` | GET | Download anonymised public JSON |
 | `/api/dataset/dictionary.json` | GET | Return data dictionary |
-| `/api/og/[token]` | GET | Dynamic archetype Open Graph card |
+| `/api/og/[token]` | GET | Private-token preview card retained for internal result previews |
+| `/api/og/archetype/[slug]` | GET | Share-safe public archetype Open Graph card |
 | `/api/ai/analyze` | POST | BYOK AI synthesis on public dataset summary |
 | `/api/health` | GET | Lightweight deployment/database health endpoint |
 
@@ -165,9 +167,9 @@ Must display:
 - pressure-risk flags;
 - nine scale cards with progress bars;
 - nine-scale radar chart;
-- dynamic archetype Open Graph card via `/api/og/[token]`;
-- share archetype CTA and LinkedIn share link;
-- "you vs dataset" percentile badges when threshold is met;
+- no private result data in page metadata or social previews;
+- share archetype CTA and LinkedIn share link that point to `/archetypes/[slug]`;
+- current public sample comparison badges when threshold is met;
 - composite index cards;
 - interpretation guide;
 - suggested 30-day experiment;
@@ -179,6 +181,8 @@ Must display:
 - return to dataset page button.
 
 Do not imply that the result is a diagnosis or validated prediction.
+
+Deletion must require a `managementToken` that is separate from the private view token. Public share links must never contain either token.
 
 ### Dataset Page `/dataset`
 
@@ -196,7 +200,7 @@ Must display:
   - role level;
   - organisation size;
 - correlation matrix if enough rows;
-- provisional Cronbach's alpha reliability snapshot when threshold is met;
+- provisional internal-consistency snapshot only when the higher reliability threshold is met;
 - citation block for the assessment and dataset DOI placeholder;
 - small-cell warning;
 - download CSV/JSON buttons;
@@ -240,6 +244,7 @@ Must include:
 - disclaimer:
   - key is sent to the server only for this request;
   - key is not stored;
+  - the provider may process the request under the user's account;
   - output may be wrong;
   - do not use for employment decisions.
 
@@ -258,6 +263,7 @@ Request:
   "consent": {
     "useBoundaryAccepted": true,
     "assessmentProcessing": true,
+    "privateResultStorage": true,
     "researchStorage": true,
     "publicDataset": true,
     "consentVersion": "consent-v1.0"
@@ -290,9 +296,12 @@ Response:
 
 ```json
 {
+  "viewToken": "private-view-token",
+  "managementToken": "private-management-token",
   "resultToken": "raw-token",
   "resultUrl": "/results/raw-token",
-  "result": {}
+  "publicShareUrl": "/archetypes/builder",
+  "publicDatasetEligible": true
 }
 ```
 
@@ -320,9 +329,23 @@ Do not expose:
 - user agent;
 - full internal submission document.
 
+### DELETE `/api/results/[token]`
+
+Request:
+
+```json
+{
+  "managementToken": "private-management-token"
+}
+```
+
+The API must hash the route view token and request management token, then delete only if both hashes match the same stored submission.
+
 ### GET `/api/dataset.csv`
 
 Return export-safe rows only.
+
+V0 row-level exports are score-first. They omit age, region, sector, role level, organisation size, work mode, and years-of-experience context fields until sample size and disclosure-control checks support safer contextual release.
 
 Headers:
 

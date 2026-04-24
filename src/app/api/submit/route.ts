@@ -1,7 +1,7 @@
 /**
  * File: src/app/api/submit/route.ts
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Scores and persists a completed assessment submission.
  */
 import { ZodError } from "zod";
@@ -36,8 +36,10 @@ function isPersistenceUnavailable(error: Error): boolean {
 }
 
 function createSubmissionResponse(input: {
-  resultToken: string;
+  viewToken: string;
+  managementToken: string;
   appUrl: string;
+  publicSharePath: string;
   publicDatasetEligible: boolean;
   status?: number;
   storageMode?: "mongo" | "stateless";
@@ -51,9 +53,11 @@ function createSubmissionResponse(input: {
 
   return jsonResponse(
     submitAssessmentResponseSchema.parse({
-      resultToken: input.resultToken,
-      resultUrl: new URL(routes.result(input.resultToken), input.appUrl)
-        .pathname,
+      viewToken: input.viewToken,
+      managementToken: input.managementToken,
+      resultToken: input.viewToken,
+      resultUrl: new URL(routes.result(input.viewToken), input.appUrl).pathname,
+      publicShareUrl: new URL(input.publicSharePath, input.appUrl).pathname,
       publicDatasetEligible: input.publicDatasetEligible,
     }),
     init,
@@ -69,10 +73,13 @@ function createStatelessFallback(input: {
     input.resultResponse,
     input.hashSecret,
   );
+  const managementToken = createResultToken();
 
   return createSubmissionResponse({
-    resultToken,
+    viewToken: resultToken,
+    managementToken,
     appUrl: input.appUrl,
+    publicSharePath: routes.archetype(input.resultResponse.result.archetype.id),
     publicDatasetEligible: false,
     storageMode: "stateless",
   });
@@ -83,16 +90,15 @@ export async function POST(request: Request) {
     const env = getServerEnv();
     const input = submitAssessmentSchema.parse(await request.json());
     const result = scoreAssessment(input.answers);
-    const resultToken = createResultToken();
+    const viewToken = createResultToken();
+    const managementToken = createResultToken();
     const now = new Date();
-    const tokenHash = hashResultToken(
-      resultToken,
-      resolveHashSecret(env.HASH_SECRET),
-    );
+    const hashSecret = resolveHashSecret(env.HASH_SECRET);
+    const viewTokenHash = hashResultToken(viewToken, hashSecret);
+    const managementTokenHash = hashResultToken(managementToken, hashSecret);
     const publicDatasetEligible =
       input.consent.researchStorage === true &&
       input.consent.publicDataset === true;
-    const hashSecret = resolveHashSecret(env.HASH_SECRET);
     const resultResponse: AssessmentResultResponse = {
       assessmentVersion: env.ASSESSMENT_VERSION,
       createdMonth: getCreatedMonth(now),
@@ -105,7 +111,9 @@ export async function POST(request: Request) {
 
     try {
       await repository.save({
-        tokenHash,
+        viewTokenHash,
+        managementTokenHash,
+        tokenHash: viewTokenHash,
         publicRowId: createPublicRowId(),
         assessmentVersion: env.ASSESSMENT_VERSION,
         consent: input.consent,
@@ -129,8 +137,10 @@ export async function POST(request: Request) {
     }
 
     return createSubmissionResponse({
-      resultToken,
+      viewToken,
+      managementToken,
       appUrl: env.NEXT_PUBLIC_APP_URL,
+      publicSharePath: routes.archetype(result.archetype.id),
       publicDatasetEligible,
       storageMode: "mongo",
     });

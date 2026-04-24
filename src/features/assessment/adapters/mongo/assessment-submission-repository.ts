@@ -1,7 +1,7 @@
 /**
  * File: src/features/assessment/adapters/mongo/assessment-submission-repository.ts
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: MongoDB implementation of the assessment submission repository port.
  */
 import type { Collection, WithId } from "mongodb";
@@ -45,6 +45,18 @@ export class MongoAssessmentSubmissionRepository implements AssessmentSubmission
 
     await Promise.all([
       collection.createIndex({ tokenHash: 1 }, { unique: true }),
+      collection.createIndex(
+        { viewTokenHash: 1 },
+        { unique: true, sparse: true },
+      ),
+      collection.createIndex(
+        { managementTokenHash: 1 },
+        { unique: true, sparse: true },
+      ),
+      collection.createIndex(
+        { publicShareId: 1 },
+        { unique: true, sparse: true },
+      ),
       collection.createIndex({ publicRowId: 1 }, { unique: true }),
       collection.createIndex({ publicDatasetEligible: 1, createdMonth: 1 }),
     ]);
@@ -58,11 +70,13 @@ export class MongoAssessmentSubmissionRepository implements AssessmentSubmission
     await collection.insertOne(parsed);
   }
 
-  async findByTokenHash(
-    tokenHash: string,
+  async findByViewTokenHash(
+    viewTokenHash: string,
   ): Promise<StoredAssessmentSubmission | null> {
     const collection = await this.collection();
-    const document = await collection.findOne({ tokenHash });
+    const document = await collection.findOne({
+      $or: [{ viewTokenHash }, { tokenHash: viewTokenHash }],
+    });
 
     return document ? stripMongoId(document) : null;
   }
@@ -77,9 +91,23 @@ export class MongoAssessmentSubmissionRepository implements AssessmentSubmission
     return documents.map(stripMongoId);
   }
 
-  async deleteByTokenHash(tokenHash: string): Promise<boolean> {
+  async deleteByManagementTokenHash(input: {
+    viewTokenHash: string;
+    managementTokenHash: string;
+  }): Promise<boolean> {
     const collection = await this.collection();
-    const result = await collection.deleteOne({ tokenHash });
+    const result = await collection.deleteOne({
+      $or: [
+        {
+          viewTokenHash: input.viewTokenHash,
+          managementTokenHash: input.managementTokenHash,
+        },
+        {
+          tokenHash: input.viewTokenHash,
+          managementTokenHash: input.managementTokenHash,
+        },
+      ],
+    });
 
     return result.deletedCount === 1;
   }

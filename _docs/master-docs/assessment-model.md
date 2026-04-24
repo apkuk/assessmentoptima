@@ -68,6 +68,8 @@ export type ScaleKey =
 | `change` | Change Agency | Change | Energy for transformation, ambiguity tolerance, courage and momentum creation. | Catalytic, bold and energised by change. | Stabilising, continuity-minded and risk-aware. | May create change fatigue or move faster than adoption capacity. |
 | `ai` | AI-Augmented Judgement | AI Judgement | Use of AI and digital tools with critical thinking, verification and responsible judgement. | Experimental, augmented and verification-minded. | Cautious, human-first and less tool-dependent. | May over-automate or trust outputs before testing. |
 
+AI-Augmented Judgement is a dynamic work-practice domain, not a fixed personality trait. It is affected by role, tool access, policy, industry, age cohort, and the maturity of AI tooling.
+
 ## Item Bank
 
 Use this item bank exactly for v0 unless the research document is deliberately revised.
@@ -79,7 +81,7 @@ Use this item bank exactly for v0 unless the research document is deliberately r
 | D3 | delivery | reverse | I often rely on last-minute intensity rather than steady progress. |
 | D4 | delivery | core | People can usually predict the quality and timing of my work. |
 | D5 | delivery | overuse | I find it hard to stop improving work once it is good enough. |
-| D6 | delivery | reverse | I lose track of details when several priorities compete. |
+| D6 | delivery | core | I can keep track of important details when several priorities compete. |
 | L1 | learning | core | I actively seek feedback that may challenge my self-image. |
 | L2 | learning | core | I enjoy learning unfamiliar tools, concepts or domains. |
 | L3 | learning | reverse | I prefer to stick with methods that have worked for me before. |
@@ -112,8 +114,8 @@ Use this item bank exactly for v0 unless the research document is deliberately r
 | S6 | strategy | overuse | I sometimes hold decisions open while searching for a better model. |
 | H1 | integrity | core | I will raise an uncomfortable truth even when it may cost me politically. |
 | H2 | integrity | core | I am willing to admit when I do not know or got something wrong. |
-| H3 | integrity | reverse | I sometimes bend rules if the outcome seems important enough. |
-| H4 | integrity | core | I seek fair outcomes even when nobody is watching. |
+| H3 | integrity | reverse | When the desired outcome is clear, I can be tempted to treat formal process as flexible. |
+| H4 | integrity | core | I consider who may be disadvantaged by a decision, even when that concern is not being raised by others. |
 | H5 | integrity | core | I invite challenge before committing to a consequential decision. |
 | H6 | integrity | overuse | I can understate my own contribution to avoid seeming self-promotional. |
 | G1 | change | core | I am energised by turning uncertainty into movement. |
@@ -262,7 +264,7 @@ DRY/SSoT rule:
 Test requirements:
 
 - all scales have exactly six items;
-- each scale has one overuse item;
+- each scale has exactly four core items, one reverse item, and one overuse item;
 - every answer is required;
 - reverse scoring works;
 - overuse item is excluded from core score;

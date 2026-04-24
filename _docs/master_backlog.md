@@ -137,6 +137,7 @@ Legend:
 ## L5 Public Pages
 
 - [x] Landing page `/`.
+- [x] About/founder page `/about`.
 - [x] Science/methodology page `/science`.
 - [x] Privacy/data page `/privacy`.
 - [x] Limitations page `/limitations`.

@@ -6,6 +6,7 @@
  */
 export const routes = {
   home: "/",
+  about: "/about",
   assessment: "/assessment",
   science: "/science",
   privacy: "/privacy",

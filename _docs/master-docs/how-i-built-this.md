@@ -246,6 +246,13 @@ At **2026-04-24 11:26 BST**, the public build-story page was updated to reflect 
 - The narrative now explicitly describes parallel workstreams rather than a single linear chat: ChatGPT Pro for research/documentation, Claude Code for UI critique, and Codex 5.5 for implementation.
 - The page notes that Claude Max and ChatGPT Pro plans provided the usage headroom for parallel high-reasoning review and build loops.
 
+At **2026-04-24 11:28 BST**, an About page was added to connect the product to the builder.
+
+- `/about` now introduces Andrew Kilshaw as the public builder behind AssessmentOptima.
+- The page references his current AI sabbatical, hands-on AI learning, phoque.ai tutoring-app work, and LinkedIn sharing of practical AI examples.
+- The page uses concise career credibility from the March 2025 resume, including TalentOptima, Sanofi, Shell, Nike, BlackRock/BGI, IMD, and enterprise transformation/capability work.
+- The page is linked from the global header and footer, while avoiding copying private contact details from the resume into the public app.
+
 At **2026-04-23 22:07 BST**, the home page hero formatting was corrected after visual review.
 
 - The oversized viewport-scaled hero title was replaced with breakpoint-based display tokens.

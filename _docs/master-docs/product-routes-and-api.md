@@ -18,6 +18,7 @@ Do not import MongoDB or provider SDKs into client components.
 | Route | Purpose | Rendering |
 | --- | --- | --- |
 | `/` | Landing page | Server Component |
+| `/about` | Founder/about page for Andrew Kilshaw and the AI sabbatical context | Server Component |
 | `/science` | Behavioural science and methodology | Server Component |
 | `/privacy` | Consent, data use, anonymisation, open dataset explanation | Server Component |
 | `/limitations` | Prohibited uses and validation roadmap | Server Component |
@@ -73,6 +74,20 @@ Must include:
 - credibility section: research-informed, transparent scoring, anonymised data, open methodology.
 
 Tone: premium, plain English, confident, but not overclaiming.
+
+### About Page `/about`
+
+Must include:
+
+- Andrew Kilshaw as the public builder/founder behind the project;
+- current AI sabbatical context;
+- phoque.ai as an AI-powered tutoring app being built in parallel;
+- practical LinkedIn sharing posture: examples of what gets built and how to use AI properly;
+- concise career credibility from the March 2025 resume, including TalentOptima, Sanofi, Shell, Nike, BlackRock/BGI, IMD, and enterprise transformation/capability experience;
+- links to `/how-i-built-this` and phoque.ai;
+- no private contact details copied from the resume unless explicitly approved for publication.
+
+Tone: credible, human, pragmatic, and focused on hands-on AI/product-building rather than biography for its own sake.
 
 ### Science Page `/science`
 

@@ -1,7 +1,7 @@
 /**
  * File: src/components/page-footer.tsx
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Shared footer with use-boundary and project links.
  */
 import Link from "next/link";
@@ -17,6 +17,7 @@ export function PageFooter() {
         validated selection instrument.
       </p>
       <div>
+        <Link href={routes.about}>About</Link>
         <Link href={routes.privacy}>Privacy</Link>
         <Link href={routes.limitations}>Limitations</Link>
         <Link href={routes.datasetDictionary}>Data dictionary</Link>

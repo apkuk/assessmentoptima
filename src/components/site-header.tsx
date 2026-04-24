@@ -1,7 +1,7 @@
 /**
  * File: src/components/site-header.tsx
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Global navigation and brand lockup for the public app shell.
  */
 import Link from "next/link";
@@ -11,6 +11,7 @@ import {
   BookOpen,
   FlaskConical,
   Sparkles,
+  UserRound,
 } from "lucide-react";
 
 import { appConfig } from "@/config/app";
@@ -21,6 +22,7 @@ const navItems = [
   { href: routes.science, label: "Science", icon: FlaskConical },
   { href: routes.dataset, label: "Dataset", icon: BarChart3 },
   { href: routes.aiAnalysis, label: "AI analysis", icon: Sparkles },
+  { href: routes.about, label: "About", icon: UserRound },
   { href: routes.howIBuiltThis, label: "Build story", icon: BookOpen },
 ];
 

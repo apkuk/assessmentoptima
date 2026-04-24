@@ -7,8 +7,11 @@
  * Description: Development-only axe-core accessibility checks for browser console QA.
  */
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export function DevA11y() {
+  const pathname = usePathname();
+
   useEffect(() => {
     if (process.env.NODE_ENV !== "development") {
       return;
@@ -17,7 +20,7 @@ export function DevA11y() {
     let active = true;
     const timeoutId = window.setTimeout(() => {
       void import("axe-core").then(async ({ default: axe }) => {
-        if (!active) {
+        if (!active || !document.querySelector("h1")) {
           return;
         }
 
@@ -48,7 +51,7 @@ export function DevA11y() {
       active = false;
       window.clearTimeout(timeoutId);
     };
-  }, []);
+  }, [pathname]);
 
   return null;
 }

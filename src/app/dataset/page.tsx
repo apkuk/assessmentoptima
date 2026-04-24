@@ -20,6 +20,7 @@ import { calculateReliabilitySnapshot } from "@/features/assessment/application/
 import { scaleKeys, scales } from "@/features/assessment/application/model";
 import { getServerEnv } from "@/lib/env/server";
 import { isMongoConnectivityError } from "@/lib/mongo/client";
+import { logger } from "@/lib/observability/logger";
 
 export const metadata: Metadata = {
   title: "WorkStyle Compass Public Dataset",
@@ -41,6 +42,13 @@ async function getDatasetState() {
 
     return { rows, aggregates, reliability, error: null };
   } catch (error) {
+    logger.error({
+      event: "page.dataset_load_failed",
+      route: "/dataset",
+      message: "Dataset page could not load live public dataset state.",
+      error,
+    });
+
     return {
       rows: [],
       aggregates: calculateAggregates([], 10),
@@ -182,12 +190,12 @@ export default async function DatasetPage() {
       <section className="section">
         <div className="dataset-card">
           <p className="panel-label">Internal consistency snapshot</p>
-          <h2>Suppressed until sample size is credible</h2>
+          <h2>Reliability, once the sample is credible</h2>
           {reliability.suppressed ? (
             <p>
-              Cronbach&apos;s alpha is suppressed until at least{" "}
-              {reliability.minGroupSize} opted-in public rows exist. Current
-              eligible row count: {reliability.rowCount}.
+              Cronbach&apos;s alpha is held back until at least{" "}
+              {reliability.minGroupSize} opted-in public rows have been
+              contributed. We currently have {reliability.rowCount}.
             </p>
           ) : (
             <div className="scale-list">
@@ -217,7 +225,7 @@ export default async function DatasetPage() {
           )}
           <p>
             This is early descriptive evidence, not validation. Alpha is
-            recomputed from public-consented records only after the higher
+            recomputed from publicly consented records only after the higher
             reliability threshold is met.
           </p>
         </div>
@@ -226,13 +234,24 @@ export default async function DatasetPage() {
       <section className="content-grid">
         <div className="callout" data-tone="science">
           <h2>Cite this assessment</h2>
-          <p className="mono">{citations.assessment}</p>
+          <p>
+            If you reference {appConfig.assessmentName} in research, teaching,
+            or writing, please cite it in the form below.
+          </p>
+          <pre className="code-block">
+            <code>{citations.assessment}</code>
+          </pre>
         </div>
         <div className="callout">
           <h2>Cite this dataset</h2>
-          <p className="mono">
-            DOI placeholder: {appConfig.datasetDoiPlaceholder}
+          <p>
+            A formal DOI will be registered once the public release threshold is
+            met. Until then, use the placeholder below and link back to the
+            dataset page so citations can be updated.
           </p>
+          <pre className="code-block">
+            <code>DOI: {appConfig.datasetDoiPlaceholder}</code>
+          </pre>
         </div>
       </section>
     </main>

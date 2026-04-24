@@ -14,7 +14,7 @@
   justify-content: space-between;
   gap: 1rem;
   border-bottom: 1px solid var(--ao-border);
-  background: rgb(247 249 248 / 0.9);
+  background: color-mix(in srgb, var(--ao-bg) 90%, transparent);
   padding: 0.75rem clamp(1rem, 4vw, 3rem);
   backdrop-filter: blur(18px);
 }
@@ -71,6 +71,12 @@
   scrollbar-width: none;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
 .site-nav::-webkit-scrollbar {
   display: none;
 }
@@ -109,6 +115,96 @@
 
 .nav-link:active {
   transform: translateY(1px);
+}
+
+.theme-toggle,
+.nav-menu-button,
+.icon-button {
+  display: inline-flex;
+  min-height: 2.45rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: 1px solid var(--ao-border);
+  border-radius: var(--ao-radius-sm);
+  background: var(--ao-surface);
+  color: var(--ao-ink-soft);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 750;
+  padding: 0.5rem 0.7rem;
+  text-transform: capitalize;
+  transition:
+    background-color var(--ao-duration-fast) var(--ao-ease),
+    border-color var(--ao-duration-fast) var(--ao-ease),
+    color var(--ao-duration-fast) var(--ao-ease),
+    transform var(--ao-duration-fast) var(--ao-ease);
+}
+
+.theme-toggle:hover,
+.nav-menu-button:hover,
+.icon-button:hover {
+  border-color: var(--ao-brand);
+  background: var(--ao-brand-soft);
+  color: var(--ao-brand-strong);
+}
+
+.theme-toggle:active,
+.nav-menu-button:active,
+.icon-button:active {
+  transform: translateY(1px);
+}
+
+.nav-menu-button {
+  display: none;
+}
+
+.icon-button {
+  width: 2.45rem;
+  padding: 0;
+}
+
+.nav-dialog {
+  width: min(calc(100% - 2rem), 26rem);
+  border: 1px solid var(--ao-border);
+  border-radius: var(--ao-radius-lg);
+  background: var(--ao-surface);
+  color: var(--ao-ink);
+  box-shadow: var(--ao-shadow-lg);
+  padding: 0;
+}
+
+.nav-dialog::backdrop {
+  background: rgb(5 13 11 / 0.56);
+  backdrop-filter: blur(5px);
+}
+
+.nav-dialog__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--ao-border);
+  padding: 1rem;
+}
+
+.nav-dialog__head h2 {
+  margin: 0;
+  font-family: var(--font-serif-editorial), ui-serif, Georgia, serif;
+  font-size: var(--ao-text-2xl);
+  line-height: 1;
+}
+
+.site-nav-dialog {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.75rem;
+}
+
+.site-nav-dialog .nav-link {
+  justify-content: flex-start;
+  min-height: 3rem;
+  padding: 0.75rem;
 }
 
 .page {
@@ -302,8 +398,16 @@
   border: 1px solid var(--ao-border);
   border-radius: var(--ao-radius-lg);
   background:
-    linear-gradient(90deg, rgb(0 97 95 / 0.08) 1px, transparent 1px),
-    linear-gradient(rgb(0 97 95 / 0.08) 1px, transparent 1px), var(--ao-surface);
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--ao-brand) 12%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      color-mix(in srgb, var(--ao-brand) 12%, transparent) 1px,
+      transparent 1px
+    ),
+    var(--ao-surface);
   background-size: 2rem 2rem;
   box-shadow: var(--ao-shadow-lg);
   overflow: hidden;

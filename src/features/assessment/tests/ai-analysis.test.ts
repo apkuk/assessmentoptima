@@ -16,8 +16,10 @@ import type {
 const request: AiAnalysisRequest = {
   provider: "openai",
   apiKey: "sk-test-secret-that-must-not-appear",
-  model: "gpt-test",
+  model: "gpt-5.4-mini",
   analysisType: "summarise_dataset",
+  reasoningEffort: "low",
+  verbosity: "medium",
 };
 
 const row: PublicDatasetRow = {

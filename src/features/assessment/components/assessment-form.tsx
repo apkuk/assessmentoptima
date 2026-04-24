@@ -39,6 +39,11 @@ import {
   type Consent,
   type RespondentContext,
 } from "@/features/assessment/schemas/assessment";
+import {
+  formatClientApiError,
+  logClientApiError,
+  parseClientApiError,
+} from "@/lib/api/client-errors";
 
 import { AssessmentStepper } from "./assessment-stepper";
 import {
@@ -368,11 +373,19 @@ export function AssessmentForm() {
       const data: unknown = await response.json();
 
       if (!response.ok) {
-        const detail =
-          data && typeof data === "object" && "detail" in data
-            ? String(data.detail)
-            : "Submission failed.";
-        throw new Error(detail);
+        const apiFailure = parseClientApiError({
+          fallbackMessage: "Submission failed.",
+          payload: data,
+          status: response.status,
+        });
+
+        logClientApiError({
+          event: "assessment.submit_failed",
+          error: apiFailure,
+          context: { step, answeredCount },
+        });
+
+        throw new Error(formatClientApiError(apiFailure));
       }
 
       const parsed = submitAssessmentResponseSchema.parse(data);
@@ -383,6 +396,16 @@ export function AssessmentForm() {
       window.localStorage.removeItem(assessmentStorageKey);
       router.push(parsed.resultUrl);
     } catch (submissionError) {
+      if (!(submissionError instanceof Error)) {
+        logClientApiError({
+          event: "assessment.submit_failed_unknown",
+          error: {
+            message: "Submission failed.",
+            status: 0,
+          },
+        });
+      }
+
       setError(
         submissionError instanceof Error
           ? submissionError.message

@@ -94,6 +94,38 @@
   --ao-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
+[data-theme="dark"] {
+  color-scheme: dark;
+  --ao-bg: #0d1513;
+  --ao-bg-soft: #12201d;
+  --ao-surface: #14211e;
+  --ao-surface-raised: #172723;
+  --ao-surface-tint: #173b36;
+  --ao-ink: #eef7f4;
+  --ao-ink-soft: #d6e5e0;
+  --ao-muted: #a9bbb5;
+  --ao-subtle: #7e938c;
+  --ao-border: #2c423d;
+  --ao-border-strong: #4a625c;
+  --ao-brand: #16837d;
+  --ao-brand-strong: #8fe2d8;
+  --ao-brand-soft: #123d39;
+  --ao-science: #82a9ff;
+  --ao-science-soft: #182b54;
+  --ao-accent: #e0ae38;
+  --ao-accent-strong: #f6d98b;
+  --ao-accent-soft: #44320c;
+  --ao-motive: #d59ae4;
+  --ao-motive-soft: #3b2341;
+  --ao-pressure: #ff8a7e;
+  --ao-pressure-soft: #441a17;
+  --ao-success: #56d0b4;
+  --ao-focus-ring: rgb(143 226 216 / 0.18);
+  --ao-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.28);
+  --ao-shadow-md: 0 16px 48px rgb(0 0 0 / 0.34);
+  --ao-shadow-lg: 0 28px 80px rgb(0 0 0 / 0.44);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -126,6 +158,43 @@ a {
   color: inherit;
   text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
   text-underline-offset: 0.18em;
+}
+
+.prose-ao {
+  --tw-prose-body: var(--ao-ink-soft);
+  --tw-prose-headings: var(--ao-ink);
+  --tw-prose-lead: var(--ao-muted);
+  --tw-prose-links: var(--ao-brand-strong);
+  --tw-prose-bold: var(--ao-ink);
+  --tw-prose-counters: var(--ao-muted);
+  --tw-prose-bullets: var(--ao-brand);
+  --tw-prose-hr: var(--ao-border);
+  --tw-prose-quotes: var(--ao-ink);
+  --tw-prose-quote-borders: var(--ao-border-strong);
+  --tw-prose-captions: var(--ao-muted);
+  --tw-prose-code: var(--ao-brand-strong);
+  --tw-prose-pre-code: var(--ao-ink-soft);
+  --tw-prose-pre-bg: var(--ao-bg-soft);
+  --tw-prose-th-borders: var(--ao-border-strong);
+  --tw-prose-td-borders: var(--ao-border);
+  max-width: none;
+}
+
+.prose-ao :where(.panel-label):not(:where([class~="not-prose"] *)) {
+  margin: 0 0 0.75rem;
+  color: var(--ao-muted);
+  font-size: 0.76rem;
+  line-height: 1;
+}
+
+.prose-ao :where(h2):not(:where([class~="not-prose"] *)) {
+  margin-top: 0;
+  font-family: var(--font-serif-editorial), ui-serif, Georgia, serif;
+  line-height: 1.05;
+}
+
+.prose-ao :where(.code-block):not(:where([class~="not-prose"] *)) {
+  margin-top: 1rem;
 }
 
 button,

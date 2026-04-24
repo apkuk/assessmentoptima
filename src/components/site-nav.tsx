@@ -13,9 +13,12 @@ import {
   BarChart3,
   BookOpen,
   FlaskConical,
+  Menu,
   Sparkles,
   UserRound,
+  X,
 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 import { routes } from "@/config/routes";
 
@@ -34,26 +37,98 @@ function isActive(pathname: string, href: string): boolean {
 
 export function SiteNav() {
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+
+    if (!dialog) {
+      return;
+    }
+
+    if (open && !dialog.open) {
+      dialog.showModal();
+    }
+
+    if (!open && dialog.open) {
+      dialog.close();
+    }
+  }, [open]);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+
+    if (!dialog) {
+      return;
+    }
+
+    const handleClose = () => setOpen(false);
+    dialog.addEventListener("close", handleClose);
+
+    return () => dialog.removeEventListener("close", handleClose);
+  }, []);
+
+  const renderNavLinks = () =>
+    navItems.map((item) => {
+      const Icon = item.icon;
+      const active = isActive(pathname, item.href);
+
+      return (
+        <Link
+          aria-current={active ? "page" : undefined}
+          className="nav-link"
+          data-active={active}
+          href={item.href}
+          key={item.href}
+          onClick={() => setOpen(false)}
+        >
+          <Icon aria-hidden="true" size={16} strokeWidth={2.1} />
+          <span>{item.label}</span>
+        </Link>
+      );
+    });
 
   return (
-    <nav className="site-nav" aria-label="Primary navigation">
-      {navItems.map((item) => {
-        const Icon = item.icon;
-        const active = isActive(pathname, item.href);
+    <>
+      <nav
+        className="site-nav site-nav--desktop"
+        aria-label="Primary navigation"
+      >
+        {renderNavLinks()}
+      </nav>
 
-        return (
-          <Link
-            aria-current={active ? "page" : undefined}
-            className="nav-link"
-            data-active={active}
-            href={item.href}
-            key={item.href}
+      <button
+        aria-haspopup="dialog"
+        aria-label="Open navigation menu"
+        className="nav-menu-button"
+        onClick={() => setOpen(true)}
+        type="button"
+      >
+        <Menu aria-hidden="true" size={18} strokeWidth={2.1} />
+        <span>Menu</span>
+      </button>
+
+      <dialog
+        aria-labelledby="nav-dialog-title"
+        className="nav-dialog"
+        ref={dialogRef}
+      >
+        <div className="nav-dialog__head">
+          <h2 id="nav-dialog-title">Navigation</h2>
+          <button
+            aria-label="Close navigation menu"
+            className="icon-button"
+            onClick={() => setOpen(false)}
+            type="button"
           >
-            <Icon aria-hidden="true" size={16} strokeWidth={2.1} />
-            <span>{item.label}</span>
-          </Link>
-        );
-      })}
-    </nav>
+            <X aria-hidden="true" size={18} strokeWidth={2.1} />
+          </button>
+        </div>
+        <nav className="site-nav-dialog" aria-label="Mobile navigation">
+          {renderNavLinks()}
+        </nav>
+      </dialog>
+    </>
   );
 }

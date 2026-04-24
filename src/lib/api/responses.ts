@@ -17,9 +17,22 @@ export function apiError(
   status: number,
   error: string,
   detail?: string,
+  options: {
+    code?: string;
+    requestId?: string;
+    retryable?: boolean;
+  } = {},
 ): NextResponse {
   return NextResponse.json(
-    apiErrorResponseSchema.parse({ error, ...(detail ? { detail } : {}) }),
+    apiErrorResponseSchema.parse({
+      error,
+      ...(options.code ? { code: options.code } : {}),
+      ...(detail ? { detail } : {}),
+      ...(options.requestId ? { requestId: options.requestId } : {}),
+      ...(options.retryable !== undefined
+        ? { retryable: options.retryable }
+        : {}),
+    }),
     { status },
   );
 }

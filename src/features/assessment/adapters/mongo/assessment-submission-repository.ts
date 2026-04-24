@@ -4,7 +4,7 @@
  * Updated: 2026-04-24
  * Description: MongoDB implementation of the assessment submission repository port.
  */
-import type { Collection, WithId } from "mongodb";
+import type { Collection, IndexDescription, WithId } from "mongodb";
 
 import { getMongoDb } from "@/lib/mongo/client";
 
@@ -15,6 +15,53 @@ import {
 import type { AssessmentSubmissionRepository } from "../../ports/submission-repository";
 
 const COLLECTION_NAME = "assessment_submissions";
+const TOKEN_INDEX_OPTIONS = { unique: true } as const;
+const PUBLIC_SHARE_INDEX_OPTIONS = { unique: true, sparse: true } as const;
+
+function sameIndexKey(
+  current: IndexDescription["key"],
+  expected: Record<string, 1 | -1>,
+): boolean {
+  const currentKeyCount =
+    current instanceof Map ? current.size : Object.keys(current).length;
+  const expectedEntries = Object.entries(expected);
+  const directionFor = (key: string) =>
+    current instanceof Map ? current.get(key) : current[key];
+
+  return (
+    currentKeyCount === expectedEntries.length &&
+    expectedEntries.every(([key, direction]) => directionFor(key) === direction)
+  );
+}
+
+function hasCompatibleIndex(
+  indexes: IndexDescription[],
+  key: Record<string, 1 | -1>,
+  options: { unique?: boolean; sparse?: boolean } = {},
+): boolean {
+  return indexes.some((index) => {
+    const matchesKey = sameIndexKey(index.key, key);
+    const matchesUnique =
+      options.unique === undefined || Boolean(index.unique) === options.unique;
+    const matchesSparse =
+      options.sparse === undefined || Boolean(index.sparse) === options.sparse;
+
+    return matchesKey && matchesUnique && matchesSparse;
+  });
+}
+
+async function createIndexIfMissing(
+  collection: Collection<StoredAssessmentSubmission>,
+  indexes: IndexDescription[],
+  key: Record<string, 1 | -1>,
+  options: { unique?: boolean; sparse?: boolean } = {},
+): Promise<void> {
+  if (hasCompatibleIndex(indexes, key, options)) {
+    return;
+  }
+
+  await collection.createIndex(key, options);
+}
 
 function stripMongoId(
   document: WithId<StoredAssessmentSubmission>,
@@ -42,16 +89,37 @@ export class MongoAssessmentSubmissionRepository implements AssessmentSubmission
 
   async ensureIndexes(): Promise<void> {
     const collection = await this.collection();
+    const indexes = await collection.indexes();
 
     await Promise.all([
-      collection.createIndex({ viewTokenHash: 1 }, { unique: true }),
-      collection.createIndex({ managementTokenHash: 1 }, { unique: true }),
-      collection.createIndex(
-        { publicShareId: 1 },
-        { unique: true, sparse: true },
+      createIndexIfMissing(
+        collection,
+        indexes,
+        { viewTokenHash: 1 },
+        TOKEN_INDEX_OPTIONS,
       ),
-      collection.createIndex({ publicRowId: 1 }, { unique: true }),
-      collection.createIndex({ publicDatasetEligible: 1, createdMonth: 1 }),
+      createIndexIfMissing(
+        collection,
+        indexes,
+        { managementTokenHash: 1 },
+        TOKEN_INDEX_OPTIONS,
+      ),
+      createIndexIfMissing(
+        collection,
+        indexes,
+        { publicShareId: 1 },
+        PUBLIC_SHARE_INDEX_OPTIONS,
+      ),
+      createIndexIfMissing(
+        collection,
+        indexes,
+        { publicRowId: 1 },
+        TOKEN_INDEX_OPTIONS,
+      ),
+      createIndexIfMissing(collection, indexes, {
+        publicDatasetEligible: 1,
+        createdMonth: 1,
+      }),
     ]);
   }
 

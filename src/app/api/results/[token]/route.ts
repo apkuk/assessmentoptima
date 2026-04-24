@@ -4,8 +4,6 @@
  * Updated: 2026-04-24
  * Description: Retrieves a respondent result report by private token.
  */
-import { ZodError } from "zod";
-
 import { createAssessmentSubmissionRepository } from "@/features/assessment/adapters/mongo/assessment-submission-repository";
 import { parseStatelessResultToken } from "@/features/assessment/application/stateless-result-token";
 import {
@@ -13,9 +11,9 @@ import {
   deleteResultRequestSchema,
   viewTokenSchema,
 } from "@/features/assessment/schemas/assessment";
-import { apiError, jsonResponse, zodErrorDetail } from "@/lib/api/responses";
+import { jsonResponse } from "@/lib/api/responses";
+import { routeErrorResponse, routeFailure } from "@/lib/api/route-errors";
 import { getServerEnv } from "@/lib/env/server";
-import { isMongoConnectivityError } from "@/lib/mongo/client";
 import { hashResultToken, resolveHashSecret } from "@/lib/security/tokens";
 
 export const runtime = "nodejs";
@@ -25,7 +23,7 @@ interface RouteContext {
   params: Promise<{ token: string }>;
 }
 
-export async function GET(_request: Request, context: RouteContext) {
+export async function GET(request: Request, context: RouteContext) {
   try {
     const env = getServerEnv();
     const { token } = await context.params;
@@ -45,7 +43,13 @@ export async function GET(_request: Request, context: RouteContext) {
     );
 
     if (!submission) {
-      return apiError(404, "Result not found.");
+      return routeErrorResponse({
+        code: "NOT_FOUND",
+        message: "Result not found.",
+        operation: "GET /api/results/[token]",
+        request,
+        status: 404,
+      });
     }
 
     return jsonResponse(
@@ -58,23 +62,13 @@ export async function GET(_request: Request, context: RouteContext) {
       }),
     );
   } catch (error) {
-    if (error instanceof ZodError) {
-      return apiError(400, "Invalid result token.", zodErrorDetail(error));
-    }
-
-    if (error instanceof Error) {
-      if (error.name === "MongoConfigurationError") {
-        return apiError(503, error.message);
-      }
-
-      if (isMongoConnectivityError(error)) {
-        return apiError(503, "Database connection unavailable.");
-      }
-
-      return apiError(500, "Result lookup failed.", error.message);
-    }
-
-    return apiError(500, "Result lookup failed.");
+    return routeFailure({
+      error,
+      fallbackMessage: "Result lookup failed.",
+      operation: "GET /api/results/[token]",
+      request,
+      validationMessage: "Invalid result token.",
+    });
   }
 }
 
@@ -100,27 +94,23 @@ export async function DELETE(request: Request, context: RouteContext) {
     });
 
     if (!deleted) {
-      return apiError(404, "Result not found.");
+      return routeErrorResponse({
+        code: "NOT_FOUND",
+        message: "Result not found.",
+        operation: "DELETE /api/results/[token]",
+        request,
+        status: 404,
+      });
     }
 
     return jsonResponse({ deleted: true });
   } catch (error) {
-    if (error instanceof ZodError) {
-      return apiError(400, "Invalid result token.", zodErrorDetail(error));
-    }
-
-    if (error instanceof Error) {
-      if (error.name === "MongoConfigurationError") {
-        return apiError(503, error.message);
-      }
-
-      if (isMongoConnectivityError(error)) {
-        return apiError(503, "Database connection unavailable.");
-      }
-
-      return apiError(500, "Result deletion failed.", error.message);
-    }
-
-    return apiError(500, "Result deletion failed.");
+    return routeFailure({
+      error,
+      fallbackMessage: "Result deletion failed.",
+      operation: "DELETE /api/results/[token]",
+      request,
+      validationMessage: "Invalid result token.",
+    });
   }
 }

@@ -25,6 +25,20 @@ Default database name: `assessmentoptima`.
 
 The default lives in `src/config/app.ts` and can be overridden with `MONGODB_DB`. The Atlas connection string belongs in `MONGODB_URI`.
 
+## Bootstrap And Alignment
+
+MongoDB alignment is handled by `pnpm mongo:bootstrap`, which runs `scripts/bootstrap-mongo.ts`.
+
+The script is intentionally schema-first:
+
+- loads local `.env` values when running outside Vercel;
+- pings the configured MongoDB Atlas database;
+- creates or reuses compatible indexes through the same Mongo repository used by the app;
+- validates existing `assessment_submissions` documents against `storedAssessmentSubmissionSchema`;
+- writes a `schema_metadata` record containing the current assessment version, consent version, scale keys, operating-system model, expected item IDs, and public dataset fields.
+
+This avoids a separate migration file that drifts from L0 schemas. If the app schema changes, update the L0 owner first, then rerun `pnpm mongo:bootstrap` against the target environment.
+
 ## DRY/SSoT Ownership
 
 The database layer must consume the same contracts as the rest of the app. It must not define parallel document, export, or context shapes inline.
@@ -89,6 +103,8 @@ assessment_submissions
 - { publicDatasetEligible: 1, createdMonth: 1 }
 ```
 
+Index creation is drift-tolerant. If Atlas already has a compatible unique index from an earlier run, the repository reuses it instead of attempting to recreate the same key with conflicting options.
+
 Rules:
 
 - Do not store name, email, company name, precise job title, exact location, IP address, or free-text responses in this collection for v0.
@@ -104,6 +120,8 @@ Rules:
 Versioned assessment metadata: item definitions, scale mappings, scoring weights, narrative templates, and consent copy references.
 
 For the current prototype, the assessment model lives in code and is documented in [Assessment Model](./assessment-model.md). Move it into this collection only when there is an admin or release process that needs runtime model changes.
+
+Current schema metadata is stored in `schema_metadata`, not `assessment_models`, because the source of truth remains code and L0 schemas for v0.
 
 ```ts
 type AssessmentModelDocument = {

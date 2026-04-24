@@ -10,14 +10,14 @@ import {
   toPublicDatasetRows,
 } from "@/features/assessment/application/public-dataset";
 import { publicDatasetResponseSchema } from "@/features/assessment/schemas/assessment";
-import { apiError, jsonResponse } from "@/lib/api/responses";
+import { jsonResponse } from "@/lib/api/responses";
+import { routeErrorResponse, routeFailure } from "@/lib/api/route-errors";
 import { getServerEnv } from "@/lib/env/server";
-import { isMongoConnectivityError } from "@/lib/mongo/client";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const env = getServerEnv();
     const repository = createAssessmentSubmissionRepository();
@@ -27,11 +27,14 @@ export async function GET() {
     const threshold = applySmallCellSuppression(rows, env.PUBLIC_DATASET_MIN_N);
 
     if (threshold.suppressed) {
-      return apiError(
-        403,
-        "Public dataset threshold has not been met.",
-        `Current public row count is ${threshold.rowCount}; minimum is ${threshold.minGroupSize}.`,
-      );
+      return routeErrorResponse({
+        code: "SMALL_CELL_SUPPRESSED",
+        detail: `Current public row count is ${threshold.rowCount}; minimum is ${threshold.minGroupSize}.`,
+        message: "Public dataset threshold has not been met.",
+        operation: "GET /api/dataset.json",
+        request,
+        status: 403,
+      });
     }
 
     return jsonResponse(
@@ -42,18 +45,11 @@ export async function GET() {
       }),
     );
   } catch (error) {
-    if (error instanceof Error) {
-      if (error.name === "MongoConfigurationError") {
-        return apiError(503, error.message);
-      }
-
-      if (isMongoConnectivityError(error)) {
-        return apiError(503, "Database connection unavailable.");
-      }
-
-      return apiError(500, "Dataset export failed.", error.message);
-    }
-
-    return apiError(500, "Dataset export failed.");
+    return routeFailure({
+      error,
+      fallbackMessage: "Dataset export failed.",
+      operation: "GET /api/dataset.json",
+      request,
+    });
   }
 }

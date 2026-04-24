@@ -4,8 +4,6 @@
  * Updated: 2026-04-24
  * Description: Scores and persists a completed assessment submission.
  */
-import { ZodError } from "zod";
-
 import { routes } from "@/config/routes";
 import { scoreAssessment } from "@/features/assessment/application/scoring";
 import { createStatelessResultToken } from "@/features/assessment/application/stateless-result-token";
@@ -15,9 +13,11 @@ import {
   submitAssessmentResponseSchema,
   submitAssessmentSchema,
 } from "@/features/assessment/schemas/assessment";
-import { apiError, jsonResponse, zodErrorDetail } from "@/lib/api/responses";
+import { jsonResponse } from "@/lib/api/responses";
+import { routeFailure } from "@/lib/api/route-errors";
 import { getServerEnv } from "@/lib/env/server";
 import { isMongoConnectivityError } from "@/lib/mongo/client";
+import { logger } from "@/lib/observability/logger";
 import {
   createPublicRowId,
   createResultToken,
@@ -124,6 +124,16 @@ export async function POST(request: Request) {
       });
     } catch (error) {
       if (error instanceof Error && isPersistenceUnavailable(error)) {
+        logger.warn({
+          event: "assessment.persistence_stateless_fallback",
+          route: "/api/submit",
+          method: "POST",
+          message:
+            "Assessment submission persistence unavailable; issuing stateless private result token.",
+          error,
+          context: { publicDatasetEligible },
+        });
+
         return createStatelessFallback({
           resultResponse,
           hashSecret,
@@ -143,26 +153,12 @@ export async function POST(request: Request) {
       storageMode: "mongo",
     });
   } catch (error) {
-    if (error instanceof ZodError) {
-      return apiError(
-        400,
-        "Invalid assessment submission.",
-        zodErrorDetail(error),
-      );
-    }
-
-    if (error instanceof Error) {
-      if (error.name === "AssessmentScoringError") {
-        return apiError(400, error.message);
-      }
-
-      if (isPersistenceUnavailable(error)) {
-        return apiError(503, "Database connection unavailable.");
-      }
-
-      return apiError(500, "Assessment submission failed.", error.message);
-    }
-
-    return apiError(500, "Assessment submission failed.");
+    return routeFailure({
+      error,
+      fallbackMessage: "Assessment submission failed.",
+      operation: "POST /api/submit",
+      request,
+      validationMessage: "Invalid assessment submission.",
+    });
   }
 }

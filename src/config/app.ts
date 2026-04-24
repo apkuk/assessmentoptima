@@ -26,8 +26,18 @@ export const appConfig = {
 } as const;
 
 export const citations = {
-  assessment:
-    "@misc{assessmentoptima2026, title={AssessmentOptima WorkStyle Compass v2}, year={2026}, note={Developmental open research prototype}}",
-  methodology:
-    "@misc{assessmentoptima2026, title={AssessmentOptima WorkStyle Compass v2 methodology}, year={2026}, note={Work operating system developmental prototype}}",
+  assessment: `@misc{assessmentoptima2026,
+  title   = {AssessmentOptima WorkStyle Compass (v2)},
+  author  = {Kilshaw, Andrew},
+  year    = {2026},
+  url     = {https://assessmentoptima.com},
+  note    = {Developmental open-research prototype.}
+}`,
+  methodology: `@misc{assessmentoptima2026methodology,
+  title   = {The Work Operating System model: methodology for AssessmentOptima WorkStyle Compass (v2)},
+  author  = {Kilshaw, Andrew},
+  year    = {2026},
+  url     = {https://assessmentoptima.com/science},
+  note    = {Developmental methodology brief. Not a validated selection instrument.}
+}`,
 } as const;

@@ -77,8 +77,8 @@ export default function Home() {
         <MetricCard label="Dataset posture" value="Open">
           <p>Score-level rows, private context, and threshold protection.</p>
         </MetricCard>
-        <MetricCard label="Build story" value="5.5">
-          <p>Documented ChatGPT 5.5 and Codex with GPT-5.5 build workflow.</p>
+        <MetricCard label="Build story" value="AI">
+          <p>Transparent ChatGPT and Codex workflow, documented end-to-end.</p>
         </MetricCard>
       </section>
 

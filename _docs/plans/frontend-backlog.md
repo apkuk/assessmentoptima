@@ -18,7 +18,7 @@ Legend:
 
 Effort guide: **XS** <10 min · **S** 10-30 min · **M** 30-90 min · **L** 90 min-half a day.
 
-**2026-04-24 12:04 BST status:** FE-01 through FE-08 and FE-11 through FE-13 have been implemented. FE-09, FE-10, and FE-14 remain valid follow-up tickets because they introduce new packages or a broader theme pass; they should be done deliberately with visual regression checks rather than folded into the quick audit pass.
+**2026-04-24 12:50 BST status:** FE-01 through FE-15, FE-17, and FE-23 have been implemented. FE-16 remains a deliberate future refactor because the current BYOK form works, is provider-aware, and would need a broader Server Action rewrite. FE-18 through FE-22 remain parked until analytics, real dataset scale, or a concrete modal/charting need justifies them.
 
 ---
 
@@ -83,13 +83,13 @@ Effort guide: **XS** <10 min · **S** 10-30 min · **M** 30-90 min · **L** 90 m
 
 ## Tier 2 — Worth Doing Next (≈3h)
 
-### [ ] FE-09 · Install `@tailwindcss/typography` and apply `prose` to long-form pages — **M**
+### [x] FE-09 · Install `@tailwindcss/typography` and apply `prose` to long-form pages — **M**
 - **Files:** `package.json` (devDep), [src/app/globals.css](../../src/app/globals.css) (add `@plugin "@tailwindcss/typography";`), then apply `prose` classes to [science/page.tsx](../../src/app/science/page.tsx), [privacy/page.tsx](../../src/app/privacy/page.tsx), [limitations/page.tsx](../../src/app/limitations/page.tsx), [how-i-built-this/page.tsx](../../src/app/how-i-built-this/page.tsx).
 - **Why:** Editorial pages will drift typographically without a shared prose rhythm. Plugin is v4-compatible.
 - **Acceptance:** Diff screenshots of long-form pages before/after; verify line-length and spacing consistency.
 - **Watch:** Override `prose` headings to use Source Serif 4 (set `--tw-prose-headings` vars or pass `prose-headings:font-serif` utility).
 
-### [ ] FE-10 · Install `@axe-core/react` (dev-only) — **XS**
+### [x] FE-10 · Install `@axe-core/react` (dev-only) — **XS**
 - **Files:** `package.json` (devDep); add a client-side mount-once block in a dev-only component that runs `axe(React, ReactDOM, 1000)` when `NODE_ENV !== 'production'`.
 - **Why:** Catches the next batch of a11y regressions in the dev console as they appear.
 - **Acceptance:** Run `pnpm dev`, open any page, see axe results in console.
@@ -116,7 +116,7 @@ Effort guide: **XS** <10 min · **S** 10-30 min · **M** 30-90 min · **L** 90 m
 
 ## Tier 3 — Portfolio Level-Up (≈3–4h)
 
-### [ ] FE-14 · Install `next-themes` + dark mode — **L**
+### [x] FE-14 · Install `next-themes` + dark mode — **L**
 - **Files:** `package.json`, [src/app/layout.tsx](../../src/app/layout.tsx) (wrap in `<ThemeProvider>`), [src/app/styles/base.css](../../src/app/styles/base.css) (add `[data-theme="dark"]` overrides for every `--ao-*` color token), a small `ThemeToggle` component rendered in the header.
 - **Why:** 2026 portfolio expectation. Tokens are already semantic — this is a palette pass, not a redesign.
 - **Acceptance:**
@@ -126,7 +126,7 @@ Effort guide: **XS** <10 min · **S** 10-30 min · **M** 30-90 min · **L** 90 m
   - OG images stay light-mode for LinkedIn previews (don't let dark mode leak into `ImageResponse`).
 - **Watch:** the three `--ao-chart-*` colours will need dark-mode adjustments. The brand-guidelines.md contrast table only covers light mode; extend it.
 
-### [ ] FE-15 · Mobile nav as dialog/sheet — **M**
+### [x] FE-15 · Mobile nav as dialog/sheet — **M**
 - **Files:** [src/components/site-header.tsx](../../src/components/site-header.tsx), [src/app/styles/layout.css](../../src/app/styles/layout.css)
 - **Change:** below 42rem, collapse nav into a hamburger button that opens a `<dialog>` or sheet with the six nav items; preserve horizontal-scroll pattern above 42rem.
 - **Why:** Horizontal scroll with hidden scrollbar is discoverable-adjacent at best. A dialog is clearer.
@@ -139,7 +139,7 @@ Effort guide: **XS** <10 min · **S** 10-30 min · **M** 30-90 min · **L** 90 m
 - **Why:** React 19-native pattern, less client state, share zod schema across client and server.
 - **Acceptance:** Pending state disables inputs via `useFormStatus`; errors rendered via action state, no local `useState` for request lifecycle.
 
-### [ ] FE-17 · Radar chart reveal animation — **S**
+### [x] FE-17 · Radar chart reveal animation — **S**
 - **Files:** [src/components/radar-chart.tsx](../../src/components/radar-chart.tsx), [src/app/styles/reporting.css](../../src/app/styles/reporting.css)
 - **Change:** animate the polygon's `stroke-dasharray` + `fill-opacity` from 0 to target on mount (CSS only). Respect `prefers-reduced-motion`.
 - **Why:** First-visit moment on the results page — single most-shared view. Reward it.
@@ -168,18 +168,14 @@ Effort guide: **XS** <10 min · **S** 10-30 min · **M** 30-90 min · **L** 90 m
 ### [ ] FE-22 · Add `motion` (formerly framer-motion) for a specific animated reveal — **M**
 - Only when FE-17's CSS approach isn't enough. Use `LazyMotion` + `m` component to keep bundle ≈4.6kb.
 
-### [ ] FE-23 · Custom `not-found.tsx` — **S**
+### [x] FE-23 · Custom `not-found.tsx` — **S**
 - Branded 404 with a short navigation. Low priority; default Next.js is acceptable today.
 
 ---
 
-## Suggested Order For A Focused Half-Day
+## Suggested Next UI QA
 
-**Morning, ~2h (Tier 1 except FE-08):** FE-01 → FE-02 → FE-03 → FE-04 → FE-05 → FE-06 → FE-07. Nine small wins that compound.
-
-**Lunch review:** screenshot diff across all pages; run Lighthouse; verify with a screen reader.
-
-**Afternoon, ~2–3h (one big item):** either **FE-14 (dark mode)** *or* **FE-08 + FE-09 + FE-10 + FE-11 + FE-12 + FE-13** as a "polish pass". Pick based on what the LinkedIn audience will value more. I'd pick dark mode.
+The original focused half-day list has now been implemented except for deliberately deferred items. The next useful review is not another speculative package pass; it is a page-by-page browser check across light/dark themes, desktop/mobile widths, keyboard navigation, the assessment flow, result sharing, dataset suppression, and BYOK error states.
 
 ---
 

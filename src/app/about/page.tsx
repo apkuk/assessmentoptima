@@ -87,6 +87,7 @@ export default function AboutPage() {
 
       <Section>
         <Surface
+          prose
           label="Current chapter"
           title="Hands-on AI, not slideware"
           variant="callout"
@@ -131,7 +132,7 @@ export default function AboutPage() {
 
       <ContentGrid>
         {focusAreas.map((area) => (
-          <Surface key={area.title} label="Focus" title={area.title}>
+          <Surface key={area.title} label="Focus" prose title={area.title}>
             <p>{area.body}</p>
           </Surface>
         ))}
@@ -152,7 +153,11 @@ export default function AboutPage() {
       </Section>
 
       <ContentGrid>
-        <Surface label="Background" title="Enterprise transformation track">
+        <Surface
+          label="Background"
+          prose
+          title="Enterprise transformation track"
+        >
           <ul>
             {experienceHighlights.map((highlight) => (
               <li key={highlight}>{highlight}</li>
@@ -161,6 +166,7 @@ export default function AboutPage() {
         </Surface>
         <Surface
           label="Why this matters"
+          prose
           title="AI with practitioner judgement"
         >
           <p>

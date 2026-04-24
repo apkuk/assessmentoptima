@@ -6,9 +6,11 @@
  * Updated: 2026-04-24
  * Description: Global branded error boundary for recoverable App Router failures.
  */
+import { useEffect } from "react";
 import Link from "next/link";
 
 import { routes } from "@/config/routes";
+import { logger } from "@/lib/observability/logger";
 
 export default function Error({
   error,
@@ -17,6 +19,15 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  useEffect(() => {
+    logger.error({
+      event: "app.error_boundary",
+      requestId: error.digest,
+      message: error.message,
+      error,
+    });
+  }, [error]);
+
   return (
     <main className="page">
       <section className="section">

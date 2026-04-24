@@ -20,10 +20,10 @@ export const metadata: Metadata = {
 
 const rules = [
   "No names, emails, company names, exact job titles, raw IP addresses, or free-text respondent comments are collected for the public dataset.",
-  "Context fields are coarse buckets and can be answered as prefer not; they support aggregate analysis, not v0 row-level export.",
-  "Public exports are score-level rows only at launch, protected by a minimum group threshold.",
-  "Bring-your-own-key AI analysis sends the key to the server for the provider request, but the application does not store it.",
-  "The assessment database does not store IP addresses or user-agent strings, though hosting and security providers may process operational request metadata.",
+  "Context fields are coarse buckets and can be left as “Prefer not to say.” They support aggregate analysis only; they are not included in public row-level exports at launch.",
+  "Public exports contain score-level rows only, protected by a minimum group threshold before anything is released.",
+  "Bring-your-own-key AI analysis sends your provider key to our server for a single request and forwards it to the provider you chose. The application does not store it.",
+  "The assessment database does not store IP addresses or user-agent strings, though the hosting and security layer may process standard request metadata.",
 ];
 
 export default function PrivacyPage() {
@@ -37,14 +37,14 @@ export default function PrivacyPage() {
 
       <ContentGrid>
         {rules.map((rule, index) => (
-          <Surface key={rule} label={`Rule ${index + 1}`}>
+          <Surface key={rule} label={`Rule ${index + 1}`} prose>
             <p>{rule}</p>
           </Surface>
         ))}
       </ContentGrid>
 
       <ContentGrid className="section">
-        <Surface title="Contact" tone="science" variant="callout">
+        <Surface prose title="Contact" tone="science" variant="callout">
           <p>
             Privacy and deletion queries should go to{" "}
             <a href={`mailto:${appConfig.privacyContactEmail}`}>
@@ -53,7 +53,7 @@ export default function PrivacyPage() {
             .
           </p>
         </Surface>
-        <Surface title="Retention" variant="callout">
+        <Surface prose title="Retention" variant="callout">
           <p>{appConfig.retentionPolicyPlaceholder}</p>
         </Surface>
       </ContentGrid>

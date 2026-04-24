@@ -60,31 +60,57 @@ export default function SciencePage() {
       </ContentGrid>
 
       <Section>
-        <Surface title="What this is not" tone="pressure" variant="callout">
+        <Surface
+          prose
+          title="What this is not"
+          tone="pressure"
+          variant="callout"
+        >
           <p>
-            This v2 prototype has not yet been validated for selection,
-            prediction, or other high-stakes use. It still needs reliability
-            analysis, factor validation, criterion validation, fairness review,
-            test-retest checks, norm development, and qualified-user
-            interpretation standards. It must not be used for hiring, promotion,
-            redundancy, diagnosis, or high-stakes employment decisions.
+            This prototype has not been validated for selection, prediction, or
+            any other high-stakes use. It must not be used for hiring,
+            promotion, redundancy, diagnosis, compensation, or disciplinary
+            decisions.
+          </p>
+          <p>
+            Before any stronger claim would be appropriate, the instrument still
+            needs reliability analysis, factor validation, criterion validation,
+            fairness and adverse-impact review, test-retest checks, norm
+            development, and qualified-user interpretation guidance.
           </p>
         </Surface>
       </Section>
 
       <ContentGrid>
         <Surface
-          label="Pre-registration posture"
-          title="What we will test before claiming"
+          prose
+          label="Validation roadmap"
+          title="What we test before claiming more"
         >
           <p>
-            Reliability, factor structure, test-retest stability, criterion
-            links, subgroup fairness, and adverse-impact signals must be tested
-            before this becomes anything more than a developmental prototype.
+            We are keeping a public list of the evidence we would need to
+            justify any stronger claim than &ldquo;developmental
+            prototype&rdquo;. Until each of these is done, the caveats on this
+            page stand.
           </p>
+          <ul>
+            <li>Internal consistency (Cronbach&rsquo;s alpha) per domain.</li>
+            <li>Factor structure across the three work operating systems.</li>
+            <li>Test-retest stability over weeks and months.</li>
+            <li>Criterion links to real work outcomes.</li>
+            <li>Subgroup fairness and adverse-impact review.</li>
+            <li>Qualified-user interpretation standards.</li>
+          </ul>
         </Surface>
-        <Surface label="Citation" title="Cite the v0 method">
-          <p className="mono">{citations.methodology}</p>
+        <Surface prose label="Citation" title="Cite this methodology">
+          <p>
+            If you reference the Work Operating System model or the WorkStyle
+            Compass assessment in research, teaching, or writing, please cite it
+            in the form below. BibTeX is provided for convenience.
+          </p>
+          <pre className="code-block">
+            <code>{citations.methodology}</code>
+          </pre>
         </Surface>
       </ContentGrid>
     </PageShell>

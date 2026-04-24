@@ -101,6 +101,20 @@
   resize: vertical;
 }
 
+.field-hint {
+  margin: 0.35rem 0 0;
+  color: var(--ao-muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.field select:disabled {
+  color: var(--ao-subtle);
+  background: var(--ao-bg-soft);
+  cursor: not-allowed;
+}
+
 .item-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -310,9 +324,12 @@
 }
 
 .radar-chart__profile {
-  fill: rgb(0 97 95 / 0.26);
+  fill: color-mix(in srgb, var(--ao-brand) 28%, transparent);
   stroke: var(--ao-brand);
   stroke-width: 3;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ao-radar-reveal 420ms var(--ao-ease) both;
 }
 
 .radar-chart__point circle {
@@ -449,6 +466,20 @@ th {
 
   to {
     background-position: 100% 50%;
+  }
+}
+
+@keyframes ao-radar-reveal {
+  from {
+    fill-opacity: 0;
+    stroke-opacity: 0;
+    transform: scale(0.86);
+  }
+
+  to {
+    fill-opacity: 1;
+    stroke-opacity: 1;
+    transform: scale(1);
   }
 }
 

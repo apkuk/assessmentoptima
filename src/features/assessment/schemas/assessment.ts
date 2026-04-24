@@ -105,6 +105,78 @@ export const aiAnalysisTypes = [
   "methodology_critique",
 ] as const;
 
+// Current BYOK catalogues. Keep these in sync with the public /ai-analysis form.
+export const openaiModels = [
+  {
+    id: "gpt-5.4-pro",
+    label: "GPT-5.4 Pro",
+    description: "Highest quality, slower. For complex synthesis.",
+  },
+  {
+    id: "gpt-5.4",
+    label: "GPT-5.4",
+    description: "Flagship default. Balanced quality and latency.",
+  },
+  {
+    id: "gpt-5.4-mini",
+    label: "GPT-5.4 mini",
+    description: "Faster and cheaper. Good general-purpose choice.",
+  },
+  {
+    id: "gpt-5.4-nano",
+    label: "GPT-5.4 nano",
+    description: "Fastest and cheapest. Best for short jobs.",
+  },
+] as const;
+
+export const anthropicModels = [
+  {
+    id: "claude-opus-4-7",
+    label: "Claude Opus 4.7",
+    description: "Most capable. Thinks adaptively on its own.",
+    supportsExplicitThinking: false,
+  },
+  {
+    id: "claude-sonnet-4-6",
+    label: "Claude Sonnet 4.6",
+    description: "Balanced workhorse. Extended thinking available.",
+    supportsExplicitThinking: true,
+  },
+  {
+    id: "claude-haiku-4-5-20251001",
+    label: "Claude Haiku 4.5",
+    description: "Fastest and cheapest. No extended thinking.",
+    supportsExplicitThinking: false,
+  },
+] as const;
+
+export const openaiModelIds = openaiModels.map(
+  (model) => model.id,
+) as unknown as readonly [
+  (typeof openaiModels)[number]["id"],
+  ...Array<(typeof openaiModels)[number]["id"]>,
+];
+export const anthropicModelIds = anthropicModels.map(
+  (model) => model.id,
+) as unknown as readonly [
+  (typeof anthropicModels)[number]["id"],
+  ...Array<(typeof anthropicModels)[number]["id"]>,
+];
+
+export const openaiReasoningEfforts = [
+  "minimal",
+  "low",
+  "medium",
+  "high",
+] as const;
+export const openaiVerbosities = ["low", "medium", "high"] as const;
+export const anthropicThinkingEfforts = [
+  "off",
+  "low",
+  "medium",
+  "high",
+] as const;
+
 export const itemTypeSchema = z.enum(["core", "reverse", "overuse"]);
 export const answerValueSchema = z.union([
   z.literal(answerValues[0]),
@@ -200,15 +272,33 @@ export const submitAssessmentSchema = z
   })
   .strict();
 
-export const aiAnalysisRequestSchema = z
+const openaiRequestSchema = z
   .object({
-    provider: z.enum(aiProviders),
+    provider: z.literal("openai"),
     apiKey: z.string().min(8),
-    model: z.string().min(1),
+    model: z.enum(openaiModelIds),
     analysisType: z.enum(aiAnalysisTypes),
     question: z.string().max(1000).optional(),
+    reasoningEffort: z.enum(openaiReasoningEfforts).default("low"),
+    verbosity: z.enum(openaiVerbosities).default("medium"),
   })
   .strict();
+
+const anthropicRequestSchema = z
+  .object({
+    provider: z.literal("anthropic"),
+    apiKey: z.string().min(8),
+    model: z.enum(anthropicModelIds),
+    analysisType: z.enum(aiAnalysisTypes),
+    question: z.string().max(1000).optional(),
+    thinkingEffort: z.enum(anthropicThinkingEfforts).default("off"),
+  })
+  .strict();
+
+export const aiAnalysisRequestSchema = z.discriminatedUnion("provider", [
+  openaiRequestSchema,
+  anthropicRequestSchema,
+]);
 
 export const aiAnalysisResponseSchema = z
   .object({
@@ -365,7 +455,10 @@ export const reliabilitySnapshotSchema = z
 export const apiErrorResponseSchema = z
   .object({
     error: z.string(),
+    code: z.string().optional(),
     detail: z.string().optional(),
+    requestId: z.string().optional(),
+    retryable: z.boolean().optional(),
   })
   .strict();
 

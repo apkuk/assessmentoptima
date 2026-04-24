@@ -26,7 +26,10 @@
 }
 
 @media (max-width: 64rem) {
-  .site-header,
+  .site-header {
+    align-items: center;
+  }
+
   .page-footer {
     align-items: flex-start;
     flex-direction: column;
@@ -54,6 +57,28 @@
 }
 
 @media (max-width: 42rem) {
+  .site-header {
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .brand-line {
+    display: none;
+  }
+
+  .site-nav--desktop {
+    display: none;
+  }
+
+  .nav-menu-button {
+    display: inline-flex;
+  }
+
+  .theme-toggle span,
+  .nav-menu-button span {
+    display: none;
+  }
+
   .hero h1,
   .page-title {
     font-size: var(--ao-text-display-sm);

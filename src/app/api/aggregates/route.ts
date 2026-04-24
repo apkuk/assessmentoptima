@@ -10,14 +10,14 @@ import {
   toPublicDatasetRows,
 } from "@/features/assessment/application/public-dataset";
 import { aggregateResponseSchema } from "@/features/assessment/schemas/assessment";
-import { apiError, jsonResponse } from "@/lib/api/responses";
+import { jsonResponse } from "@/lib/api/responses";
+import { routeFailure } from "@/lib/api/route-errors";
 import { getServerEnv } from "@/lib/env/server";
-import { isMongoConnectivityError } from "@/lib/mongo/client";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const env = getServerEnv();
     const repository = createAssessmentSubmissionRepository();
@@ -27,18 +27,11 @@ export async function GET() {
 
     return jsonResponse(aggregateResponseSchema.parse(aggregates));
   } catch (error) {
-    if (error instanceof Error) {
-      if (error.name === "MongoConfigurationError") {
-        return apiError(503, error.message);
-      }
-
-      if (isMongoConnectivityError(error)) {
-        return apiError(503, "Database connection unavailable.");
-      }
-
-      return apiError(500, "Aggregate query failed.", error.message);
-    }
-
-    return apiError(500, "Aggregate query failed.");
+    return routeFailure({
+      error,
+      fallbackMessage: "Aggregate query failed.",
+      operation: "GET /api/aggregates",
+      request,
+    });
   }
 }

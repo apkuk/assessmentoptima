@@ -10,7 +10,7 @@ created: 2026-04-24
 **Scope:** All user-facing frontend code (`src/app/**`, `src/components/**`, `src/features/assessment/components/**`, `src/app/styles/**`, OG image routes, layout, and metadata).
 **Method:** Parallel agent audit of every page and component + web research on current Next.js 16 / React 19 / Tailwind v4 best practices.
 **Stack audited:** Next.js 16 (App Router), React 19.2, Tailwind v4, TypeScript strict, pnpm, Vitest 4. Installed deps: `lucide-react`, `zod`, `mongodb`.
-**Implementation status:** quick-pass fixes applied 2026-04-24 12:04 BST: font swap, alert semantics, skip-link styling, active nav state, softened dataset error copy, radar accessibility fallback, motion tokens, global loading/error fallbacks, mobile Likert sizing, keyboard hint, and dataset archetype bars. Package-level enhancements remain in [frontend-backlog.md](./frontend-backlog.md).
+**Implementation status:** quick-pass fixes applied 2026-04-24 12:04 BST, then package-level polish applied 2026-04-24 12:50 BST. Implemented: font swap, alert semantics, skip-link styling, active nav state, softened dataset copy, radar accessibility fallback, motion tokens, global loading/error fallbacks, mobile Likert sizing, keyboard hint, dataset archetype bars, Tailwind typography support, dev-only axe checks, next-themes dark mode, mobile navigation dialog, radar reveal animation, and branded 404. Deferred items remain tracked in [frontend-backlog.md](./frontend-backlog.md).
 
 ## Headline
 

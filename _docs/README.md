@@ -26,10 +26,11 @@ Active plan docs:
 - [Assessment Model](./master-docs/assessment-model.md): implemented WorkStyle Compass v2 model, scale labels, item bank, scoring, composites, pressure-drift logic, and archetypes.
 - [Assessment Science Research](./master-docs/assessment-science/research.md): behavioural-science basis and validation posture.
 - [Application Architecture](./master-docs/application-architecture.md): L0-L5 ownership, dependency rules, and DRY/SSoT contract.
-- [Data Architecture](./master-docs/data-architecture.md): MongoDB collections, persistence boundaries, public export shape, and AI data policy.
+- [Data Architecture](./master-docs/data-architecture.md): MongoDB collections, bootstrap/alignment, persistence boundaries, public export shape, and AI data policy.
 - [Product Routes And API](./master-docs/product-routes-and-api.md): page inventory, API routes, route-level requirements, and endpoint contracts.
 - [Privacy And Open Data](./master-docs/privacy-and-open-data.md): consent, prohibited data, export allowlists, suppression, and privacy copy.
 - [AI Analysis](./master-docs/ai-analysis.md): BYOK analysis contract, provider handling, prompt guardrails, and event logging limits.
+- [Observability And Error Handling](./master-docs/observability.md): structured logs, request IDs, API error shapes, redaction, and dev-console sharing rules.
 - [Brand Guidelines](./master-docs/brand-guidelines.md): visual system, CSS token direction, accessibility, and interaction standards.
 - [Delivery And QA](./master-docs/delivery-and-qa.md): verification, deployment, manual QA, and roadmap.
 - [How I Built This](./master-docs/how-i-built-this.md): public build-story requirements and sprint evidence.

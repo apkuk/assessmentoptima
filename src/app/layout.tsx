@@ -7,8 +7,10 @@
 import type { Metadata } from "next";
 import { Geist_Mono, IBM_Plex_Sans, Source_Serif_4 } from "next/font/google";
 
+import { DevA11y } from "@/components/dev-a11y";
 import { PageFooter } from "@/components/page-footer";
 import { SiteHeader } from "@/components/site-header";
+import { ThemeProvider } from "@/components/theme-provider";
 import { appConfig } from "@/config/app";
 
 import "./globals.css";
@@ -74,18 +76,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${plex.variable} ${editorial.variable} ${mono.variable}`}
       >
-        <a className="skip-link" href="#main-content">
-          Skip to main content
-        </a>
-        <SiteHeader />
-        <div id="main-content" tabIndex={-1}>
-          {children}
-        </div>
-        <PageFooter />
+        <ThemeProvider>
+          <DevA11y />
+          <a className="skip-link" href="#main-content">
+            Skip to main content
+          </a>
+          <SiteHeader />
+          <div id="main-content" tabIndex={-1}>
+            {children}
+          </div>
+          <PageFooter />
+        </ThemeProvider>
       </body>
     </html>
   );

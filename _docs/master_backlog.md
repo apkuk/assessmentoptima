@@ -23,6 +23,7 @@ Legend:
 - [Product Routes And API](./master-docs/product-routes-and-api.md)
 - [Privacy And Open Data](./master-docs/privacy-and-open-data.md)
 - [AI Analysis](./master-docs/ai-analysis.md)
+- [Observability And Error Handling](./master-docs/observability.md)
 - [Delivery And QA](./master-docs/delivery-and-qa.md)
 - [How I Built This](./master-docs/how-i-built-this.md)
 - [Assessment Science Research](./master-docs/assessment-science/research.md)
@@ -40,6 +41,9 @@ Legend:
 - [x] Database: MongoDB Atlas.
 - [x] Test runner: Vitest 4.
 - [x] Styling direction: Tailwind v4 plus AssessmentOptima global tokens.
+- [x] Dark mode: next-themes with light/system/dark toggle.
+- [x] Dev-time accessibility checks: `@axe-core/react`.
+- [x] Long-form typography support: `@tailwindcss/typography`.
 - [x] Global background polish: calm lab surface, no site-wide grid.
 - [x] V0 assessment instrument: WorkStyle Compass.
 - [x] V2 assessment model: Work Operating Systems with Operational Clarity, Human Coordination, and Adaptive Capacity.
@@ -84,6 +88,7 @@ Legend:
 - [x] Scale key export is derived from `scaleKeySchema`.
 - [x] Respondent context defaults and buckets are centralised in L0 schemas.
 - [x] Public dataset/reliability/comparison contracts are schema-derived.
+- [x] API error responses include stable code, request ID, retryability, and optional safe detail.
 
 ## L3 Assessment Logic
 
@@ -112,6 +117,7 @@ Legend:
 - [x] Small-cell suppression tests.
 - [x] Result token hashing tests.
 - [x] Aggregate calculation tests.
+- [x] Observability redaction and error-shaping tests.
 - [x] SSoT consolidation compiles under strict TypeScript.
 - [ ] AI orchestration tests with fake provider.
 
@@ -124,6 +130,7 @@ Legend:
 - [x] Aggregate repository.
 - [ ] AI analysis event repository, optional.
 - [x] Index creation script or startup-safe index helper.
+- [x] MongoDB bootstrap/alignment script: `pnpm mongo:bootstrap`.
 - [ ] Development seed data script.
 
 ## L4 API And Server Entrypoints
@@ -141,6 +148,7 @@ Legend:
 - [x] `DELETE /api/results/[token]`.
 - [x] `GET /api/results/[token]/experiment.ics`.
 - [x] Public API docs page at `/api/docs`.
+- [x] Shared API route error classifier and logger.
 
 ## L5 Public Pages
 
@@ -158,6 +166,7 @@ Legend:
 - [x] How I Built This page `/how-i-built-this`.
 - [x] Global navigation.
 - [x] Footer with use-boundary language.
+- [x] Branded global loading, error, and not-found states.
 
 ## UI Components
 
@@ -174,6 +183,9 @@ Legend:
 - [x] Dataset metric.
 - [x] Aggregate chart.
 - [x] Data dictionary table.
+- [x] Theme toggle.
+- [x] Mobile navigation dialog.
+- [x] Radar reveal animation.
 - [x] BYOK AI analysis form.
 - [x] Radar chart.
 - [x] Result share actions.
@@ -253,6 +265,7 @@ Legend:
 - [x] JSON export works.
 - [x] Small-n suppression works.
 - [x] BYOK key is not stored or logged.
+- [x] Client API failures log structured, redacted browser-console events with request references.
 - [x] Share-safe archetype OG image works.
 - [x] 30-day experiment calendar export works.
 - [x] Delete-by-management-token works.

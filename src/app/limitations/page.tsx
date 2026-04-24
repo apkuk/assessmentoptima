@@ -28,6 +28,7 @@ export default function LimitationsPage() {
 
       <ContentGrid>
         <Surface
+          prose
           title="Do not use for selection"
           tone="pressure"
           variant="callout"
@@ -38,7 +39,7 @@ export default function LimitationsPage() {
             high-stakes decision about a person.
           </p>
         </Surface>
-        <Surface title="Validation roadmap">
+        <Surface prose title="Validation roadmap">
           <p>
             A validated instrument would need internal consistency, factor
             structure, test-retest reliability, criterion validity, subgroup

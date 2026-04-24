@@ -2,18 +2,18 @@
 
 Status: Implementation-current master reference for testing, deployment, README, and roadmap.
 
-Current implementation status as of 2026-04-24 11:02 BST:
+Current implementation status as of 2026-04-24 12:50 BST:
 
 - Next.js App Router, strict TypeScript, pnpm, Tailwind v4, ESLint, Prettier, and Vitest are implemented.
 - L0 schemas, Mongo repository, API routes, WorkStyle Compass v2 assessment flow, result report, score-first dataset exports, BYOK AI analysis, share-safe archetype OG cards, separate view/delete tokens, and How I Built This are implemented.
-- `pnpm verify`, `pnpm build`, and linked `vercel build --prod` pass locally.
+- `pnpm verify`, `pnpm build`, `pnpm mongo:bootstrap`, and linked `vercel build --prod` pass locally.
 - The first GitHub-triggered Vercel deployment exposed a project configuration issue: Vercel was set to Framework Preset `Other` and expected a static `public` output directory after the Next.js build.
 - A root `vercel.json` now forces the deployment to use the Next.js framework preset, `pnpm install --frozen-lockfile`, `pnpm build`, and default Next.js output handling.
 - Production environment variables have been added and production redeploy is ready at `https://assessmentoptima.vercel.app`.
 - `/`, `/dataset`, and `/api/health` return `200` in production.
-- First synthetic `/api/submit` smoke testing exposed a MongoDB connectivity timeout in Vercel runtime. Atlas network access still needs to allow Vercel/serverless egress before persistence-backed routes can pass.
+- Local production smoke testing now passes route checks and the Mongo-backed submit -> result -> delete flow. First Vercel `/api/submit` smoke testing previously exposed a MongoDB connectivity timeout in Vercel runtime; production persistence still needs a fresh Vercel smoke test after network/env confirmation.
 - The core assessment journey now has a signed stateless result-token fallback. If MongoDB is unreachable during submission, the user can still receive a private report, result API payload, dynamic OG image, and 30-day experiment calendar export. These fallback results are not added to the public dataset.
-- Remaining launch work is MongoDB Atlas network access/runtime persistence QA, mobile hands-on QA, final dataset licence decision, and optional seed/logging/test expansion.
+- Remaining launch work is Vercel runtime persistence QA, mobile hands-on QA, final dataset licence decision, optional seed data, and deeper AI-provider test coverage.
 
 ## Build Order
 
@@ -165,12 +165,21 @@ pnpm test:ui
 pnpm test:coverage
 pnpm typecheck
 pnpm verify
+pnpm mongo:bootstrap
 pnpm clean
 ```
 
 `pnpm dev` and `pnpm dev:3001` should open the local frontend in Chrome by default through `scripts/dev-open.mjs`. Use `OPEN_BROWSER=false` when running in automation or when a browser launch is not desired.
 
 Database migration scripts can be added only if/when a migration approach is selected for MongoDB schema/index setup.
+
+MongoDB bootstrap/alignment is implemented:
+
+```text
+pnpm mongo:bootstrap
+```
+
+This command pings the configured database, creates or reuses compatible indexes, validates existing submissions against the current stored submission schema, and writes schema metadata for the current WorkStyle Compass contract.
 
 ## Deployment To Vercel
 
@@ -265,6 +274,8 @@ Generate/update `README.md` before deployment with:
 - No API keys in URLs.
 - No BYOK key persistence.
 - No public raw database errors.
+- API errors use the shared route-error helper and include a request ID for debugging.
+- Structured logs must be redacted and must not include secrets, BYOK keys, raw answers, tokens, prompts, or connection strings.
 - Zod validate all API inputs.
 - Result token must be unguessable.
 - Store token hash only.
@@ -283,6 +294,7 @@ Do not consider v0 complete until:
 - [x] CSV download works.
 - [x] JSON download works.
 - [x] Dataset page handles no-data state.
+- [x] API failures return stable codes, request IDs, and retryability.
 - [x] Dataset page handles small-n suppression.
 - [x] AI BYOK route does not store key.
 - [x] `/how-i-built-this` is implemented and linked.

@@ -271,10 +271,24 @@ At **2026-04-24 11:49 BST**, the documentation set was consolidated around the i
 At **2026-04-24 12:04 BST**, the Claude Code frontend audit was applied as a focused UI/accessibility pass.
 
 - Quick-pass fixes included active nav state, skip-link styling, alert semantics, motion tokens, radar-chart accessibility, global loading/error fallbacks, mobile Likert sizing, a desktop keyboard hint, calmer dataset outage copy, and visual archetype distribution bars.
-- Remaining package-level polish items, such as dev-only axe checks, typography plugin adoption, and a dark-mode pass, are tracked in `_docs/plans/frontend-backlog.md`.
+- Remaining package-level polish items, such as dev-only axe checks, typography plugin adoption, and a dark-mode pass, were tracked in `_docs/plans/frontend-backlog.md` for deliberate implementation.
+
+At **2026-04-24 12:35 BST**, a shared observability and error-handling layer was added before user-facing QA.
+
+- API routes now share a DRY error classifier that maps validation, scoring, database, rate-limit, suppression, not-found, and internal failures to stable codes, request IDs, retryability flags, and safe public messages.
+- Server and browser logging now flows through a redacting structured logger so QA console logs can be shared without leaking BYOK keys, tokens, secrets, connection strings, raw answers, or prompts.
+- Client API forms now log structured browser-console failures and show request references in user-facing error messages where helpful.
+- `_docs/master-docs/observability.md` records the logging contract and what should or should not be shared during testing.
 - Stale implementation language was removed or clarified, including older result-signal terms, older chart-library references, older AI analysis type names, and production persistence status.
 - The privacy/open-data doc now points readers to the L0 schema as the owner for context bucket values instead of duplicating enum lists.
 - The route/API, data, privacy, and AI docs now cross-reference their related source-of-truth docs so future changes start from the correct owner.
+
+At **2026-04-24 12:50 BST**, the pre-test UI polish and MongoDB bootstrap pass was completed.
+
+- `pnpm mongo:bootstrap` now pings Atlas, aligns compatible indexes, validates existing submissions against `storedAssessmentSubmissionSchema`, and writes schema metadata for the current WorkStyle Compass contract.
+- The Mongo repository now tolerates compatible existing indexes, preventing Atlas index-option drift from breaking `/api/submit`.
+- Package-level UI polish was added: Tailwind typography support, dev-only axe checks, next-themes dark mode, a header theme toggle, mobile navigation dialog, radar reveal animation, and a branded 404 page.
+- Local production smoke testing passed for all public pages, dataset suppression responses, archetype OG image generation, and the Mongo-backed submit -> result -> delete path.
 
 At **2026-04-23 22:07 BST**, the home page hero formatting was corrected after visual review.
 

@@ -4,8 +4,6 @@
  * Updated: 2026-04-23
  * Description: BYOK AI analysis proxy that does not store user provider keys.
  */
-import { ZodError } from "zod";
-
 import { createAssessmentSubmissionRepository } from "@/features/assessment/adapters/mongo/assessment-submission-repository";
 import { createAiAnalysisPrompt } from "@/features/assessment/application/ai-analysis";
 import {
@@ -17,9 +15,9 @@ import {
   aiAnalysisRequestSchema,
   aiAnalysisResponseSchema,
 } from "@/features/assessment/schemas/assessment";
-import { apiError, jsonResponse, zodErrorDetail } from "@/lib/api/responses";
+import { jsonResponse } from "@/lib/api/responses";
+import { routeErrorResponse, routeFailure } from "@/lib/api/route-errors";
 import { getServerEnv } from "@/lib/env/server";
-import { isMongoConnectivityError } from "@/lib/mongo/client";
 import { rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
@@ -110,10 +108,23 @@ function extractAnthropicText(payload: unknown): string {
     .join("\n\n");
 }
 
+// Anthropic models that accept an explicit `thinking.budget_tokens` request.
+// Opus 4.7 thinks adaptively and rejects manual budgets; Haiku doesn't think.
+const anthropicExplicitThinkingModels = new Set<string>(["claude-sonnet-4-6"]);
+
+const anthropicThinkingBudgets = {
+  off: 0,
+  low: 2048,
+  medium: 4096,
+  high: 8192,
+} as const;
+
 async function callOpenAi(input: {
   apiKey: string;
   model: string;
   prompt: string;
+  reasoningEffort: "minimal" | "low" | "medium" | "high";
+  verbosity: "low" | "medium" | "high";
 }): Promise<string> {
   const response = await fetch("https://api.openai.com/v1/responses", {
     method: "POST",
@@ -124,8 +135,10 @@ async function callOpenAi(input: {
     body: JSON.stringify({
       model: input.model,
       input: input.prompt,
-      max_output_tokens: 1200,
+      max_output_tokens: 2000,
       store: false,
+      reasoning: { effort: input.reasoningEffort },
+      text: { verbosity: input.verbosity },
     }),
   });
 
@@ -141,7 +154,26 @@ async function callAnthropic(input: {
   apiKey: string;
   model: string;
   prompt: string;
+  thinkingEffort: "off" | "low" | "medium" | "high";
 }): Promise<string> {
+  const thinkingBudget = anthropicThinkingBudgets[input.thinkingEffort];
+  const useExplicitThinking =
+    thinkingBudget > 0 && anthropicExplicitThinkingModels.has(input.model);
+  const outputTokens = 2000;
+  const maxTokens = useExplicitThinking
+    ? thinkingBudget + outputTokens
+    : outputTokens;
+
+  const body: Record<string, unknown> = {
+    model: input.model,
+    max_tokens: maxTokens,
+    messages: [{ role: "user", content: input.prompt }],
+  };
+
+  if (useExplicitThinking) {
+    body.thinking = { type: "enabled", budget_tokens: thinkingBudget };
+  }
+
   const response = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -149,11 +181,7 @@ async function callAnthropic(input: {
       "content-type": "application/json",
       "x-api-key": input.apiKey,
     },
-    body: JSON.stringify({
-      model: input.model,
-      max_tokens: 1200,
-      messages: [{ role: "user", content: input.prompt }],
-    }),
+    body: JSON.stringify(body),
   });
 
   if (!response.ok) {
@@ -171,7 +199,13 @@ export async function POST(request: Request) {
     const env = getServerEnv();
 
     if (!env.AI_ANALYSIS_ENABLED) {
-      return apiError(403, "AI analysis is disabled.");
+      return routeErrorResponse({
+        code: "AI_ANALYSIS_DISABLED",
+        message: "AI analysis is disabled.",
+        operation: "POST /api/ai/analyze",
+        request,
+        status: 403,
+      });
     }
 
     const limit = await rateLimit({
@@ -182,11 +216,15 @@ export async function POST(request: Request) {
     });
 
     if (!limit.allowed) {
-      return apiError(
-        429,
-        "AI analysis rate limit exceeded.",
-        `Try again after ${new Date(limit.resetAt).toISOString()}.`,
-      );
+      return routeErrorResponse({
+        code: "RATE_LIMITED",
+        detail: `Try again after ${new Date(limit.resetAt).toISOString()}.`,
+        message: "AI analysis rate limit exceeded.",
+        operation: "POST /api/ai/analyze",
+        request,
+        retryable: true,
+        status: 429,
+      });
     }
 
     const input = aiAnalysisRequestSchema.parse(await request.json());
@@ -197,11 +235,14 @@ export async function POST(request: Request) {
     const threshold = applySmallCellSuppression(rows, env.PUBLIC_DATASET_MIN_N);
 
     if (threshold.suppressed) {
-      return apiError(
-        403,
-        "Public dataset threshold has not been met.",
-        `Current public row count is ${threshold.rowCount}; minimum is ${threshold.minGroupSize}.`,
-      );
+      return routeErrorResponse({
+        code: "SMALL_CELL_SUPPRESSED",
+        detail: `Current public row count is ${threshold.rowCount}; minimum is ${threshold.minGroupSize}.`,
+        message: "Public dataset threshold has not been met.",
+        operation: "POST /api/ai/analyze",
+        request,
+        status: 403,
+      });
     }
 
     const aggregates = calculateAggregates(
@@ -219,11 +260,14 @@ export async function POST(request: Request) {
             apiKey: input.apiKey,
             model: input.model,
             prompt,
+            reasoningEffort: input.reasoningEffort,
+            verbosity: input.verbosity,
           })
         : await callAnthropic({
             apiKey: input.apiKey,
             model: input.model,
             prompt,
+            thinkingEffort: input.thinkingEffort,
           });
 
     return jsonResponse(
@@ -235,26 +279,12 @@ export async function POST(request: Request) {
       }),
     );
   } catch (error) {
-    if (error instanceof ZodError) {
-      return apiError(
-        400,
-        "Invalid AI analysis request.",
-        zodErrorDetail(error),
-      );
-    }
-
-    if (error instanceof Error) {
-      if (error.name === "MongoConfigurationError") {
-        return apiError(503, error.message);
-      }
-
-      if (isMongoConnectivityError(error)) {
-        return apiError(503, "Database connection unavailable.");
-      }
-
-      return apiError(500, "AI analysis failed.", error.message);
-    }
-
-    return apiError(500, "AI analysis failed.");
+    return routeFailure({
+      error,
+      fallbackMessage: "AI analysis failed.",
+      operation: "POST /api/ai/analyze",
+      request,
+      validationMessage: "Invalid AI analysis request.",
+    });
   }
 }

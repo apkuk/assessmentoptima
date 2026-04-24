@@ -9,6 +9,7 @@ import Link from "next/link";
 import { appConfig } from "@/config/app";
 import { routes } from "@/config/routes";
 import { SiteNav } from "@/components/site-nav";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function SiteHeader() {
   return (
@@ -27,7 +28,10 @@ export function SiteHeader() {
         </span>
       </Link>
 
-      <SiteNav />
+      <div className="header-actions">
+        <ThemeToggle />
+        <SiteNav />
+      </div>
     </header>
   );
 }

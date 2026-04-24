@@ -8,9 +8,8 @@ import { createAssessmentSubmissionRepository } from "@/features/assessment/adap
 import { appConfig } from "@/config/app";
 import { parseStatelessResultToken } from "@/features/assessment/application/stateless-result-token";
 import { viewTokenSchema } from "@/features/assessment/schemas/assessment";
-import { apiError } from "@/lib/api/responses";
+import { routeErrorResponse, routeFailure } from "@/lib/api/route-errors";
 import { getServerEnv } from "@/lib/env/server";
-import { isMongoConnectivityError } from "@/lib/mongo/client";
 import { hashResultToken, resolveHashSecret } from "@/lib/security/tokens";
 
 export const runtime = "nodejs";
@@ -34,7 +33,7 @@ function escapeIcsText(value: string): string {
     .replaceAll("\n", "\\n");
 }
 
-export async function GET(_request: Request, context: RouteContext) {
+export async function GET(request: Request, context: RouteContext) {
   try {
     const env = getServerEnv();
     const { token } = await context.params;
@@ -54,7 +53,13 @@ export async function GET(_request: Request, context: RouteContext) {
       : submission?.publicRowId;
 
     if (!result || !uid) {
-      return apiError(404, "Result not found.");
+      return routeErrorResponse({
+        code: "NOT_FOUND",
+        message: "Result not found.",
+        operation: "GET /api/results/[token]/experiment.ics",
+        request,
+        status: 404,
+      });
     }
 
     const now = new Date();
@@ -83,18 +88,12 @@ export async function GET(_request: Request, context: RouteContext) {
       },
     });
   } catch (error) {
-    if (error instanceof Error) {
-      if (error.name === "MongoConfigurationError") {
-        return apiError(503, error.message);
-      }
-
-      if (isMongoConnectivityError(error)) {
-        return apiError(503, "Database connection unavailable.");
-      }
-
-      return apiError(500, "Calendar export failed.", error.message);
-    }
-
-    return apiError(500, "Calendar export failed.");
+    return routeFailure({
+      error,
+      fallbackMessage: "Calendar export failed.",
+      operation: "GET /api/results/[token]/experiment.ics",
+      request,
+      validationMessage: "Invalid result token.",
+    });
   }
 }

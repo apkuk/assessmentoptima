@@ -2,7 +2,7 @@
  * File: src/features/assessment/application/ai-analysis.ts
  * Created: 2026-04-23
  * Updated: 2026-04-24
- * Description: Prompt construction for BYOK AI analysis of the public dataset.
+ * Description: Prompt construction and provider defaults for BYOK AI analysis of the public dataset.
  */
 import type {
   AggregateResponse,
@@ -18,9 +18,11 @@ const analysisLabels: Record<AiAnalysisRequest["analysisType"], string> = {
   methodology_critique: "critique the assessment methodology",
 };
 
+// Provider-aware defaults used by the BYOK form and backend fall-backs.
+// Update alongside openaiModels / anthropicModels in schemas/assessment.ts.
 export const aiProviderModelDefaults = {
-  openai: "gpt-5.5",
-  anthropic: "claude-sonnet-4-5",
+  openai: "gpt-5.4",
+  anthropic: "claude-sonnet-4-6",
 } as const satisfies Record<AiAnalysisRequest["provider"], string>;
 
 export const aiAnalysisPromptPolicy = [

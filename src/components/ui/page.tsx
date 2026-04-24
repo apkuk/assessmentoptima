@@ -66,18 +66,23 @@ export function ContentGrid({
 export function Surface({
   children,
   label,
+  prose,
   title,
   tone,
   variant = "panel",
 }: {
   children: ReactNode;
   label?: string;
+  prose?: boolean;
   title?: string;
   tone?: Tone;
   variant?: SurfaceVariant;
 }) {
   return (
-    <div className={variant} data-tone={tone}>
+    <div
+      className={mergeClassName(variant, prose ? "prose prose-ao" : undefined)}
+      data-tone={tone}
+    >
       {label ? <p className="panel-label">{label}</p> : null}
       {title ? <h2>{title}</h2> : null}
       {children}

@@ -69,6 +69,7 @@ Implementation rules:
 - Tests should import canonical field lists and constants unless the test is explicitly asserting the canonical list itself.
 - Docs should describe the same owners used in code and should not introduce alternate field names or route paths.
 - L5 pages should use `src/components/ui/*` primitives for repeated layout and surface patterns before adding raw class combinations inline.
+- Shared L5 infrastructure includes the theme provider/toggle, primary navigation, dev-only axe checker, branded error/loading/not-found fallbacks, Tailwind typography support, and global CSS tokens. New pages should consume those systems rather than creating route-local alternatives.
 
 Change procedure:
 
@@ -107,6 +108,8 @@ src/
     api/                        # response helpers
     build/                      # git/build timeline helpers
     security/                   # result token helpers
+scripts/
+  bootstrap-mongo.ts            # MongoDB index and schema metadata alignment from app SSoT contracts
 ```
 
 This layout can be adjusted once the Next.js scaffold exists, but the dependency rules should remain stable.
@@ -145,6 +148,7 @@ MongoDB responsibilities:
 
 - connect through a server-only Mongo client utility
 - implement repository ports from L3/L0
+- expose startup-safe index alignment for `pnpm mongo:bootstrap`
 - persist assessment submissions
 - query aggregate dashboard data
 - generate public export rows from allowlisted fields
@@ -191,6 +195,18 @@ Example files:
 src/features/assessment/application/ai-analysis.ts
 src/app/api/ai/analyze/route.ts
 ```
+
+## Cross-Cutting: Observability And Error Handling
+
+Observability is shared infrastructure, not feature-local logic. API routes should use `src/lib/api/route-errors.ts` for classification, structured logging, request IDs, and consistent JSON error responses. Client components should use `src/lib/api/client-errors.ts` for browser-console diagnostics that can be shared during QA.
+
+Rules:
+
+- Route handlers do not hand-roll Zod/Mongo/generic catch branches.
+- Every handled API failure should have a stable `code`, `requestId`, HTTP status, and `retryable` flag.
+- Server logs must be structured and redacted through `src/lib/observability/logger.ts`.
+- Do not log raw respondent answers, BYOK provider keys, result tokens, management tokens, cookies, authorization headers, prompts, or MongoDB connection strings.
+- User-facing error copy should be calm and should include a reference ID when useful.
 
 ## L3: Orchestrators And Business Logic
 

@@ -5,6 +5,7 @@
  * Description: Global stylesheet entrypoint that imports the AssessmentOptima CSS layers.
  */
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 @import "./styles/base.css";
 @import "./styles/layout.css";
 @import "./styles/reporting.css";

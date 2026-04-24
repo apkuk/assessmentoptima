@@ -278,6 +278,22 @@ Must follow [How I Built This](./how-i-built-this.md).
 
 ## API Contracts
 
+### Shared Error Response
+
+All API routes use the shared L0 `apiErrorResponseSchema` and the route-error helper. Expected and unexpected failures should return:
+
+```json
+{
+  "error": "Database connection unavailable.",
+  "code": "DATABASE_UNAVAILABLE",
+  "detail": "Development-only detail when safe.",
+  "requestId": "ao_...",
+  "retryable": true
+}
+```
+
+The `requestId` is safe to share during QA. It connects the browser-console message to the structured server log. See [Observability And Error Handling](./observability.md).
+
 ### POST `/api/submit`
 
 Request:

@@ -91,6 +91,8 @@ Open work-style research assessment
 
 The palette is semantic, not decorative. Use CSS variables from `src/app/styles/base.css` as the source of truth, imported through `src/app/globals.css`.
 
+Light and dark themes are both token-driven. `next-themes` applies `data-theme="light" | "dark"` on the document element, and `ThemeToggle` exposes system/light/dark switching in the header. Do not hard-code page colours outside the token system; dark mode should inherit from the same semantic variables.
+
 ### Foundation
 
 | Token | Value | Use |

@@ -216,6 +216,14 @@ At **2026-04-24 11:15 BST**, the frontend DX and reuse pass was added.
 - Shared UI primitives were introduced under `src/components/ui/` for page shells, page headers, sections, content grids, surfaces, metric cards, action rows, and button links.
 - Repeated public-page markup was refactored to those primitives so new pages have a more consistent look and fewer inline class combinations.
 
+At **2026-04-24 11:20 BST**, the public build-story page gained an enterprise-grade vibe-coding playbook section.
+
+- The page now explains that fast AI-assisted application development only works when the guardrails are explicit.
+- It highlights `AGENTS.md` as the operating manual for build instructions, QA expectations, no-god-file rules, line-count limits, documentation habits, and verification checks.
+- It calls out Vitest coverage, strict TypeScript, ESLint, Prettier, production builds, and the future need for CI gates.
+- It explains the multi-model review pattern: use strategy/documentation models for PRDs, UI-strong models for polish, and Codex 5.5 with high or extra-high reasoning for implementation.
+- It reinforces documentation, inline comments for non-obvious constraints, README/master-doc upkeep, `.gitignore`, `.env` discipline, and Vercel environment variables as enterprise hygiene rather than optional admin.
+
 At **2026-04-23 22:07 BST**, the home page hero formatting was corrected after visual review.
 
 - The oversized viewport-scaled hero title was replaced with breakpoint-based display tokens.
@@ -364,6 +372,18 @@ Describe Codex as the implementation partner for:
 - UI implementation
 - Vercel readiness
 - turning the PRD and master docs into a deployed public product
+
+### Enterprise-Grade Vibe Coding
+
+Explain the operating model behind building serious AI-assisted applications:
+
+- `AGENTS.md` gives agents and humans a shared operating manual for product boundaries, build style, QA, no-god-file rules, line-count limits, documentation habits, and verification expectations.
+- Full fast test coverage turns vague confidence into repeatable evidence. This project uses Vitest for scoring, consent, public export, suppression, token, and AI prompt guardrail tests.
+- Code quality tooling matters: strict TypeScript, ESLint, Prettier, and production builds catch issues before they become launch problems.
+- Multiple agents or LLMs can be used as specialist reviewers. Use the right model for the right exercise: ChatGPT Pro-style reasoning for documentation and strategy, UI-strong review for visual polish, and Codex 5.5 with high or extra-high reasoning for implementation.
+- Clear documentation makes the work steerable. The PRD, master docs, README files, file headers, and targeted inline comments reduce ambiguity for humans and agents.
+- CI gates should be added so typecheck, lint, format, tests, and build run automatically before merge or deploy. The local gates exist; CI should become the shared enforcement layer.
+- `.gitignore`, `.env` discipline, Vercel environment variables, and secret scanning habits are essential. A fast AI workflow must never become a secrets leak.
 
 This section can include a concise build timeline if accurate. Do not claim “built in two hours” unless the actual public build was completed in that window. It is safer to say:
 

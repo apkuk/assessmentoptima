@@ -111,6 +111,37 @@ const connectedDots = [
   },
 ];
 
+const enterprisePractices = [
+  {
+    title: "Instruction files make the team consistent",
+    body: "AGENTS.md acts like an operating manual: product boundaries, DRY/SSoT rules, no god files, line-count limits, documentation habits, and required QA checks are visible before the model touches code.",
+  },
+  {
+    title: "Tests turn vibe into engineering signal",
+    body: "Vitest covers scoring, consent, export shaping, suppression, tokens, and AI prompt guardrails. The point is not theatre; it is fast feedback on the rules that would be expensive to rediscover manually.",
+  },
+  {
+    title: "Strict code quality gates keep drift down",
+    body: "Strict TypeScript, ESLint, Prettier, and production builds run as a repeatable verification path. The local standard is pnpm verify plus pnpm build before a serious push.",
+  },
+  {
+    title: "Use the right model for the right job",
+    body: "Strategy and documentation benefit from ChatGPT Pro-style deep reasoning. UI polish benefits from strong visual review. Implementation benefits from Codex 5.5 with high or extra-high reasoning on code.",
+  },
+  {
+    title: "Documentation is part of the system",
+    body: "The PRD and master docs define architecture, data, privacy, assessment science, AI analysis, delivery, and brand. Source files carry short headers, and comments are reserved for non-obvious constraints.",
+  },
+  {
+    title: "CI should become the public quality gate",
+    body: "This repo already has local gates. The next enterprise step is GitHub Actions or Vercel checks that run typecheck, lint, formatting, tests, and build before merges or production promotion.",
+  },
+  {
+    title: "Secrets hygiene is non-negotiable",
+    body: ".gitignore, .env discipline, Vercel environment variables, and no raw keys in logs are what stop a fast AI-assisted workflow from becoming an expensive security incident.",
+  },
+];
+
 const statusRows = [
   {
     label: "Local confidence",
@@ -207,6 +238,27 @@ export default function HowIBuiltThisPage() {
             <article className={styles.dotCard} key={dot.prompt}>
               <h3>{dot.prompt}</h3>
               <p>{dot.implication}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <p className={styles.panelKicker}>Enterprise-grade vibe coding</p>
+          <h2>Speed works only when the guardrails are real.</h2>
+          <p>
+            The lesson is not that prompts replace engineering. The useful
+            pattern is giving AI agents the same scaffolding a strong product
+            team would use: instructions, tests, contracts, review loops,
+            documentation, CI gates, and secret hygiene.
+          </p>
+        </div>
+        <div className={styles.practiceGrid}>
+          {enterprisePractices.map((practice) => (
+            <article className={styles.practiceCard} key={practice.title}>
+              <h3>{practice.title}</h3>
+              <p>{practice.body}</p>
             </article>
           ))}
         </div>

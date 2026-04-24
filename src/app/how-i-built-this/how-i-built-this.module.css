@@ -62,6 +62,7 @@
 .receiptPanel,
 .askCard,
 .dotCard,
+.practiceCard,
 .shippedCard,
 .statusSection,
 .receiptCard,
@@ -117,6 +118,7 @@
 
 .askGrid,
 .dotGrid,
+.practiceGrid,
 .shippedGrid,
 .receiptsGrid {
   display: grid;
@@ -129,6 +131,7 @@
 
 .askCard,
 .dotCard,
+.practiceCard,
 .shippedCard,
 .receiptCard {
   padding: 1rem;
@@ -136,6 +139,7 @@
 
 .askCard h2,
 .dotCard h3,
+.practiceCard h3,
 .shippedCard h3 {
   margin: 0.7rem 0 0;
   color: var(--ao-ink);
@@ -146,6 +150,7 @@
 
 .askCard p,
 .dotCard p,
+.practiceCard p,
 .shippedCard li,
 .statusList p,
 .receiptCard p,
@@ -179,6 +184,23 @@
 
 .dotCard {
   background: var(--ao-brand-soft);
+}
+
+.practiceGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 1rem;
+}
+
+.practiceCard {
+  background: var(--ao-surface);
+}
+
+.practiceCard:nth-child(odd) {
+  border-color: color-mix(in srgb, var(--ao-science) 24%, var(--ao-border));
+}
+
+.practiceCard:nth-child(even) {
+  border-color: color-mix(in srgb, var(--ao-brand) 24%, var(--ao-border));
 }
 
 .shippedGrid {
@@ -261,6 +283,7 @@
   .hero,
   .askGrid,
   .dotGrid,
+  .practiceGrid,
   .shippedGrid,
   .statusSection,
   .receiptsGrid,

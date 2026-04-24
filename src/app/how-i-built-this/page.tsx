@@ -28,8 +28,8 @@ const proofStats = [
     label: "ChatGPT 5.5 Pro research and PRD handoff",
   },
   {
-    value: "2 hr",
-    label: "Codex/Vercel sprint target for the public v0",
+    value: "2.5 hr",
+    label: "total AI-assisted sprint to a share-ready v0",
   },
   {
     value: "54",
@@ -51,6 +51,39 @@ const askCards = [
     label: "Ask 2",
     title: "Build and launch the product",
     body: "Codex 5.5 used the PRD and master docs to implement the Next.js app, strict TypeScript contracts, MongoDB persistence layer, public routes, tests, deployment wiring, and the build-story page you are reading.",
+  },
+];
+
+const processSteps = [
+  {
+    label: "1",
+    title: "ChatGPT Pro created the science and PRD",
+    body: "The first pass was research and strategy: behavioural-science grounding, assessment architecture, privacy boundaries, open-data posture, and a Codex-ready product requirements document.",
+  },
+  {
+    label: "2",
+    title: "The docs were split into a build system",
+    body: "After the project owner created the new project folder, the huge PRD was split into master docs for architecture, data, routes/API, privacy, AI analysis, delivery, brand, and assessment model.",
+  },
+  {
+    label: "3",
+    title: "AGENTS.md set the engineering operating model",
+    body: "The VS Code/Codex workflow was given explicit build instructions: schema-first contracts, DRY/SSoT, file-size limits, JSDoc headers, QA checks, no secrets, and no psychometric overclaiming.",
+  },
+  {
+    label: "4",
+    title: "Codex built while Claude Code reviewed UI polish",
+    body: "Claude Code was used for a product and UI polish critique. Codex then folded the feedback into the UX: gated assessment flow, share surfaces, visual tightening, radar/report presentation, and page copy.",
+  },
+  {
+    label: "5",
+    title: "ChatGPT Pro did a hardening review",
+    body: "A second deep review from ChatGPT Pro focused on launch risk: privacy, token design, public sharing, dataset export safety, consent language, reliability wording, and AI BYOK boundaries.",
+  },
+  {
+    label: "6",
+    title: "User walkthrough closed the loop",
+    body: "A hands-on UI pass caught practical issues: formatting, image sizing, checkbox behavior, context dropdown labels, and flow quality. Those fixes became the final polish before calling the v0 done.",
   },
 ];
 
@@ -221,6 +254,34 @@ export default function HowIBuiltThisPage() {
             <p>{card.body}</p>
           </article>
         ))}
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <p className={styles.panelKicker}>The actual workflow</p>
+          <h2>Parallel thinking, building, review, and feedback.</h2>
+          <p>
+            The useful pattern was not one model doing everything in a straight
+            line. It was multiple high-capability tools working in parallel:
+            ChatGPT Pro for deep strategy and documentation, Claude Code for UI
+            critique, and Codex 5.5 with high-reasoning implementation inside VS
+            Code. The project reached a share-ready v0 in about 2.5 hours.
+          </p>
+        </div>
+        <div className={styles.processGrid}>
+          {processSteps.map((step) => (
+            <article className={styles.processCard} key={step.title}>
+              <span>{step.label}</span>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
+            </article>
+          ))}
+        </div>
+        <p className={styles.processNote}>
+          The parallel setup depended on high-usage plans: Claude Max for Claude
+          Code review capacity, and ChatGPT Pro for deep analysis and
+          documentation passes.
+        </p>
       </section>
 
       <section className={styles.section}>

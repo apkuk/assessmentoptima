@@ -66,10 +66,25 @@ Use this as the page's public narrative spine, but keep it precise:
 - The ChatGPT 5.5 Pro research and PRD handoff took 47 minutes.
 - The 47-minute figure refers to creating the research-backed Markdown handoff documents, not completing the deployed application.
 - The page may say the project was scoped as a two-hour AI-assisted build challenge.
-- The page should distinguish between a target, a prototype sprint, and the actual final delivery time.
+- The page should distinguish between a target, a prototype sprint, and the actual final delivery time: the share-ready v0 took about 2.5 hours end to end.
 - The page should not repeat volatile leaderboard or model-release claims unless the PRD later provides source links.
 - The page should not imply the assessment became professionally validated within the sprint.
 - The page should reinforce that the interesting question is pragmatic: what can ChatGPT 5.5 and Codex produce when given serious product, science, privacy, and UX constraints?
+
+## Actual Parallel Workflow
+
+The public page should explain the real workflow that happened, because it is central to the product story:
+
+1. ChatGPT Pro created the initial behavioural-science research basis, assessment creation logic, and project requirements document.
+2. The project owner created the new project folder. Codex then split the large PRD into smaller master docs and started building in VS Code against explicit `AGENTS.md` best-practice instructions.
+3. `AGENTS.md` became the operating model for the repo: schema-first architecture, DRY/SSoT, no god files, a 600-line default file limit, testing/typechecking/linting expectations, documentation habits, and secret hygiene.
+4. Claude Code was used in parallel for a UI/UX polish review. Codex then iterated the visible product experience, including the gated assessment flow, copy, layout, share surfaces, and visual polish.
+5. ChatGPT Pro did a second review against the documents and codebase direction, focused on scientific claims, privacy, consent, sharing, token design, public dataset safety, and launch hardening.
+6. Codex updated both documentation and code from that hardening pass.
+7. The project owner then performed a real user walkthrough of the UI and gave practical feedback, including formatting, image sizing, checkbox behaviour, context dropdown labels, and assessment flow quality.
+8. Codex implemented that user feedback and the project reached a share-ready v0 in about 2.5 hours total.
+
+The page should make the parallelism explicit. The work was not a single linear chat thread. It used multiple high-capability tools for different activities at the same time: ChatGPT Pro for deep documentation and strategic review, Claude Code for UI critique, and Codex 5.5 inside VS Code for implementation and verification. The project owner used Claude Max and ChatGPT Pro plans, which provided the usage headroom needed to run those parallel review/build loops.
 
 ## Build Log Snapshot
 
@@ -223,6 +238,13 @@ At **2026-04-24 11:20 BST**, the public build-story page gained an enterprise-gr
 - It calls out Vitest coverage, strict TypeScript, ESLint, Prettier, production builds, and the future need for CI gates.
 - It explains the multi-model review pattern: use strategy/documentation models for PRDs, UI-strong models for polish, and Codex 5.5 with high or extra-high reasoning for implementation.
 - It reinforces documentation, inline comments for non-obvious constraints, README/master-doc upkeep, `.gitignore`, `.env` discipline, and Vercel environment variables as enterprise hygiene rather than optional admin.
+
+At **2026-04-24 11:26 BST**, the public build-story page was updated to reflect the actual end-to-end process.
+
+- The visible build receipt now states a 2.5-hour total AI-assisted sprint to share-ready v0.
+- The page now explains that ChatGPT Pro created the initial PRD and science basis, Codex split the project documentation and built in VS Code, Claude Code reviewed UI polish, ChatGPT Pro performed a hardening review, and the project owner completed a hands-on UI pass before final fixes.
+- The narrative now explicitly describes parallel workstreams rather than a single linear chat: ChatGPT Pro for research/documentation, Claude Code for UI critique, and Codex 5.5 for implementation.
+- The page notes that Claude Max and ChatGPT Pro plans provided the usage headroom for parallel high-reasoning review and build loops.
 
 At **2026-04-23 22:07 BST**, the home page hero formatting was corrected after visual review.
 

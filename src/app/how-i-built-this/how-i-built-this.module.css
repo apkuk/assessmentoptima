@@ -1,7 +1,7 @@
 /**
  * File: src/app/how-i-built-this/how-i-built-this.module.css
  * Created: 2026-04-23
- * Updated: 2026-04-23
+ * Updated: 2026-04-24
  * Description: Page-scoped presentation for the public AI-assisted build story.
  */
 .page {
@@ -62,6 +62,7 @@
 .receiptPanel,
 .askCard,
 .dotCard,
+.processCard,
 .practiceCard,
 .shippedCard,
 .statusSection,
@@ -118,6 +119,7 @@
 
 .askGrid,
 .dotGrid,
+.processGrid,
 .practiceGrid,
 .shippedGrid,
 .receiptsGrid {
@@ -131,6 +133,7 @@
 
 .askCard,
 .dotCard,
+.processCard,
 .practiceCard,
 .shippedCard,
 .receiptCard {
@@ -139,6 +142,7 @@
 
 .askCard h2,
 .dotCard h3,
+.processCard h3,
 .practiceCard h3,
 .shippedCard h3 {
   margin: 0.7rem 0 0;
@@ -150,12 +154,14 @@
 
 .askCard p,
 .dotCard p,
+.processCard p,
 .practiceCard p,
 .shippedCard li,
 .statusList p,
 .receiptCard p,
 .finalCallout p,
-.sectionHeader p {
+.sectionHeader p,
+.processNote {
   color: var(--ao-muted);
   line-height: 1.65;
 }
@@ -184,6 +190,35 @@
 
 .dotCard {
   background: var(--ao-brand-soft);
+}
+
+.processGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 1rem;
+}
+
+.processCard {
+  position: relative;
+  min-height: 14rem;
+  overflow: hidden;
+}
+
+.processCard span {
+  display: grid;
+  width: 2.35rem;
+  height: 2.35rem;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--ao-brand) 35%, var(--ao-border));
+  border-radius: 999px;
+  background: var(--ao-brand-soft);
+  color: var(--ao-brand-strong);
+  font-family: var(--font-mono-data), ui-monospace, monospace;
+  font-weight: 800;
+}
+
+.processNote {
+  max-width: 62rem;
+  margin: 1rem 0 0;
 }
 
 .practiceGrid {
@@ -283,6 +318,7 @@
   .hero,
   .askGrid,
   .dotGrid,
+  .processGrid,
   .practiceGrid,
   .shippedGrid,
   .statusSection,

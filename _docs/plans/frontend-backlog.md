@@ -89,8 +89,8 @@ Effort guide: **XS** <10 min · **S** 10-30 min · **M** 30-90 min · **L** 90 m
 - **Acceptance:** Diff screenshots of long-form pages before/after; verify line-length and spacing consistency.
 - **Watch:** Override `prose` headings to use Source Serif 4 (set `--tw-prose-headings` vars or pass `prose-headings:font-serif` utility).
 
-### [x] FE-10 · Install `@axe-core/react` (dev-only) — **XS**
-- **Files:** `package.json` (devDep); add a client-side mount-once block in a dev-only component that runs `axe(React, ReactDOM, 1000)` when `NODE_ENV !== 'production'`.
+### [x] FE-10 · Install `axe-core` (dev-only) — **XS**
+- **Files:** `package.json` (devDep); add a client-side mount-once block in a dev-only component that runs `axe.run(document)` when `NODE_ENV !== 'production'`.
 - **Why:** Catches the next batch of a11y regressions in the dev console as they appear.
 - **Acceptance:** Run `pnpm dev`, open any page, see axe results in console.
 

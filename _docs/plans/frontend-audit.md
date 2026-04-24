@@ -25,7 +25,7 @@ At audit time, the gap between where it was and "epic" was **polish and presence
 5. No skip link.
 6. Mobile Likert touch targets sit below WCAG AAA (48×48).
 7. Motion is present on key controls, but it is not yet tokenised as a reusable motion system.
-8. No developer-mode a11y checking (`@axe-core/react` dev-only).
+8. No developer-mode a11y checking (`axe-core` dev-only).
 9. `@tailwindcss/typography` absent — long-form pages (science, how-i-built-this, privacy, limitations) are hand-styled, which will drift.
 10. No loading/error boundary files — MongoDB hiccups currently surface technical copy inline.
 
@@ -118,7 +118,7 @@ User constraint: **high-impact, low-effort. No architectural migrations.** The r
 |---|---|---|
 | `next-themes` (~1kb) | Dark mode toggle + SSR flash-free `prefers-color-scheme` handling | Tokens are already semantic. Portfolio-piece expectation in 2026. ~2h end-to-end including palette tuning. |
 | `@tailwindcss/typography` (dev) | `prose` utility for long-form content | Build-story, science, privacy, limitations pages will drift without it. Works on Tailwind v4 via `@plugin "@tailwindcss/typography"` in CSS. |
-| `@axe-core/react` (dev only) | Dev-time console warnings for a11y violations | Zero production bundle. Catches the next 10 a11y regressions before they ship. |
+| `axe-core` (dev only) | Dev-time console warnings for a11y violations | Zero production bundle. Catches the next 10 a11y regressions before they ship. |
 
 ### Defer (valid, but not worth the effort right now)
 | Package | Reason to defer |
@@ -182,5 +182,5 @@ These are the ones I'd ship first. Detailed tickets are in [frontend-backlog.md]
 - [Next.js `ImageResponse`](https://nextjs.org/docs/app/api-reference/functions/image-response)
 - [React docs: `useActionState`](https://react.dev/reference/react/useActionState)
 - [Tailwind v4 typography plugin](https://github.com/tailwindlabs/tailwindcss-typography)
-- [axe-core/react](https://github.com/dequelabs/axe-core-npm/tree/develop/packages/react)
+- [axe-core](https://github.com/dequelabs/axe-core-npm)
 - [next-themes](https://github.com/pacocoursey/next-themes)

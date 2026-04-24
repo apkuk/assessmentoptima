@@ -31,7 +31,6 @@
     "fresh:prod": "pnpm stop:3001 && pnpm clean && pnpm install && pnpm build && pnpm start:3001"
   },
   "devDependencies": {
-    "@axe-core/react": "^4.11.2",
     "@tailwindcss/postcss": "4.2.4",
     "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^25.6.0",
@@ -39,6 +38,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitest/coverage-v8": "4.1.5",
     "@vitest/ui": "4.1.5",
+    "axe-core": "^4.11.3",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.4",
     "eslint-config-prettier": "^10.1.8",

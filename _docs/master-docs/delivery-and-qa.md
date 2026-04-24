@@ -9,11 +9,13 @@ Current implementation status as of 2026-04-24 12:50 BST:
 - `pnpm verify`, `pnpm build`, `pnpm mongo:bootstrap`, and linked `vercel build --prod` pass locally.
 - The first GitHub-triggered Vercel deployment exposed a project configuration issue: Vercel was set to Framework Preset `Other` and expected a static `public` output directory after the Next.js build.
 - A root `vercel.json` now forces the deployment to use the Next.js framework preset, `pnpm install --frozen-lockfile`, `pnpm build`, and default Next.js output handling.
-- Production environment variables have been added and production redeploy is ready at `https://assessmentoptima.vercel.app`.
+- Production environment variables have been added and production redeploy is live at `https://assessmentoptima.vercel.app`.
 - `/`, `/dataset`, and `/api/health` return `200` in production.
-- Local production smoke testing now passes route checks and the Mongo-backed submit -> result -> delete flow. Vercel production version env values have been aligned to `wsc-v2.0` / `consent-v2.0`, and a fresh production deploy serves core routes. Production `/api/submit` still returns the signed stateless fallback, so Mongo-backed production persistence still needs Atlas network access from Vercel runtime.
+- Local production smoke testing passes route checks and the Mongo-backed submit -> result -> delete flow.
+- Vercel production version env values are aligned to `wsc-v2.0` / `consent-v2.0`.
+- Vercel production persistence is now working after Atlas network access was opened: production submit -> result -> delete smoke returned `x-assessmentoptima-storage: mongo`.
 - The core assessment journey now has a signed stateless result-token fallback. If MongoDB is unreachable during submission, the user can still receive a private report, result API payload, dynamic OG image, and 30-day experiment calendar export. These fallback results are not added to the public dataset.
-- Remaining launch work is Vercel runtime persistence QA, mobile hands-on QA, final dataset licence decision, optional seed data, and deeper AI-provider test coverage.
+- Remaining launch work is mobile hands-on QA, final dataset licence decision, optional seed data, and deeper AI-provider test coverage.
 
 ## Build Order
 
@@ -304,7 +306,7 @@ Do not consider v0 complete until:
 - [ ] Mobile end-to-end assessment reviewed by a human.
 - [ ] Vercel preview deployment passes.
 - [x] Vercel production build/deployment serves core routes.
-- [!] Vercel production persistence-backed submit/result smoke currently falls back to stateless result tokens.
+- [x] Vercel production persistence-backed submit/result/delete smoke passes.
 
 ## Roadmap
 

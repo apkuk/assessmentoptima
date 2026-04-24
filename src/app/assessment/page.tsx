@@ -17,7 +17,7 @@ export default function AssessmentPage() {
   return (
     <PageShell>
       <PageHeader
-        eyebrow="WorkStyle Compass v0"
+        eyebrow="WorkStyle Compass"
         title="Your WorkStyle Compass"
         lede="No right answers - just what is true for you at work right now. Takes about 8 minutes. You will get a developmental report at the end."
       />

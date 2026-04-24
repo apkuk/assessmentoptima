@@ -16,13 +16,13 @@ import {
 import { citations } from "@/config/app";
 
 export const metadata: Metadata = {
-  title: "Science",
+  title: "Work Operating System Model",
 };
 
 const pillars = [
   {
     title: "Work operating systems",
-    body: "The v2 model asks how people turn complexity into contribution through Operational Clarity, Human Coordination, and Adaptive Capacity.",
+    body: "WorkStyle Compass uses the Work Operating System model to explain how people turn complexity into contribution through Operational Clarity, Human Coordination, and Adaptive Capacity.",
   },
   {
     title: "Pressure drift",
@@ -47,8 +47,8 @@ export default function SciencePage() {
     <PageShell>
       <PageHeader
         eyebrow="Methodology"
-        title="The science behind the prototype"
-        lede="WorkStyle Compass is a developmental assessment of how people turn complexity into contribution. It looks at three work operating systems: Operational Clarity, Human Coordination, and Adaptive Capacity."
+        title="The Work Operating System model"
+        lede="WorkStyle Compass is the assessment. The Work Operating System model is the framework underneath it: Operational Clarity, Human Coordination, and Adaptive Capacity."
       />
 
       <ContentGrid>

@@ -12,6 +12,8 @@ WorkStyle Compass is a developmental work-style assessment. It explores how peop
 
 It is not a selection instrument, clinical tool, validated predictor, or employment-decision aid. Results are for self-reflection, coaching, team conversation, and open research only.
 
+Naming rule: **AssessmentOptima** is the product/platform brand, **WorkStyle Compass** is the assessment/instrument, and the **Work Operating System model** is the methodology underneath it. Respondent-facing UI should use WorkStyle Compass for the instrument and reserve Work Operating System language for science, methodology, and results interpretation. Internal version labels such as `wsc-v2.0` belong in data, docs, and citations, not in primary user-facing page labels.
+
 ## Scale Keys
 
 The implementation uses v2 domain-aligned scale keys directly. Do not reintroduce older generic keys or compatibility aliases:

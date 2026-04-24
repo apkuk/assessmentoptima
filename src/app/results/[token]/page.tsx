@@ -112,7 +112,7 @@ export default async function ResultPage({ params }: ResultPageProps) {
       <section className="report-hero">
         <div>
           <p className="eyebrow">Private report</p>
-          <h1 className="page-title">Your WorkStyle profile</h1>
+          <h1 className="page-title">Your WorkStyle Compass profile</h1>
           <p className="lede">
             This is a developmental interpretation, not a verdict. Use it to
             name likely strengths, pressure drifts, and experiments to test in

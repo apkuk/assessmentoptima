@@ -92,7 +92,7 @@ const shippedGroups = [
     title: "Assessment product",
     items: [
       "Gated Intro -> Consent -> About you -> Assessment -> Review flow",
-      "54-item WorkStyle Compass model with nine scale scores",
+      "54-item WorkStyle Compass assessment with nine scale scores",
       "Private result report with archetype, radar, strengths, pressure drifts, and 30-day experiment",
       "Developmental-only use boundary throughout the product",
     ],
@@ -218,10 +218,11 @@ export default function HowIBuiltThisPage() {
           <p className="eyebrow">The public proof point</p>
           <h1>From rough idea to deployed assessment product</h1>
           <p className={styles.lede}>
-            {appConfig.productName} is a work-style assessment prototype. It is
-            also a transparent case study in what ChatGPT 5.5 and Codex with
-            GPT-5.5 can do when the brief includes product thinking, behavioural
-            science, privacy, data architecture, UX, tests, and deployment.
+            {appConfig.productName} is the public platform. WorkStyle Compass is
+            the developmental assessment inside it. This is also a transparent
+            case study in what ChatGPT 5.5 and Codex with GPT-5.5 can do when
+            the brief includes product thinking, behavioural science, privacy,
+            data architecture, UX, tests, and deployment.
           </p>
           <div className={styles.heroActions}>
             <Link className="button" href={routes.assessment}>

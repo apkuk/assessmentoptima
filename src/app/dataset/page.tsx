@@ -22,7 +22,7 @@ import { getServerEnv } from "@/lib/env/server";
 import { isMongoConnectivityError } from "@/lib/mongo/client";
 
 export const metadata: Metadata = {
-  title: "Open Dataset",
+  title: "WorkStyle Compass Public Dataset",
 };
 
 export const dynamic = "force-dynamic";
@@ -65,7 +65,7 @@ export default async function DatasetPage() {
     <main className="page">
       <section className="section">
         <p className="eyebrow">Open dataset</p>
-        <h1 className="page-title">Public research data</h1>
+        <h1 className="page-title">WorkStyle Compass public dataset</h1>
         <p className="lede">
           Download anonymised, scale-level records once the public release
           threshold has been met. Until then, aggregate views remain suppressed.

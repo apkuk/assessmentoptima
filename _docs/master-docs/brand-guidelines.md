@@ -20,6 +20,16 @@ The desired read is:
 Evidence-led, calm, transparent, precise, and unusually well-built for a public demo.
 ```
 
+## Naming Hierarchy
+
+Use this naming system consistently in UI, docs, metadata, and exports:
+
+- **AssessmentOptima** is the product/platform/brand.
+- **WorkStyle Compass** is the developmental assessment/instrument inside AssessmentOptima.
+- **The Work Operating System model** is the methodology underneath WorkStyle Compass, made up of Operational Clarity, Human Coordination, and Adaptive Capacity.
+
+Do not call the product "Work Operating System." Do not put visible version numbers such as `v0` or `v2` in respondent-facing UI unless the page is specifically about methodology, data versioning, or build provenance.
+
 ## Design Principles
 
 ### 1. Serious But Not Clinical
